@@ -73,32 +73,17 @@ app.whenReady().then(async () => {
   Menu.setApplicationMenu(null);
 
   // В dev-режиме (npm start) Electron показывает в Dock свою иконку, а не
-  // нашу из assets/icon.png. Подменяем явно. В собранной .app — Electron
-  // подхватит .icns автоматически, но повторный вызов не повредит.
+  // нашу из assets/icon.png. Подменяем явно. Никакого ручного bitmap-composite
+  // больше — все попытки ужать iconику программно ломали либо stride на Retina,
+  // либо artwork (артефакты сверху). Картинка из assets/icon.png уже нарисована
+  // с правильной геометрией дизайнером — отдаём её Dock'у как есть.
   if (process.platform === 'darwin' && app.dock) {
     try {
       const path = require('path');
       const { nativeImage } = require('electron');
       const iconPath = path.join(__dirname, '..', '..', 'assets', 'icon.png');
       const src = nativeImage.createFromPath(iconPath);
-      if (!src.isEmpty()) {
-        // Иконка нарисована «в край» squircle. macOS-iconography требует
-        // прозрачные поля ~10-12% по периметру (как Chrome/Telegram/Discord),
-        // иначе визуально иконка крупнее соседних в Dock. Композируем
-        // оригинал в центр большего прозрачного canvas через bitmap-буфер.
-        const s = src.getSize();
-        const pad = Math.round(s.width * 0.12);
-        const W = s.width + pad * 2, H = s.height + pad * 2;
-        const out = Buffer.alloc(W * H * 4); // все байты 0 → прозрачно
-        const srcBytes = src.toBitmap();      // BGRA на macOS
-        for (let y = 0; y < s.height; y++) {
-          const srcRow = y * s.width * 4;
-          const dstRow = ((y + pad) * W + pad) * 4;
-          srcBytes.copy(out, dstRow, srcRow, srcRow + s.width * 4);
-        }
-        const padded = nativeImage.createFromBitmap(out, { width: W, height: H });
-        app.dock.setIcon(padded);
-      }
+      if (!src.isEmpty()) app.dock.setIcon(src);
     } catch (e) { console.warn('[dock] setIcon failed:', e.message); }
   }
 

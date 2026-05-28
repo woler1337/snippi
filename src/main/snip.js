@@ -63,15 +63,16 @@ function closeSnipWindow() {
   snipDisplayId = null;
 }
 
-// Возврат фокуса в предыдущее приложение. Используем `Menu.sendActionToFirstResponder`
-// (эквивалент Cmd+H в menu bar) — он мягче чем `app.hide()` и НЕ удаляет dock-иконку
-// на macOS 26 Tahoe (что делал прямой `app.hide()`).
+// ВАЖНО: НЕ возвращаем фокус автоматически.
+// Любая форма app.hide() / Menu.sendActionToFirstResponder('hide:') /
+// app.dock.hide() — на macOS 26 Tahoe приводит к тому, что dock-иконка
+// «исчезает» (становится невидимой или «дергается»). После 4+ попыток
+// решения было понятно: не трогаем фокус вообще.
+// UX-trade-off: после OCR/Translate приложение остаётся на переднем плане.
+// Пользователь сам переключится в нужную программу через Cmd+Tab или клик.
+// Зато dock-иконка остаётся на месте, и нет визуальных глюков.
 function returnFocusToPreviousApp() {
-  if (process.platform !== 'darwin') return;
-  try {
-    const { Menu } = require('electron');
-    Menu.sendActionToFirstResponder('hide:');
-  } catch {}
+  // намеренно ничего не делаем
 }
 
 // Единый диалог для всех случаев когда захват экрана не работает.
