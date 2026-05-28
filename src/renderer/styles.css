@@ -167,8 +167,8 @@ body::before {
   padding: 0 18px;
   height: var(--header-h);
   background: rgba(20, 22, 26, 0.55);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
   -webkit-app-region: drag;
@@ -462,8 +462,8 @@ mark {
   padding: 0 16px;
   height: var(--footer-h);
   background: rgba(20, 22, 26, 0.45);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
   border-top: 1px solid var(--border);
   flex-shrink: 0; gap: 12px;
 }
@@ -519,8 +519,8 @@ mark {
 
 .modal {
   background: rgba(22, 24, 28, 0.78);
-  backdrop-filter: blur(60px) saturate(180%);
-  -webkit-backdrop-filter: blur(60px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
   box-shadow: var(--shadow-lg);
@@ -668,8 +668,8 @@ form { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px
   position: fixed; bottom: 60px; left: 50%;
   transform: translateX(-50%) translateY(8px);
   background: rgba(22, 24, 28, 0.92);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
   color: var(--text-1);
   border: 1px solid rgba(255,255,255,0.10);
   padding: 9px 16px; border-radius: 999px;
@@ -1092,11 +1092,13 @@ form { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px
   font-size: 11.5px;
   letter-spacing: 0.005em;
 }
+/* Анимация пульса убрана: под backdrop-filter шапки она заставляла GPU
+   непрерывно пересчитывать blur (Renderer 25% + GPU 30% на idle). Точка
+   осталась статичной — выглядит как «онлайн»-индикатор у iMessage. */
 .status-dot {
   width: 7px; height: 7px; border-radius: 50%;
   background: var(--green);
-  box-shadow: 0 0 0 0 color-mix(in srgb, var(--green) 60%, transparent);
-  animation: te-status-pulse 2.4s ease-out infinite;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--green) 25%, transparent);
   flex-shrink: 0;
 }
 .status-pill.disabled {
@@ -1104,13 +1106,7 @@ form { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px
   border-color: var(--border);
 }
 .status-pill.disabled .status-label { color: var(--text-3); }
-.status-pill.disabled .status-dot { background: var(--text-3); animation: none; box-shadow: none; }
-
-@keyframes te-status-pulse {
-  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--green) 55%, transparent); }
-  70%  { box-shadow: 0 0 0 6px transparent; }
-  100% { box-shadow: 0 0 0 0 transparent; }
-}
+.status-pill.disabled .status-dot { background: var(--text-3); box-shadow: none; }
 
 /* ══════════════════════════════════════════════════════════════════
    ПАНЕЛЬ «СКРИНШОТ → ТЕКСТ» И «ПЕРЕВОД»
@@ -1472,3 +1468,52 @@ form { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px
   box-shadow: 0 0 0 4px rgba(255,255,255,0.05);
 }
 .status-pill.disabled .status-label { color: var(--text-2); }
+
+/* ══════════════════════════════════════════════════════════════════
+   Подсказка про {|} placeholder в редакторе сниппета
+══════════════════════════════════════════════════════════════════ */
+
+.form-hint-btn {
+  margin-left: auto;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 9px;
+  font-size: 11.5px;
+  font-weight: 500;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: background var(--tr), color var(--tr), border-color var(--tr);
+}
+.form-hint-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-1);
+  border-color: var(--border-focus);
+}
+.form-hint-btn .mono {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-1);
+}
+
+.form-label {
+  display: flex; align-items: center;
+}
+
+.form-hint-row {
+  display: flex; align-items: center; gap: 5px; flex-wrap: wrap;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--text-3);
+  line-height: 1.45;
+}
+.form-hint-row code {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  padding: 1px 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-1);
+}

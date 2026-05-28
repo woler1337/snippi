@@ -26,7 +26,10 @@ Object.assign(console, log.functions);
 
 // ── Process-level настройки до создания app ──────────────────────────────
 
-app.disableHardwareAcceleration();
+// ВАЖНО: hardware acceleration ВКЛЮЧЕНА намеренно. Раньше она была отключена,
+// но это превращало все backdrop-filter blur, анимации и градиенты в CPU-работу,
+// что делало UI заметно лаганым. С новым стеклянным дизайном (blur(40px) в шапке,
+// status-pulse, ambient градиенты) hardware acceleration обязателен.
 // 256 МБ — разумный минимум: V8 при 96 МБ непрерывно GC-ит, что
 // блокирует поток с глобальным хуком клавиатуры.
 app.commandLine.appendSwitch('js-flags', '--max-old-space-size=256');

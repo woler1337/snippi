@@ -9,7 +9,7 @@ const fs = require('fs');
 const storage      = require('./storage');
 const translator   = require('./translator');
 const { setAutoLaunch }                  = require('./autolaunch');
-const { startSnip, handleSnipPick, closeSnipWindow } = require('./snip');
+const { startSnip, handleSnipPick, closeSnipWindow, cancelSnip } = require('./snip');
 const { registerOcrHotkey, registerTranslateHotkey, runTranslate } = require('./hotkeys');
 const { updateTrayMenu }                 = require('./tray');
 const { getMainWindow }                  = require('./mainWindow');
@@ -81,7 +81,7 @@ function setupIPC() {
     return s;
   });
   ipcMain.handle('snip-pick',   (_, b) => handleSnipPick(b));
-  ipcMain.handle('snip-cancel', ()     => closeSnipWindow());
+  ipcMain.handle('snip-cancel', ()     => cancelSnip());
   ipcMain.handle('ocr-trigger', ()     => startSnip('ocr'));
 
   // ── Переводчик ──

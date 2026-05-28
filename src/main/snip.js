@@ -55,17 +55,21 @@ function createSnipWindow(display) {
   return w;
 }
 
+// closeSnipWindow — только закрытие оверлея. БЕЗ app.hide() — иначе двойной
+// вызов в handleSnipPick → closeSnipWindow → app.hide()  +  ещё один app.hide()
+// приводил к тому что на macOS Tahoe dock-иконка пропадала.
+// Возврат фокуса в предыдущее приложение делает явный returnFocusToPreviousApp().
 function closeSnipWindow() {
   if (snipWindow && !snipWindow.isDestroyed()) {
     try { snipWindow.close(); } catch {}
   }
   snipWindow = null;
   snipDisplayId = null;
-  // На macOS прячем приложение целиком, чтобы фокус вернулся в то приложение,
-  // которое было активно до старта snip.
-  if (process.platform === 'darwin') {
-    try { app.hide(); } catch {}
-  }
+}
+
+function returnFocusToPreviousApp() {
+  if (process.platform !== 'darwin') return;
+  try { app.hide(); } catch {}
 }
 
 async function startSnip(mode = 'ocr') {
@@ -95,10 +99,8 @@ async function handleSnipPick(bounds) {
   const display = screen.getAllDisplays().find(d => d.id === snipDisplayId)
                 || screen.getPrimaryDisplay();
   closeSnipWindow();
-
-  if (process.platform === 'darwin') {
-    try { app.hide(); } catch {}
-  }
+  // Возвращаем фокус в предыдущее активное приложение ОДИН раз.
+  returnFocusToPreviousApp();
 
   if (ocrBusy) return;
   ocrBusy = true;
@@ -239,10 +241,18 @@ function sendTranslateResult(payload) {
   } catch {}
 }
 
+// Внешний API для cancel-флоу (вызывается по Esc): закрыть оверлей и вернуть
+// фокус, без OCR-pipeline'а.
+function cancelSnip() {
+  closeSnipWindow();
+  returnFocusToPreviousApp();
+}
+
 module.exports = {
   startSnip,
   handleSnipPick,
   closeSnipWindow,
+  cancelSnip,
   getSnipWindow,
-  sendTranslateResult,   // нужен hotkeys.js когда runTranslate проверяет enabled
+  sendTranslateResult,
 };

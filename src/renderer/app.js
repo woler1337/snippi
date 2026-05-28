@@ -134,6 +134,7 @@ const dom = {
   snippetTrigErr:   $('snippet-trigger-err'),
   snippetReplace:   $('snippet-replacement'),
   snippetRepErr:    $('snippet-replacement-err'),
+  snippetInsertCaret: $('snippet-insert-caret'),
   snippetCancel:    $('snippet-cancel'),
   snippetSave:      $('snippet-save'),
   // Модалка хоткея
@@ -1257,6 +1258,21 @@ function bindEvents() {
   dom.snippetCancel.addEventListener('click', closeSnippetModal);
   dom.snippetBackdrop.addEventListener('click', e => { if (e.target === dom.snippetBackdrop) closeSnippetModal(); });
   dom.snippetForm.addEventListener('submit', e => { e.preventDefault(); saveSnippet(); });
+
+  // Кнопка «{|} курсор» — вставляет маркер в текущую позицию курсора в textarea.
+  if (dom.snippetInsertCaret) {
+    dom.snippetInsertCaret.addEventListener('click', () => {
+      const ta = dom.snippetReplace;
+      const start = ta.selectionStart, end = ta.selectionEnd;
+      const v = ta.value;
+      ta.value = v.slice(0, start) + '{|}' + v.slice(end);
+      // Курсор после вставленного маркера
+      ta.focus();
+      ta.setSelectionRange(start + 3, start + 3);
+      // Триггерим input — чтобы автоформат высоты сработал
+      ta.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+  }
 
   dom.snippetReplace.addEventListener('input', () => {
     dom.snippetReplace.style.height = 'auto';

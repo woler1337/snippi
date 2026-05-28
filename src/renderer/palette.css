@@ -49,8 +49,8 @@ html, body {
   position: fixed; inset: 0;
   display: flex; flex-direction: column;
   background: var(--bg);
-  backdrop-filter: saturate(180%) blur(28px);
-  -webkit-backdrop-filter: saturate(180%) blur(28px);
+  backdrop-filter: saturate(140%) blur(16px);
+  -webkit-backdrop-filter: saturate(140%) blur(16px);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;

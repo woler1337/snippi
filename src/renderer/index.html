@@ -545,10 +545,23 @@
           <span class="form-error" id="snippet-trigger-err"></span>
         </div>
         <div class="form-group">
-          <label class="form-label" data-i18n="snippet.field.replace">Замена</label>
+          <label class="form-label">
+            <span data-i18n="snippet.field.replace">Замена</span>
+            <button type="button" class="form-hint-btn" id="snippet-insert-caret"
+                    data-i18n-title="snippet.field.caretBtnTitle"
+                    title="Вставить маркер позиции курсора {|}">
+              <span class="mono">{|}</span>
+              <span data-i18n="snippet.field.caretBtn">курсор</span>
+            </button>
+          </label>
           <textarea id="snippet-replacement" class="form-textarea mono"
                     data-i18n-placeholder="snippet.field.replacePlaceholder"
                     placeholder="Полный текст для подстановки…" rows="4"></textarea>
+          <p class="form-hint-row">
+            <span data-i18n="snippet.field.caretHint">Подсказка: добавьте</span>
+            <code class="mono">{|}</code>
+            <span data-i18n="snippet.field.caretHint2">в любое место — после раскрытия курсор автоматически встанет туда.</span>
+          </p>
           <span class="form-error" id="snippet-replacement-err"></span>
         </div>
         <div class="form-group">

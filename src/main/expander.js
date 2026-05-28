@@ -54,12 +54,14 @@ function ensureMacHelper() {
   return (_macH = h);
 }
 
-function sendKeysMac(n) {
+// n — сколько backspace перед Cmd+V; leftMoves — сколько раз нажать ← после вставки
+// (для placeholder {|} — позиционирует курсор внутри вставленного текста).
+function sendKeysMac(n, leftMoves = 0) {
   const h = ensureMacHelper();
   return new Promise((resolve, reject) => {
     const t = setTimeout(() => { _macCb = null; reject(new Error('helper timeout')); }, 5000);
     _macCb = () => { clearTimeout(t); resolve(); };
-    h.stdin.write(`${n}\n`);
+    h.stdin.write(leftMoves > 0 ? `${n},${leftMoves}\n` : `${n}\n`);
   });
 }
 
@@ -107,12 +109,13 @@ function ensurePS() {
   return _ps;
 }
 
-function sendKeysWin(backspaceCount) {
+function sendKeysWin(backspaceCount, leftMoves = 0) {
   const ps    = ensurePS();
   const token = `K${++_psId}`;
-  const keys  = backspaceCount > 0
-    ? `{BACKSPACE ${backspaceCount}}^v`
-    : `^v`;
+  let keys    = backspaceCount > 0 ? `{BACKSPACE ${backspaceCount}}^v` : `^v`;
+  // {LEFT N} в SendKeys повторяет ← N раз. Шлём ОДНОЙ строкой — паузу
+  // между вставкой и стрелками Windows покрывает встроенной задержкой.
+  if (leftMoves > 0) keys += `{LEFT ${leftMoves}}`;
 
   return new Promise((resolve, reject) => {
     const t = setTimeout(() => {
@@ -129,23 +132,40 @@ function sendKeysWin(backspaceCount) {
 
 // ── Универсальная функция вставки ─────────────────────────────────────────
 
+// Извлекает позицию маркера {|} в тексте.
+// Возвращает { text: текст-без-маркера, leftMoves: сколько раз нажать ← после вставки }.
+// Поддерживает только ПЕРВОЕ вхождение маркера — остальные оставляет как есть.
+function parseCursorMarker(raw) {
+  if (!raw) return { text: raw || '', leftMoves: 0 };
+  const idx = raw.indexOf('{|}');
+  if (idx === -1) return { text: raw, leftMoves: 0 };
+  const stripped = raw.slice(0, idx) + raw.slice(idx + 3);
+  // leftMoves = сколько символов ПОСЛЕ курсора — на столько ← нужно нажать,
+  // чтобы курсор вернулся туда, где был маркер.
+  const leftMoves = stripped.length - idx;
+  return { text: stripped, leftMoves };
+}
+
 async function sendBackspacesAndPaste(backspaceCount, text) {
+  // Парсим placeholder {|} — если есть, courseRP станет > 0.
+  const { text: finalText, leftMoves } = parseCursorMarker(text);
   const saved = clipboard.readText();
-  clipboard.writeText(text);
+  clipboard.writeText(finalText);
 
   try {
     if (process.platform === 'darwin') {
       // Постоянный Swift-хелпер: команда идёт по pipe ~0.5 мс, нет запуска процесса
-      await sendKeysMac(backspaceCount);
+      await sendKeysMac(backspaceCount, leftMoves);
 
     } else if (process.platform === 'win32') {
       // PowerShell SendWait — надёжная отправка в активное окно
-      await sendKeysWin(backspaceCount);
+      await sendKeysWin(backspaceCount, leftMoves);
 
     } else {
       // Linux: xdotool
       const keys = Array(backspaceCount).fill('BackSpace');
       keys.push('ctrl+v');
+      for (let i = 0; i < leftMoves; i++) keys.push('Left');
       await execCmd('xdotool', ['key', '--clearmodifiers', ...keys]);
     }
   } finally {
@@ -256,7 +276,10 @@ async function tryExpandSnippet() {
     try {
       await delay(3);
       await sendBackspacesAndPaste(backspaceCount, match.replacement);
-      _fireNotify('snippet', match.replacement.length - match.trigger.length);
+      // В статистике считаем только символы, реально попавшие в текст —
+      // маркер {|} в статистике не учитываем.
+      const insertedLen = parseCursorMarker(match.replacement).text.length;
+      _fireNotify('snippet', insertedLen - match.trigger.length);
     } catch (err) {
       console.error('[expander] Ошибка сниппета:', err);
     } finally {
@@ -290,7 +313,7 @@ async function fireKeybinding(binding) {
     if (process.platform === 'win32') await delay(30);
     const extraBs = hotkeyTypesChar(binding.hotkeyData) ? 1 : 0;
     await sendBackspacesAndPaste(extraBs, binding.text);
-    _fireNotify('hotkey', binding.text.length);
+    _fireNotify('hotkey', parseCursorMarker(binding.text).text.length);
   } catch (err) {
     console.error('[expander] Ошибка хоткея:', err);
   } finally {
