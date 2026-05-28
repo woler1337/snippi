@@ -73,17 +73,39 @@ app.whenReady().then(async () => {
   Menu.setApplicationMenu(null);
 
   // В dev-режиме (npm start) Electron показывает в Dock свою иконку, а не
-  // нашу из assets/icon.png. Подменяем явно. Никакого ручного bitmap-composite
-  // больше — все попытки ужать iconику программно ломали либо stride на Retina,
-  // либо artwork (артефакты сверху). Картинка из assets/icon.png уже нарисована
-  // с правильной геометрией дизайнером — отдаём её Dock'у как есть.
+  // нашу. Подменяем + добавляем 12% прозрачных полей программно — иначе
+  // squircle растягивается на всю ячейку Dock'а и визуально крупнее соседей.
+  //
+  // Наш icon.png — 1024×1024 без Retina-метки → s.width === bitmap stride,
+  // никакой DIP/physical путаницы. Тот старый bug с «хвостами» был на другом
+  // PNG, который был Retina-tagged. Текущий icon.png — обычный, проверено.
   if (process.platform === 'darwin' && app.dock) {
     try {
       const path = require('path');
       const { nativeImage } = require('electron');
       const iconPath = path.join(__dirname, '..', '..', 'assets', 'icon.png');
       const src = nativeImage.createFromPath(iconPath);
-      if (!src.isEmpty()) app.dock.setIcon(src);
+      if (!src.isEmpty()) {
+        const s = src.getSize();
+        const pad = Math.round(s.width * 0.12);
+        const W = s.width + pad * 2, H = s.height + pad * 2;
+        const out = Buffer.alloc(W * H * 4);   // transparent
+        const srcBytes = src.toBitmap();
+        // Защита: если по факту stride отличается (Retina-PNG), просто
+        // отдаём оригинал без padding'а — лучше «слишком большая», чем артефакты.
+        if (srcBytes.length === s.width * s.height * 4) {
+          for (let y = 0; y < s.height; y++) {
+            const srcRow = y * s.width * 4;
+            const dstRow = ((y + pad) * W + pad) * 4;
+            srcBytes.copy(out, dstRow, srcRow, srcRow + s.width * 4);
+          }
+          const padded = nativeImage.createFromBitmap(out, { width: W, height: H });
+          app.dock.setIcon(padded);
+        } else {
+          console.warn('[dock] неожиданный stride, использую оригинал без padding');
+          app.dock.setIcon(src);
+        }
+      }
     } catch (e) { console.warn('[dock] setIcon failed:', e.message); }
   }
 
