@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Snippi — расширитель текста с OCR и переводом для Mac, Windows и Linux</title>
+  <meta name="description" content="Триггер из двух букв разворачивается в готовое письмо. Скриншот области → текст в буфере. Перевод любого экрана за одну клавишу. Бесплатно. Локально. Без аккаунта." />
+  <meta name="theme-color" content="#0a0b0d" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Snippi — расширитель текста с OCR и переводом" />
+  <meta property="og:description" content="Триггер из двух букв разворачивается в готовое письмо. Скриншот области → текст в буфере. Перевод любого экрана за одну клавишу." />
+  <meta property="og:image" content="https://woler1337.github.io/snippi/assets/icon.png" />
+  <meta property="og:url" content="https://woler1337.github.io/snippi/" />
+  <meta property="og:type" content="website" />
+
+  <link rel="icon" type="image/png" href="assets/icon.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- ─────────────────────────────────────────────  NAV  ───────────────────── -->
+<nav class="nav">
+  <a href="#" class="nav-brand">
+    <img src="assets/icon.png" alt="" class="nav-icon" />
+    <span>Snippi</span>
+  </a>
+  <div class="nav-links">
+    <a href="#features">Возможности</a>
+    <a href="#how">Как работает</a>
+    <a href="#faq">FAQ</a>
+    <a href="https://github.com/woler1337/snippi" target="_blank" rel="noopener">GitHub</a>
+    <a href="#download" class="btn btn-primary btn-sm">Скачать</a>
+  </div>
+</nav>
+
+<!-- ─────────────────────────────────────────────  HERO  ──────────────────── -->
+<header class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">v1.0 · Mac · Windows · Linux</span>
+    <h1>Печатай в&nbsp;5 раз меньше.<br><span class="accent">Делай то&nbsp;же самое.</span></h1>
+    <p class="lead">
+      Триггер из&nbsp;двух букв разворачивается в&nbsp;готовое письмо. Скриншот области экрана —
+      и&nbsp;текст уже в&nbsp;буфере обмена. Перевод любого текста с&nbsp;экрана за&nbsp;одну
+      клавишу. Всё локально, без&nbsp;аккаунта, без&nbsp;подписки.
+    </p>
+    <div class="hero-actions">
+      <a href="#download" class="btn btn-primary btn-lg">Скачать бесплатно</a>
+      <a href="https://github.com/woler1337/snippi" class="btn btn-ghost btn-lg" target="_blank" rel="noopener">
+        Открыть на GitHub
+      </a>
+    </div>
+    <p class="hero-foot">Бесплатно навсегда · Открытый код · Никаких данных не уходит на сервер</p>
+  </div>
+
+  <!-- Скриншот приложения (placeholder — заменишь на свой) -->
+  <div class="hero-screenshot">
+    <div class="screenshot-frame">
+      <div class="screenshot-window">
+        <div class="window-bar">
+          <span class="dot dot-red"></span>
+          <span class="dot dot-yellow"></span>
+          <span class="dot dot-green"></span>
+        </div>
+        <div class="window-body">
+          <div class="ws-sidebar">
+            <div class="ws-brand"><img src="assets/icon.png" alt="" /></div>
+            <div class="ws-status">
+              <span class="ws-dot"></span> Перехватчик активен
+            </div>
+            <div class="ws-section">БИБЛИОТЕКА</div>
+            <div class="ws-item active">📝 Сниппеты <span class="ws-count">28</span></div>
+            <div class="ws-item">⌨️ Хоткеи <span class="ws-count">4</span></div>
+            <div class="ws-item">📋 Буфер <span class="ws-count">50</span></div>
+            <div class="ws-section">ИНСТРУМЕНТЫ</div>
+            <div class="ws-item">📸 Скриншот → текст <kbd>⌘⇧1</kbd></div>
+            <div class="ws-item">🌐 Перевод <kbd>⌘⇧2</kbd></div>
+          </div>
+          <div class="ws-content">
+            <h2>Сниппеты</h2>
+            <p class="ws-sub">Короткие триггеры разворачиваются в длинный текст по нажатию триггер-клавиши.</p>
+            <div class="ws-snippet">
+              <span class="ws-trigger">nm</span>
+              <span class="ws-arrow">→</span>
+              <span class="ws-text">Николай Михайлов</span>
+            </div>
+            <div class="ws-snippet">
+              <span class="ws-trigger">eml</span>
+              <span class="ws-arrow">→</span>
+              <span class="ws-text">nikolay.mikhaylov@example.com</span>
+            </div>
+            <div class="ws-snippet">
+              <span class="ws-trigger">sig</span>
+              <span class="ws-arrow">→</span>
+              <span class="ws-text">С уважением, Николай Михайлов, Product Designer</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="screenshot-caption">Скриншот приложения (Mac)</p>
+  </div>
+</header>
+
+<!-- ─────────────────────────────────────────────  FEATURES GRID  ─────────── -->
+<section id="features" class="section">
+  <div class="section-head">
+    <h2>Шесть инструментов, которые экономят часы</h2>
+    <p class="lead-sm">Каждая мелкая операция, которую ты делаешь сотни раз в день — теперь одна клавиша.</p>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature">
+      <div class="feature-icon">📝</div>
+      <h3>Сниппеты</h3>
+      <p>Триггер «gm» разворачивается в «Good morning, hope you're having a great day!». Группы по контексту.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">⌨️</div>
+      <h3>Глобальные хоткеи</h3>
+      <p>Любая комбинация клавиш — твой текст. Удобно для повторяющихся ответов в чатах и поддержке.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">📋</div>
+      <h3>История буфера</h3>
+      <p>Последние 50 копий всегда под рукой. Палитра по <kbd>⌘⇧E</kbd> — fuzzy-поиск.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">📸</div>
+      <h3>Скриншот → текст</h3>
+      <p>Выделил область — текст в буфере. Apple Vision на Mac, Tesseract на Windows/Linux. Офлайн.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🌐</div>
+      <h3>Скриншот → перевод</h3>
+      <p>Та же область, но текст автоматически переводится на нужный язык. ~80 языков, без ключа.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🎯</div>
+      <h3>Палитра поиска</h3>
+      <p>Не помнишь триггер? <kbd>⌘⇧E</kbd> открывает fuzzy-поиск по всем сниппетам. Как Spotlight.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────  HOW IT WORKS  ──────────── -->
+<section id="how" class="section section-alt">
+  <div class="section-head">
+    <h2>Три сценария, которые ты будешь использовать каждый день</h2>
+  </div>
+
+  <div class="how-step">
+    <div class="how-text">
+      <span class="how-num">01</span>
+      <h3>Печатай меньше — сниппеты</h3>
+      <p>Создаёшь триггер один раз — пользуешься тысячи. Email, подписи, шаблоны писем, типовые ответы.</p>
+      <div class="code-example">
+        <div class="code-row"><kbd>n</kbd><kbd>m</kbd> + <kbd>Right Shift</kbd> → Николай Михайлов</div>
+        <div class="code-row"><kbd>e</kbd><kbd>m</kbd><kbd>l</kbd> + <kbd>Right Shift</kbd> → nikolay@example.com</div>
+        <div class="code-row"><kbd>s</kbd><kbd>i</kbd><kbd>g</kbd> + <kbd>Right Shift</kbd> → Полная подпись из 4 строк</div>
+      </div>
+    </div>
+    <div class="how-visual">
+      <div class="placeholder-media">
+        <span>📹</span>
+        <small>GIF: скриншот раскрытия сниппета</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="how-step reverse">
+    <div class="how-text">
+      <span class="how-num">02</span>
+      <h3>Достань текст откуда угодно — OCR</h3>
+      <p>Открываешь PDF, видишь нужный фрагмент. Жмёшь <kbd>⌘⇧1</kbd>, выделяешь область — текст уже в буфере. Работает офлайн через Apple Vision.</p>
+      <ul class="how-list">
+        <li>~80 языков, включая русский, украинский, китайский, японский</li>
+        <li>Никаких изображений никуда не отправляется</li>
+        <li>1–2 секунды распознавания на средний абзац</li>
+      </ul>
+    </div>
+    <div class="how-visual">
+      <div class="placeholder-media">
+        <span>📹</span>
+        <small>GIF: выделение области → текст в буфере</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="how-step">
+    <div class="how-text">
+      <span class="how-num">03</span>
+      <h3>Переведи любой текст с экрана</h3>
+      <p><kbd>⌘⇧2</kbd> → область → распознавание → перевод → буфер. Один shortcut, один select, готово.</p>
+      <ul class="how-list">
+        <li>Целевой язык выбираешь в настройках (English, Русский, Deutsch, и ещё 80)</li>
+        <li>Автоопределение языка-источника</li>
+        <li>Перевод через MyMemory API — никаких API-ключей, никакой регистрации</li>
+      </ul>
+    </div>
+    <div class="how-visual">
+      <div class="placeholder-media">
+        <span>📹</span>
+        <small>GIF: скриншот → автоматический перевод</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────  DOWNLOAD  ──────────────── -->
+<section id="download" class="section section-download">
+  <h2>Скачать</h2>
+  <p class="lead-sm">Бесплатно, без регистрации, без подписки. Открытый код на GitHub.</p>
+
+  <div class="downloads">
+    <a href="https://github.com/woler1337/snippi/releases/latest" class="dl-card">
+      <div class="dl-icon">🍎</div>
+      <h3>macOS</h3>
+      <p>Apple Silicon &amp; Intel · <code>.dmg</code></p>
+    </a>
+    <a href="https://github.com/woler1337/snippi/releases/latest" class="dl-card">
+      <div class="dl-icon">🪟</div>
+      <h3>Windows</h3>
+      <p>10 / 11 · <code>.exe</code> (portable)</p>
+    </a>
+    <a href="https://github.com/woler1337/snippi/releases/latest" class="dl-card">
+      <div class="dl-icon">🐧</div>
+      <h3>Linux</h3>
+      <p>x64 · <code>.AppImage</code></p>
+    </a>
+  </div>
+  <p class="dl-note">
+    Не знаешь какую версию macOS брать? Меню Apple → Об этом Mac → Чип.<br>
+    «Apple M…» — arm64. «Intel» — x64.<br>
+    Подробная инструкция установки —
+    <a href="https://github.com/woler1337/snippi/blob/main/INSTALL.md" target="_blank" rel="noopener">INSTALL.md</a>.
+  </p>
+</section>
+
+<!-- ─────────────────────────────────────────────  FAQ  ───────────────────── -->
+<section id="faq" class="section">
+  <div class="section-head">
+    <h2>Частые вопросы</h2>
+  </div>
+
+  <details class="faq-item">
+    <summary>Что отправляется в интернет?</summary>
+    <p>
+      Только распознанный текст для функции «Скриншот → перевод» — он уходит в
+      <a href="https://mymemory.translated.net/" target="_blank" rel="noopener">MyMemory Translated API</a>.
+      Сами скриншоты никогда не покидают компьютер. OCR работает локально через Apple Vision
+      (Mac) или Tesseract (Windows/Linux). Сниппеты, история буфера, статистика — всё локально.
+    </p>
+  </details>
+
+  <details class="faq-item">
+    <summary>Можно ли использовать на работе?</summary>
+    <p>
+      Да. Сниппеты хранятся только на твоём компьютере, никаких облаков. Открытый код позволяет
+      службе безопасности проверить что приложение делает. Поддержка корпоративных шаблонов через
+      экспорт/импорт JSON.
+    </p>
+  </details>
+
+  <details class="faq-item">
+    <summary>Это правда бесплатно? Где подвох?</summary>
+    <p>
+      Приложение полностью бесплатное. Подвоха нет — это side-project, который мы развиваем потому
+      что сами им пользуемся. В будущем может появиться платный Pro-тариф с дополнительными
+      функциями (синхронизация между устройствами, премиум-движок перевода), но текущий
+      функционал останется бесплатным навсегда.
+    </p>
+  </details>
+
+  <details class="faq-item">
+    <summary>Чем отличается от TextExpander.com?</summary>
+    <p>
+      TextExpander — это подписка $40/год за text-expanding функции и облако сниппетов.
+      Snippi — бесплатно, локально, и плюс OCR / переводчик / fuzzy-палитра поиска / история буфера,
+      которых у них нет. Зато у TextExpander есть командная подписка для рабочих групп.
+    </p>
+  </details>
+
+  <details class="faq-item">
+    <summary>Что нужно разрешить на macOS?</summary>
+    <p>
+      Два разрешения в Системных настройках → Конфиденциальность и безопасность:
+      <strong>Универсальный доступ</strong> (для перехвата клавиш сниппетов) и
+      <strong>Запись экрана</strong> (для функций OCR / перевод). Оба настраиваются один раз, при
+      первом запуске приложение само подскажет.
+    </p>
+  </details>
+
+  <details class="faq-item">
+    <summary>Что если иконка не появилась в menu bar?</summary>
+    <p>
+      Редкая проблема на macOS 26+ (Tahoe) — SystemUIServer иногда «зависает». Решается одним
+      кликом: правый клик по dock-иконке Snippi → меню трея →
+      <strong>«Сбросить menu bar»</strong>. Через секунду иконка вернётся.
+    </p>
+  </details>
+
+  <details class="faq-item">
+    <summary>Можно посмотреть исходный код?</summary>
+    <p>
+      Да — <a href="https://github.com/woler1337/snippi" target="_blank" rel="noopener">github.com/woler1337/snippi</a>.
+      Лицензия MIT, можно форкать, изучать, контрибьютить.
+    </p>
+  </details>
+</section>
+
+<!-- ─────────────────────────────────────────────  CTA  ───────────────────── -->
+<section class="section section-cta">
+  <h2>Начни печатать в 5 раз меньше</h2>
+  <p class="lead-sm">Скачивание занимает 30 секунд. Первый сниппет — ещё минуту.</p>
+  <a href="https://github.com/woler1337/snippi/releases/latest" class="btn btn-primary btn-lg">Скачать Snippi</a>
+</section>
+
+<!-- ─────────────────────────────────────────────  FOOTER  ────────────────── -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="assets/icon.png" alt="" class="footer-icon" />
+      <div>
+        <div class="footer-name">Snippi</div>
+        <div class="footer-tag">© 2026 — open source, MIT license</div>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/woler1337/snippi" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/woler1337/snippi/releases" target="_blank" rel="noopener">Releases</a>
+      <a href="https://github.com/woler1337/snippi/blob/main/INSTALL.md" target="_blank" rel="noopener">Установка</a>
+      <a href="https://github.com/woler1337/snippi/issues" target="_blank" rel="noopener">Сообщить о баге</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
