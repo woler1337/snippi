@@ -1,6 +1,6 @@
-appId: com.textexpander.app
-productName: Text Expander
-copyright: Copyright © 2024 Text Expander
+appId: com.snippi.app
+productName: Snippi
+copyright: Copyright © 2024 Snippi
 
 directories:
   output: dist
@@ -37,7 +37,7 @@ mac:
   entitlementsInherit: build/entitlements.mac.plist
 
 dmg:
-  title: "Text Expander"
+  title: "Snippi"
   contents:
     - x: 130
       y: 220

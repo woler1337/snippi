@@ -1,7 +1,7 @@
 'use strict';
 
 // ══════════════════════════════════════════════════════════════════
-//  Text Expander — i18n
+//  Snippi — i18n
 //  Поддерживаемые языки: ru, en, de
 // ══════════════════════════════════════════════════════════════════
 
@@ -103,7 +103,7 @@ const TRANSLATIONS = {
     'settings.lang.de':       'Deutsch',
 
     // Статистика
-    'stats.savedLabel':       'TypeBlaze сэкономил вам',
+    'stats.savedLabel':       'Snippi сэкономил вам',
     'stats.timeZero':         'пока ни секунды — начните пользоваться!',
     'stats.timeHours':        '{h} ч {m} мин',
     'stats.timeMinutes':      '{m} мин {s} сек',
@@ -332,7 +332,7 @@ const TRANSLATIONS = {
     'settings.lang.en':       'English',
     'settings.lang.de':       'Deutsch',
 
-    'stats.savedLabel':       'TypeBlaze has saved you',
+    'stats.savedLabel':       'Snippi has saved you',
     'stats.timeZero':         "not a second yet — start using it!",
     'stats.timeHours':        '{h} h {m} min',
     'stats.timeMinutes':      '{m} min {s} sec',
@@ -550,7 +550,7 @@ const TRANSLATIONS = {
     'settings.lang.en':       'English',
     'settings.lang.de':       'Deutsch',
 
-    'stats.savedLabel':       'TypeBlaze hat Ihnen erspart',
+    'stats.savedLabel':       'Snippi hat Ihnen erspart',
     'stats.timeZero':         'noch keine Sekunde — fangen Sie an!',
     'stats.timeHours':        '{h} Std {m} Min',
     'stats.timeMinutes':      '{m} Min {s} Sek',

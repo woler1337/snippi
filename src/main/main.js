@@ -17,8 +17,8 @@
 const { app, Menu, globalShortcut } = require('electron');
 const log = require('electron-log/main');
 
-// Файловые логи: ~/Library/Logs/Text Expander/main.log (mac),
-// %APPDATA%/Text Expander/logs (windows).
+// Файловые логи: ~/Library/Logs/Snippi/main.log (mac),
+// %APPDATA%/Snippi/logs (windows).
 log.initialize();
 log.transports.file.level    = 'info';
 log.transports.console.level = 'debug';

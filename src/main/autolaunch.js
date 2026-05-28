@@ -17,7 +17,7 @@ async function initAutoLaunch() {
   }
   try {
     const AutoLaunch = require('auto-launch');
-    autoLauncher = new AutoLaunch({ name: 'Text Expander', path: app.getPath('exe') });
+    autoLauncher = new AutoLaunch({ name: 'Snippi', path: app.getPath('exe') });
     const want = storage.getAutoStart();
     const has  = await autoLauncher.isEnabled();
     if (want && !has) await autoLauncher.enable();

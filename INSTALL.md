@@ -1,6 +1,6 @@
-# Установка Text Expander
+# Установка Snippi
 
-Выберите свою операционную систему ниже. Скачивание — со страницы **[Releases](https://github.com/woler1337/text-expander/releases/latest)**.
+Выберите свою операционную систему ниже. Скачивание — со страницы **[Releases](https://github.com/woler1337/snippi/releases/latest)**.
 
 ---
 
@@ -9,15 +9,15 @@
 ### 1. Какой DMG скачать?
 
 - **Меню Apple → Об этом Mac → Чип**:
-  - «Apple M1/M2/M3/M4» → скачать **`Text Expander-X.Y.Z-arm64.dmg`**
-  - «Intel» → скачать **`Text Expander-X.Y.Z-x64.dmg`**
+  - «Apple M1/M2/M3/M4» → скачать **`Snippi-X.Y.Z-arm64.dmg`**
+  - «Intel» → скачать **`Snippi-X.Y.Z-x64.dmg`**
 
 ### 2. Установка
 
 1. Откройте скачанный DMG.
-2. Перетащите **Text Expander** в папку **Applications**.
+2. Перетащите **Snippi** в папку **Applications**.
 3. Извлеките образ (правый клик по иконке диска на рабочем столе → «Извлечь»).
-4. Откройте **Launchpad** или Spotlight (`Cmd+Space`) → запустите **Text Expander**.
+4. Откройте **Launchpad** или Spotlight (`Cmd+Space`) → запустите **Snippi**.
 
 ### 3. Первый запуск — «Apple не может проверить разработчика»
 
@@ -26,7 +26,7 @@
 Решение **одноразовое**:
 1. Нажмите **Cancel** на предупреждении.
 2. Откройте **Finder → Программы**.
-3. Сделайте **правый клик** на **Text Expander** → **Open**.
+3. Сделайте **правый клик** на **Snippi** → **Open**.
 4. В появившемся диалоге снова жмите **Open**.
 
 После этого приложение запускается двойным кликом как обычно.
@@ -45,7 +45,7 @@
 ### 5. Если иконка не появилась в menu bar
 
 Редкая проблема на macOS Tahoe (26+). Решается одним кликом:
-- Кликните правой кнопкой по иконке Text Expander в Dock → меню трея → **«Сбросить menu bar»**.
+- Кликните правой кнопкой по иконке Snippi в Dock → меню трея → **«Сбросить menu bar»**.
 
 ---
 
@@ -53,11 +53,11 @@
 
 ### 1. Скачать
 
-Со страницы Releases — **`Text Expander-X.Y.Z-portable.exe`**.
+Со страницы Releases — **`Snippi-X.Y.Z-portable.exe`**.
 
 ### 2. Запуск
 
-1. Это **portable** — установка не нужна. Сохраните `.exe` куда удобно (например `Documents\Text Expander\`).
+1. Это **portable** — установка не нужна. Сохраните `.exe` куда удобно (например `Documents\Snippi\`).
 2. Двойной клик → запуск.
 
 ### 3. Предупреждение SmartScreen
@@ -78,7 +78,7 @@
 
 ### 1. Скачать
 
-Со страницы Releases — **`Text Expander-X.Y.Z.AppImage`**.
+Со страницы Releases — **`Snippi-X.Y.Z.AppImage`**.
 
 ### 2. Сделать исполняемым и запустить
 
@@ -100,21 +100,21 @@ chmod +x Text*Expander*.AppImage
 ## ❌ Деинсталляция
 
 ### macOS
-1. Удалите **Text Expander** из папки **Applications** в Корзину.
+1. Удалите **Snippi** из папки **Applications** в Корзину.
 2. Удалите данные:
    ```bash
-   rm -rf ~/Library/Application\ Support/text-expander
-   rm -rf ~/Library/Logs/text-expander
+   rm -rf ~/Library/Application\ Support/snippi
+   rm -rf ~/Library/Logs/snippi
    ```
 3. Снимите разрешения в Системных настройках (Универсальный доступ и Запись экрана).
 
 ### Windows
 1. Удалите `.exe`-файл.
-2. Удалите папку `%APPDATA%\text-expander\`.
+2. Удалите папку `%APPDATA%\snippi\`.
 
 ### Linux
 1. Удалите `.AppImage`-файл.
-2. Удалите папку `~/.config/text-expander/`.
+2. Удалите папку `~/.config/snippi/`.
 
 ---
 
@@ -122,4 +122,4 @@ chmod +x Text*Expander*.AppImage
 
 Если что-то не работает:
 1. Посмотрите [логи приложения](README.md#где-смотреть-логи).
-2. Откройте **issue** на GitHub: https://github.com/woler1337/text-expander/issues
+2. Откройте **issue** на GitHub: https://github.com/woler1337/snippi/issues

@@ -111,7 +111,7 @@ function setupIPC() {
   // ── Импорт / Экспорт ──
   ipcMain.handle('export-data', async () => {
     const win = getMainWindow();
-    const defaultName = `text-expander-${new Date().toISOString().slice(0,10)}.json`;
+    const defaultName = `snippi-${new Date().toISOString().slice(0,10)}.json`;
     const result = await dialog.showSaveDialog(win || undefined, {
       title:       'Сохранить настройки',
       defaultPath: defaultName,

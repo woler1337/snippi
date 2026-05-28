@@ -6,7 +6,7 @@ const crypto = require('crypto');
 
 // Схема хранилища с дефолтными значениями
 const store = new Store({
-  name: 'text-expander-data',
+  name: 'snippi-data',
   defaults: {
     enabled: true,
     autoStart: true,
@@ -386,7 +386,7 @@ class Storage extends EventEmitter {
     return {
       version:    1,
       exportedAt: new Date().toISOString(),
-      app:        'text-expander',
+      app:        'snippi',
       snippets:   this.getSnippets(),
       keybindings: this.getKeybindings(),
       groups:     this.getGroups()

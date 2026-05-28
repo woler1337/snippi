@@ -89,7 +89,7 @@ function buildTrayMenu() {
   const enabled = storage.getEnabled();
   const paletteHotkeyLabel = process.platform === 'darwin' ? '⌘⇧E' : 'Ctrl+Shift+E';
   const items = [
-    { label: 'Открыть Text Expander', click: () => getOrCreateWindow().then(w => { w.show(); w.focus(); }) },
+    { label: 'Открыть Snippi', click: () => getOrCreateWindow().then(w => { w.show(); w.focus(); }) },
     { label: `Быстрый поиск сниппета (${paletteHotkeyLabel})`, click: () => {
         // Ленивый require — palette модуль зависит от mainWindow и переменных.
         try { require('./palette').showPalette(); } catch (e) { console.error(e); }
@@ -166,7 +166,7 @@ function createTray() {
   if (process.platform === 'darwin') templateIcon.setTemplateImage(true);
 
   tray = new Tray(templateIcon);
-  tray.setToolTip('Text Expander');
+  tray.setToolTip('Snippi');
   tray.setContextMenu(buildTrayMenu());
   tray.on('click', () => getOrCreateWindow().then(w => {
     if (w.isVisible()) w.hide(); else { w.show(); w.focus(); }

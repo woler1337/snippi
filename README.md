@@ -1,4 +1,4 @@
-# Text Expander
+# Snippi
 
 Кроссплатформенное desktop-приложение на Electron, которое живёт в системном трее и помогает быстро вставлять часто используемые тексты, распознавать текст со скриншотов и переводить любой текст с экрана.
 
@@ -6,14 +6,14 @@
 
 ## 📥 Скачать
 
-Все версии лежат на странице **[Releases](https://github.com/woler1337/text-expander/releases/latest)** — выберите свою систему:
+Все версии лежат на странице **[Releases](https://github.com/woler1337/snippi/releases/latest)** — выберите свою систему:
 
 | Платформа | Файл | Архитектура |
 |-----------|------|-------------|
-| 🍎 **macOS** (Apple Silicon — M1/M2/M3/M4) | `Text Expander-X.Y.Z-arm64.dmg` | arm64 |
-| 🍎 **macOS** (Intel) | `Text Expander-X.Y.Z-x64.dmg` | x64 |
-| 🪟 **Windows** (10 / 11) | `Text Expander-X.Y.Z-portable.exe` | x64 |
-| 🐧 **Linux** | `Text Expander-X.Y.Z.AppImage` | x64 |
+| 🍎 **macOS** (Apple Silicon — M1/M2/M3/M4) | `Snippi-X.Y.Z-arm64.dmg` | arm64 |
+| 🍎 **macOS** (Intel) | `Snippi-X.Y.Z-x64.dmg` | x64 |
+| 🪟 **Windows** (10 / 11) | `Snippi-X.Y.Z-portable.exe` | x64 |
+| 🐧 **Linux** | `Snippi-X.Y.Z.AppImage` | x64 |
 
 > Не уверены какой нужен? На macOS — меню Apple → «Об этом Mac», смотрите чип (Apple M-series → arm64; Intel → x64).
 
@@ -51,8 +51,8 @@
 ## 🛠 Запуск из исходников (для разработчиков)
 
 ```bash
-git clone https://github.com/woler1337/text-expander.git
-cd text-expander
+git clone https://github.com/woler1337/snippi.git
+cd snippi
 npm install
 npm start              # запуск в dev-режиме
 npm run build:mac      # сборка DMG (macOS, x64 + arm64)
@@ -95,15 +95,15 @@ src/
 
 ## 🔒 Конфиденциальность
 
-- **Все данные хранятся локально** — `~/Library/Application Support/text-expander/` (macOS), `%APPDATA%/text-expander/` (Windows), `~/.config/text-expander/` (Linux).
+- **Все данные хранятся локально** — `~/Library/Application Support/snippi/` (macOS), `%APPDATA%/snippi/` (Windows), `~/.config/snippi/` (Linux).
 - **OCR работает офлайн** — изображения никуда не отправляются.
 - **Перевод** идёт через [MyMemory Translated API](https://mymemory.translated.net/) — бесплатный публичный сервис, без API-ключа. Лимит ~1000 символов/день на IP. Только распознанный текст передаётся в API; скриншоты не загружаются.
 
 ### Где смотреть логи
 
-- **macOS:** `~/Library/Logs/text-expander/main.log`
-- **Windows:** `%APPDATA%\text-expander\logs\main.log`
-- **Linux:** `~/.config/text-expander/logs/main.log`
+- **macOS:** `~/Library/Logs/snippi/main.log`
+- **Windows:** `%APPDATA%\snippi\logs\main.log`
+- **Linux:** `~/.config/snippi/logs/main.log`
 
 ---
 

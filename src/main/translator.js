@@ -53,7 +53,7 @@ function requestOne(text, sourceLang, targetLang) {
       // пользователя без его согласия мы не хотим. Работаем на дефолтном лимите.
 
     const req = net.request({ method: 'GET', url });
-    req.setHeader('User-Agent', 'TextExpander/1.0');
+    req.setHeader('User-Agent', 'Snippi/1.0');
 
     let raw = '';
     let status = 0;

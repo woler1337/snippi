@@ -214,7 +214,7 @@ function notifyOcr(payload) {
   sendToMainWindow('ocr-result', payload);
   try {
     if (Notification.isSupported()) {
-      new Notification({ title: 'Text Expander', body: msg, silent: true }).show();
+      new Notification({ title: 'Snippi', body: msg, silent: true }).show();
     }
   } catch {}
 }
