@@ -1,0 +1,61 @@
+appId: com.textexpander.app
+productName: Text Expander
+copyright: Copyright © 2024 Text Expander
+
+directories:
+  output: dist
+
+# Файлы, которые войдут в сборку
+files:
+  - src/**/*
+  - "!src/native/*.swift"      # swift-исходники не нужны в бандле
+  - assets/tray-icon.png
+  - assets/tray-icon@2x.png    # Retina для macOS menubar
+  - package.json
+  - "!**/*.map"
+  - "!**/node_modules/*/{CHANGELOG.md,README.md,readme.md}"
+  - "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}"
+  - "!**/node_modules/.bin"
+
+# macOS: Swift-хелперы кладём в Resources/ (доступны через process.resourcesPath)
+extraResources:
+  - from: src/native/key-helper
+    to: key-helper
+  - from: src/native/ocr-helper
+    to: ocr-helper
+
+# ── macOS ─────────────────────────────────────────────────────────────────
+mac:
+  target:
+    - target: dmg
+      arch: [arm64, x64]         # один комплект DMG: и для Apple Silicon, и для Intel
+  icon: assets/icon.png          # charcoal + светлая обводка — electron-builder конвертирует в .icns
+  category: public.app-category.productivity
+  hardenedRuntime: false         # без подписи — для локальной сборки
+  identity: null
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.plist
+
+dmg:
+  title: "Text Expander"
+  contents:
+    - x: 130
+      y: 220
+    - x: 410
+      y: 220
+      type: link
+      path: /Applications
+
+# ── Windows ───────────────────────────────────────────────────────────────
+win:
+  target:
+    - target: portable           # один .exe файл, не требует установки
+      arch: [x64]                # стандартная архитектура Windows
+  icon: assets/icon-win.png      # чистый тёмный фон без обводки — для taskbar
+
+# ── Linux ─────────────────────────────────────────────────────────────────
+linux:
+  target:
+    - AppImage
+  icon: assets/icon.png          # тот же, что и для macOS — на большинстве DE выглядит хорошо
+  category: Utility

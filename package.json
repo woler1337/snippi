@@ -1,0 +1,29 @@
+{
+  "name": "text-expander",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cross-platform text expander with OCR, screen translation and clipboard history",
+  "author": "Daniil Limarenkov",
+  "license": "MIT",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "create-icon": "node scripts/create-icon.js",
+    "build:mac": "node scripts/create-icon.js && bash scripts/build-helper.sh && electron-builder --mac",
+    "build:win": "node scripts/create-icon.js && electron-builder --win",
+    "build:linux": "node scripts/create-icon.js && electron-builder --linux",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "dependencies": {
+    "auto-launch": "^5.0.5",
+    "electron-log": "^5.4.4",
+    "electron-store": "^8.1.0",
+    "franc-min": "^6.2.0",
+    "tesseract.js": "^7.0.0",
+    "uiohook-napi": "^1.5.3"
+  },
+  "devDependencies": {
+    "electron": "^42.1.0",
+    "electron-builder": "^26.8.1"
+  }
+}

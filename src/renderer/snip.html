@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:;" />
+  <title>Snip</title>
+  <link rel="stylesheet" href="snip.css">
+</head>
+<body class="snip-body">
+  <div id="snip-root">
+    <div id="snip-rect" class="snip-rect hidden"></div>
+    <div id="snip-size" class="snip-size hidden"></div>
+    <div class="snip-hint">
+      <span class="snip-hint-key">Esc</span>
+      <span>отменить</span>
+      <span class="snip-hint-sep">·</span>
+      <span>выделите область → отпустите кнопку мыши</span>
+    </div>
+  </div>
+  <script src="snip.js"></script>
+</body>
+</html>

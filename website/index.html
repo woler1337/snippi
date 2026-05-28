@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TypeBlaze — Text Expander for Windows & Mac</title>
+  <meta name="description" content="Insert any text with a single keystroke. Snippets, hotkeys, and clipboard history — all in one app.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ── NAV ───────────────────────────────────────────────────────────────── -->
+<nav class="nav" id="nav">
+  <div class="nav__inner">
+    <a class="nav__logo" href="#">
+      <span class="logo-icon">⚡</span>
+      <span>TypeBlaze</span>
+    </a>
+    <ul class="nav__links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a class="btn btn--primary nav__cta" href="#pricing">Buy &amp; Download</a>
+    <button class="nav__burger" aria-label="Menu" onclick="toggleMobile()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav__mobile" id="navMobile">
+    <a href="#features" onclick="toggleMobile()">Features</a>
+    <a href="#how" onclick="toggleMobile()">How it works</a>
+    <a href="#pricing" onclick="toggleMobile()">Pricing</a>
+    <a href="#faq" onclick="toggleMobile()">FAQ</a>
+    <a href="#pricing" class="btn btn--primary" onclick="toggleMobile()">Buy &amp; Download</a>
+  </div>
+</nav>
+
+<!-- ── HERO ──────────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero__bg">
+    <div class="orb orb--1"></div>
+    <div class="orb orb--2"></div>
+    <div class="orb orb--3"></div>
+    <div class="grid-lines"></div>
+  </div>
+
+  <div class="hero__content">
+    <div class="hero__badge">
+      <span class="badge__dot"></span>
+      Version 1.0 · Windows &amp; macOS
+    </div>
+
+    <h1 class="hero__title">
+      Type less.<br>
+      <span class="gradient-text">Do more.</span>
+    </h1>
+
+    <p class="hero__sub">
+      TypeBlaze expands any abbreviation into ready-made text — instantly,
+      in any application. Snippets, hotkeys, and clipboard history
+      always at your fingertips.
+    </p>
+
+    <div class="hero__actions">
+      <a href="#pricing" class="btn btn--primary btn--lg">
+        <span>⬇</span> Get it for $9 &mdash; one-time
+      </a>
+      <a href="#how" class="btn btn--ghost btn--lg">See demo ↓</a>
+    </div>
+
+    <div class="hero__trust">
+      <div class="stars">★★★★★</div>
+      <span>Over <strong>2,400</strong> users</span>
+      <div class="sep"></div>
+      <span>🔒 Pay once, license forever</span>
+    </div>
+  </div>
+
+  <!-- Animated app mockup -->
+  <div class="hero__mockup">
+    <div class="mockup-window">
+      <div class="mockup-titlebar">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+        <span class="mockup-title">TypeBlaze</span>
+      </div>
+      <div class="mockup-body">
+        <div class="mockup-sidebar">
+          <div class="sidebar-item active">📝 Snippets</div>
+          <div class="sidebar-item">⌨️ Hotkeys</div>
+          <div class="sidebar-item">📋 Clipboard</div>
+          <div class="sidebar-item">⚙️ Settings</div>
+        </div>
+        <div class="mockup-main">
+          <div class="mockup-search">
+            <span class="search-icon">🔍</span>
+            <span class="search-placeholder">Search snippets...</span>
+          </div>
+          <div class="snippet-list">
+            <div class="snippet-row" style="--d:0">
+              <span class="trigger">addr</span>
+              <span class="arrow">→</span>
+              <span class="replacement">221B Baker Street, London, NW1 6XE</span>
+            </div>
+            <div class="snippet-row" style="--d:1">
+              <span class="trigger">ty</span>
+              <span class="arrow">→</span>
+              <span class="replacement">Thanks for reaching out! 🙏</span>
+            </div>
+            <div class="snippet-row active-row" style="--d:2">
+              <span class="trigger">sig</span>
+              <span class="arrow">→</span>
+              <span class="replacement">Best regards, James Miller</span>
+              <span class="flash-badge">⚡</span>
+            </div>
+            <div class="snippet-row" style="--d:3">
+              <span class="trigger">meet</span>
+              <span class="arrow">→</span>
+              <span class="replacement">Let's hop on a Zoom call...</span>
+            </div>
+            <div class="snippet-row" style="--d:4">
+              <span class="trigger">phone</span>
+              <span class="arrow">→</span>
+              <span class="replacement">+1 (415) 555-0142</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Typing demo floating -->
+    <div class="typing-demo">
+      <div class="typing-label">You type</div>
+      <div class="typing-text" id="typingText">sig<span class="cursor">|</span></div>
+      <div class="typing-arrow">⇥ Tab</div>
+      <div class="typing-result" id="typingResult"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── LOGOS / SOCIAL PROOF ──────────────────────────────────────────────── -->
+<section class="logos">
+  <p class="logos__label">Works in any application</p>
+  <div class="logos__row">
+    <div class="app-chip">💬 Telegram</div>
+    <div class="app-chip">📧 Gmail</div>
+    <div class="app-chip">💼 Slack</div>
+    <div class="app-chip">📝 Notion</div>
+    <div class="app-chip">🖥 VS Code</div>
+    <div class="app-chip">📊 Excel</div>
+    <div class="app-chip">🌐 Chrome</div>
+    <div class="app-chip">🗒 Word</div>
+    <div class="app-chip">+ anything else</div>
+  </div>
+</section>
+
+<!-- ── FEATURES ───────────────────────────────────────────────────────────── -->
+<section class="features" id="features">
+  <div class="section-header">
+    <div class="section-tag">Features</div>
+    <h2>Everything you need — in one place</h2>
+    <p>No subscriptions, no cloud. Your data stays only on your computer.</p>
+  </div>
+
+  <div class="features__grid">
+    <div class="feat-card feat-card--wide">
+      <div class="feat-card__icon">⚡</div>
+      <h3>Instant snippets</h3>
+      <p>Create a short trigger word — and TypeBlaze will instantly replace it with any text. Addresses, signatures, email templates — all with a single keystroke.</p>
+      <div class="feat-demo">
+        <div class="demo-chip trigger-chip">addr</div>
+        <div class="demo-chip arrow-chip">⇥</div>
+        <div class="demo-chip result-chip">221B Baker Street, London, NW1 6XE</div>
+      </div>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-card__icon">🎹</div>
+      <h3>Hotkeys</h3>
+      <p>Bind any text to a keyboard shortcut. Ctrl+Shift+A inserts the phrase you need without typing.</p>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-card__icon">📋</div>
+      <h3>Clipboard history</h3>
+      <p>Everything you've copied — at your fingertips. Scroll through history and paste any fragment back.</p>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-card__icon">🌍</div>
+      <h3>Anywhere, anytime</h3>
+      <p>Global key capture — works in any window, even in games and system dialogs.</p>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-card__icon">🔒</div>
+      <h3>Privacy first</h3>
+      <p>No cloud, no telemetry. Your snippets are stored locally only.</p>
+    </div>
+
+    <div class="feat-card feat-card--wide">
+      <div class="feat-card__icon">🗂</div>
+      <h3>Groups &amp; organization</h3>
+      <p>Sort snippets into folders: "Work", "Personal", "Support" — any structure you want. JSON import and export for backups and moving between devices.</p>
+      <div class="groups-demo">
+        <div class="group-item"><span>📁</span> Work templates <span class="count">12</span></div>
+        <div class="group-item"><span>📁</span> Personal <span class="count">7</span></div>
+        <div class="group-item"><span>📁</span> Customer support <span class="count">24</span></div>
+      </div>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-card__icon">🌙</div>
+      <h3>Dark theme</h3>
+      <p>The interface adapts to your system theme. Light, dark, or auto.</p>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-card__icon">🚀</div>
+      <h3>Auto-start</h3>
+      <p>Lives in your system tray and launches with Windows or macOS. Quietly and quickly.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ───────────────────────────────────────────────────────── -->
+<section class="how" id="how">
+  <div class="section-header">
+    <div class="section-tag">How it works</div>
+    <h2>Three steps to your first snippet</h2>
+  </div>
+
+  <div class="how__steps">
+    <div class="step">
+      <div class="step__num">01</div>
+      <div class="step__content">
+        <h3>Install the app</h3>
+        <p>Download the installer, run it — in 30 seconds TypeBlaze is in your system tray.</p>
+      </div>
+    </div>
+    <div class="step__connector"></div>
+    <div class="step">
+      <div class="step__num">02</div>
+      <div class="step__content">
+        <h3>Create a snippet</h3>
+        <p>Choose a short trigger word and type the text that should appear in its place.</p>
+      </div>
+    </div>
+    <div class="step__connector"></div>
+    <div class="step">
+      <div class="step__num">03</div>
+      <div class="step__content">
+        <h3>Use it everywhere</h3>
+        <p>Type your trigger in any app, press Tab — TypeBlaze instantly expands the text.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Terminal demo -->
+  <div class="terminal-demo">
+    <div class="terminal-bar">
+      <span class="dot red"></span>
+      <span class="dot yellow"></span>
+      <span class="dot green"></span>
+      <span style="flex:1; text-align:center; font-size:12px; color:#666">Live demo</span>
+    </div>
+    <div class="terminal-body">
+      <div class="term-line"><span class="term-prompt">✦</span> You open Gmail and start a new email</div>
+      <div class="term-line dim"><span class="term-prompt">✦</span> You type: <span class="term-highlight">meet</span></div>
+      <div class="term-line"><span class="term-prompt">✦</span> You press <kbd>Shift</kbd></div>
+      <div class="term-line success"><span class="term-prompt">⚡</span> Inserted: "Let's hop on a Zoom call this Friday at 2:00 PM. Link: zoom.us/j/123456789"</div>
+      <div class="term-line dim blink-line">█</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ───────────────────────────────────────────────────────── -->
+<section class="testimonials">
+  <div class="section-header">
+    <div class="section-tag">Testimonials</div>
+    <h2>What users say</h2>
+  </div>
+  <div class="testimonials__grid">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p>"Saves me at least 40 minutes a day. Customer email templates — now one keystroke. I'd buy it again."</p>
+      <div class="testi-author">
+        <div class="avatar" style="background:#7C5CBF">AM</div>
+        <div>
+          <strong>Alex M.</strong>
+          <span>Sales Manager</span>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card testi-card--featured">
+      <div class="testi-stars">★★★★★</div>
+      <p>"As a developer, I drop in boilerplate code in seconds. Best productivity tool of the year. Easily worth the money."</p>
+      <div class="testi-author">
+        <div class="avatar" style="background:#00B4FF">DK</div>
+        <div>
+          <strong>David K.</strong>
+          <span>Senior Frontend Developer</span>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p>"Rolled it out across our entire support team. Response speed doubled, typos in standard phrases are gone."</p>
+      <div class="testi-author">
+        <div class="avatar" style="background:#2ECC71">NS</div>
+        <div>
+          <strong>Natalie S.</strong>
+          <span>Head of Customer Support</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ────────────────────────────────────────────────────────────── -->
+<section class="pricing" id="pricing">
+  <div class="section-header">
+    <div class="section-tag">Pricing</div>
+    <h2>Pay once — own it forever</h2>
+    <p>No subscriptions. Buy once and use it as long as you want.</p>
+  </div>
+
+  <div class="pricing__cards">
+    <!-- Free -->
+    <div class="price-card">
+      <div class="price-card__name">Free</div>
+      <div class="price-card__price">$0</div>
+      <div class="price-card__period">forever</div>
+      <ul class="price-card__features">
+        <li class="ok">Up to 5 snippets</li>
+        <li class="ok">1 hotkey</li>
+        <li class="ok">Clipboard history (10 entries)</li>
+        <li class="no">Unlimited snippets</li>
+        <li class="no">Unlimited hotkeys</li>
+        <li class="no">Groups &amp; folders</li>
+        <li class="no">Import / Export</li>
+        <li class="no">Priority support</li>
+      </ul>
+      <button class="btn btn--ghost btn--full" onclick="openFreeModal()">Download free</button>
+    </div>
+
+    <!-- Pro -->
+    <div class="price-card price-card--pro">
+      <div class="price-card__badge">🔥 Popular</div>
+      <div class="price-card__name">Pro</div>
+      <div class="price-card__price">$9</div>
+      <div class="price-card__period">one-time payment · license forever</div>
+      <ul class="price-card__features">
+        <li class="ok">♾️ Unlimited snippets</li>
+        <li class="ok">♾️ Unlimited hotkeys</li>
+        <li class="ok">📋 Clipboard history (∞)</li>
+        <li class="ok">🗂 Groups &amp; folders</li>
+        <li class="ok">⬆️ JSON import / export</li>
+        <li class="ok">🌍 Windows + macOS</li>
+        <li class="ok">🔄 All future updates</li>
+        <li class="ok">🎧 Priority support</li>
+      </ul>
+      <button class="btn btn--primary btn--full btn--glow" onclick="openPayModal()">
+        Get it for $9 ⚡
+      </button>
+      <div class="price-card__note">💳 Visa, Mastercard, PayPal</div>
+    </div>
+
+    <!-- Team -->
+    <div class="price-card">
+      <div class="price-card__name">Team</div>
+      <div class="price-card__price">$39</div>
+      <div class="price-card__period">up to 10 devices</div>
+      <ul class="price-card__features">
+        <li class="ok">Everything in Pro</li>
+        <li class="ok">Up to 10 licenses</li>
+        <li class="ok">Shared team snippets</li>
+        <li class="ok">Centralized export</li>
+        <li class="ok">Slack support</li>
+        <li class="no">Custom installation</li>
+        <li class="no">99.9% SLA</li>
+        <li class="no">Custom branding</li>
+      </ul>
+      <button class="btn btn--ghost btn--full" onclick="openTeamModal()">Buy for team</button>
+    </div>
+  </div>
+
+  <div class="pricing__guarantee">
+    <span>🛡</span>
+    <div>
+      <strong>30-day money-back guarantee</strong>
+      <p>If TypeBlaze isn't right for you — we'll refund your money, no questions asked.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ────────────────────────────────────────────────────────────────── -->
+<section class="faq" id="faq">
+  <div class="section-header">
+    <div class="section-tag">FAQ</div>
+    <h2>Frequently asked questions</h2>
+  </div>
+  <div class="faq__list">
+    <div class="faq__item">
+      <button class="faq__q" onclick="toggleFaq(this)">
+        Which OS does TypeBlaze run on?
+        <span class="faq__arrow">+</span>
+      </button>
+      <div class="faq__a">Windows 10/11 (x64) and macOS 12+. Linux support is in development.</div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__q" onclick="toggleFaq(this)">
+        Does my data go to the cloud?
+        <span class="faq__arrow">+</span>
+      </button>
+      <div class="faq__a">No. Everything is stored locally on your computer. No registration, no data transfer.</div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__q" onclick="toggleFaq(this)">
+        How do I get updates?
+        <span class="faq__arrow">+</span>
+      </button>
+      <div class="faq__a">After purchase you get access to all updates forever. New versions are downloaded via the link in your email.</div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__q" onclick="toggleFaq(this)">
+        How many computers can I install it on?
+        <span class="faq__arrow">+</span>
+      </button>
+      <div class="faq__a">Pro license — 2 devices (e.g. home PC + laptop). Team license — up to 10 devices.</div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__q" onclick="toggleFaq(this)">
+        Does TypeBlaze slow down typing?
+        <span class="faq__arrow">+</span>
+      </button>
+      <div class="faq__a">No. The app uses minimal resources (&lt;50 MB RAM) and has no impact on typing speed.</div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__q" onclick="toggleFaq(this)">
+        How do I get a refund?
+        <span class="faq__arrow">+</span>
+      </button>
+      <div class="faq__a">Email support@typeblaze.app within 30 days of purchase — we'll refund you, no questions asked.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA BOTTOM ─────────────────────────────────────────────────────────── -->
+<section class="cta-bottom">
+  <div class="orb orb--cta1"></div>
+  <div class="orb orb--cta2"></div>
+  <h2>Start saving time right now</h2>
+  <p>Pay $9 once — and never type the same thing twice again</p>
+  <button class="btn btn--primary btn--lg btn--glow" onclick="openPayModal()">
+    ⚡ Get TypeBlaze Pro — $9
+  </button>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__brand">
+      <span class="logo-icon">⚡</span> TypeBlaze
+      <p>A text expander for people who value their time.</p>
+    </div>
+    <div class="footer__links">
+      <div class="footer__col">
+        <strong>Product</strong>
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="footer__col">
+        <strong>Support</strong>
+        <a href="mailto:support@typeblaze.app">Contact us</a>
+        <a href="#">Documentation</a>
+        <a href="#">Changelog</a>
+      </div>
+      <div class="footer__col">
+        <strong>Company</strong>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Refund Policy</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span>© 2026 TypeBlaze. All rights reserved.</span>
+    <div class="footer__badges">
+      <span class="badge-pill">🔒 SSL</span>
+      <span class="badge-pill">✅ Windows 10/11</span>
+      <span class="badge-pill">🍎 macOS</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ── MODALS ─────────────────────────────────────────────────────────────── -->
+
+<!-- Free download modal -->
+<div class="modal-overlay" id="freeModal" onclick="closeModal('freeModal')">
+  <div class="modal" onclick="e=>e.stopPropagation()">
+    <button class="modal__close" onclick="closeModal('freeModal')">✕</button>
+    <div class="modal__icon">📦</div>
+    <h3>Download free version</h3>
+    <p>Up to 5 snippets, 1 hotkey. No sign-up required.</p>
+    <a href="#" class="btn btn--primary btn--full" onclick="simulateDownload(event,'TypeBlaze_Free_Setup.exe')">
+      ⬇ Download for Windows
+    </a>
+    <a href="#" class="btn btn--ghost btn--full" style="margin-top:10px" onclick="simulateDownload(event,'TypeBlaze_Free.dmg')">
+      ⬇ Download for macOS
+    </a>
+  </div>
+</div>
+
+<!-- Payment modal -->
+<div class="modal-overlay" id="payModal" onclick="closeModalCheck(event,'payModal')">
+  <div class="modal modal--pay" onclick="void(0)">
+    <button class="modal__close" onclick="closeModal('payModal')">✕</button>
+
+    <!-- Step 1: payment form -->
+    <div id="payStep1">
+      <div class="modal__header">
+        <div class="modal__icon">⚡</div>
+        <div>
+          <h3>TypeBlaze Pro</h3>
+          <p class="modal__price-tag">$9 <span>— one-time payment</span></p>
+        </div>
+      </div>
+
+      <div class="pay-summary">
+        <div class="pay-row"><span>TypeBlaze Pro License</span><span>$9.00</span></div>
+        <div class="pay-row pay-row--total"><span>Total</span><span>$9.00</span></div>
+      </div>
+
+      <form class="pay-form" onsubmit="submitPay(event)">
+        <label>Email for license delivery</label>
+        <input type="email" placeholder="you@example.com" required id="payEmail">
+
+        <label>Card number</label>
+        <div class="card-input-wrap">
+          <input type="text" placeholder="0000 0000 0000 0000" maxlength="19"
+                 oninput="formatCard(this)" id="cardNum">
+          <span class="card-icons">💳</span>
+        </div>
+
+        <div class="pay-row-inputs">
+          <div>
+            <label>Expiry</label>
+            <input type="text" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)">
+          </div>
+          <div>
+            <label>CVV</label>
+            <input type="text" placeholder="•••" maxlength="3" oninput="this.value=this.value.replace(/\D/g,'')">
+          </div>
+        </div>
+
+        <label>Name on card</label>
+        <input type="text" placeholder="JOHN SMITH" style="text-transform:uppercase">
+
+        <button type="submit" class="btn btn--primary btn--full btn--glow" id="payBtn">
+          🔒 Pay $9
+        </button>
+      </form>
+
+      <div class="pay-security">
+        <span>🔒 256-bit SSL encryption</span>
+        <span>·</span>
+        <span>🛡 30-day refund</span>
+        <span>·</span>
+        <span>💳 Visa · MC · PayPal</span>
+      </div>
+    </div>
+
+    <!-- Step 2: processing -->
+    <div id="payStep2" style="display:none; text-align:center; padding:32px 0">
+      <div class="spinner"></div>
+      <p style="margin-top:20px; color:#9E9EBE">Processing payment...</p>
+    </div>
+
+    <!-- Step 3: success + download -->
+    <div id="payStep3" style="display:none; text-align:center; padding:24px 0">
+      <div class="success-circle">✓</div>
+      <h3 style="margin-top:16px">Payment successful!</h3>
+      <p style="color:#9E9EBE; margin:8px 0 24px">License key sent to <strong id="confirmedEmail"></strong></p>
+      <a href="#" class="btn btn--primary btn--full btn--glow"
+         onclick="simulateDownload(event,'TypeBlaze_Pro_Setup.exe')" style="margin-bottom:10px">
+        ⬇ Download for Windows (.exe)
+      </a>
+      <a href="#" class="btn btn--ghost btn--full"
+         onclick="simulateDownload(event,'TypeBlaze_Pro.dmg')">
+        ⬇ Download for macOS (.dmg)
+      </a>
+      <p class="modal__note">The file has also been emailed to you</p>
+    </div>
+  </div>
+</div>
+
+<!-- Team modal -->
+<div class="modal-overlay" id="teamModal" onclick="closeModalCheck(event,'teamModal')">
+  <div class="modal" onclick="void(0)">
+    <button class="modal__close" onclick="closeModal('teamModal')">✕</button>
+    <div class="modal__icon">👥</div>
+    <h3>TypeBlaze Team — $39</h3>
+    <p style="color:#9E9EBE; margin-bottom:24px">Up to 10 devices, everything in Pro + team-wide export.</p>
+    <form class="pay-form" onsubmit="submitTeam(event)">
+      <label>Email</label>
+      <input type="email" placeholder="team@company.com" required id="teamEmail">
+      <label>Company name</label>
+      <input type="text" placeholder="Acme Inc.">
+      <label>Card number</label>
+      <input type="text" placeholder="0000 0000 0000 0000" maxlength="19" oninput="formatCard(this)">
+      <div class="pay-row-inputs">
+        <div><label>Expiry</label><input type="text" placeholder="MM/YY" maxlength="5"></div>
+        <div><label>CVV</label><input type="text" placeholder="•••" maxlength="3"></div>
+      </div>
+      <button type="submit" class="btn btn--primary btn--full">🔒 Pay $39</button>
+    </form>
+  </div>
+</div>
+
+<!-- Download toast -->
+<div class="toast" id="toast">
+  <span>⬇</span> Download started...
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
