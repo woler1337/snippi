@@ -6,7 +6,7 @@
 
 const {
   BrowserWindow, app, screen, desktopCapturer, clipboard,
-  dialog, shell, Notification,
+  dialog, shell, Notification, systemPreferences,
 } = require('electron');
 const path = require('path');
 const fs   = require('fs');
@@ -55,10 +55,6 @@ function createSnipWindow(display) {
   return w;
 }
 
-// closeSnipWindow — только закрытие оверлея. БЕЗ app.hide() — иначе двойной
-// вызов в handleSnipPick → closeSnipWindow → app.hide()  +  ещё один app.hide()
-// приводил к тому что на macOS Tahoe dock-иконка пропадала.
-// Возврат фокуса в предыдущее приложение делает явный returnFocusToPreviousApp().
 function closeSnipWindow() {
   if (snipWindow && !snipWindow.isDestroyed()) {
     try { snipWindow.close(); } catch {}
@@ -67,13 +63,51 @@ function closeSnipWindow() {
   snipDisplayId = null;
 }
 
+// Возврат фокуса в предыдущее приложение. Используем `Menu.sendActionToFirstResponder`
+// (эквивалент Cmd+H в menu bar) — он мягче чем `app.hide()` и НЕ удаляет dock-иконку
+// на macOS 26 Tahoe (что делал прямой `app.hide()`).
 function returnFocusToPreviousApp() {
   if (process.platform !== 'darwin') return;
-  try { app.hide(); } catch {}
+  try {
+    const { Menu } = require('electron');
+    Menu.sendActionToFirstResponder('hide:');
+  } catch {}
+}
+
+// Единый диалог для всех случаев когда захват экрана не работает.
+// status: 'denied' | 'restricted' | 'not-determined' | 'unknown'
+let _screenDialogShown = false; // не показываем подряд если пользователь уже видел
+function showScreenRecordingDialog(status) {
+  if (_screenDialogShown) return;
+  _screenDialogShown = true;
+  setTimeout(() => { _screenDialogShown = false; }, 60_000); // сбрасываем через минуту
+
+  const appName = app.isPackaged ? app.getName() : 'Electron';
+  const detail = status === 'not-determined'
+    ? 'macOS ещё не запросил разрешение, либо оно потеряно после переустановки приложения.'
+    : 'Разрешение «Запись экрана» сейчас выключено или отозвано.';
+
+  dialog.showMessageBox({
+    type: 'warning',
+    title: 'Нужно разрешение «Запись экрана»',
+    message: `Snippi не может сделать скриншот для распознавания текста.\n\n${detail}`,
+    detail:
+      `Чтобы исправить:\n` +
+      `1. Нажмите «Открыть настройки» ниже.\n` +
+      `2. Найдите «${appName}» в списке (или добавьте кнопкой «+»).\n` +
+      `3. Включите тумблер рядом с «${appName}».\n` +
+      `4. Полностью закройте и перезапустите приложение (Snippi → Выйти → запустить снова).`,
+    buttons: ['Открыть настройки', 'Позже'],
+    defaultId: 0,
+    cancelId: 1,
+  }).then(r => {
+    if (r.response === 0) {
+      shell.openExternal('x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture');
+    }
+  }).catch(() => {});
 }
 
 async function startSnip(mode = 'ocr') {
-  // Защита от двойного нажатия хоткея и от запуска поверх существующего оверлея.
   if (ocrBusy) return;
   if (snipWindow && !snipWindow.isDestroyed()) return;
   if (mode === 'ocr'       && !storage.getOcrSettings().enabled)       return;
@@ -88,8 +122,12 @@ async function startSnip(mode = 'ocr') {
   snipWindow = createSnipWindow(display);
   snipWindow.once('ready-to-show', () => {
     snipWindow.show();
+    // Фокусим ТОЛЬКО оверлей — без `app.focus({ steal: true })`. Это
+    // важно: app.focus с steal активирует всё приложение, и потом без
+    // app.hide() фокус остаётся у нас, а с app.hide() — теряется dock-иконка.
+    // BrowserWindow.focus() на macOS 26 активирует приложение, но это
+    // компенсируется отложенным hide-after-pipeline в handleSnipPick.
     snipWindow.focus();
-    if (process.platform === 'darwin') app.focus({ steal: true });
     try { snipWindow.webContents.send('snip-mode', snipMode); } catch {}
   });
 }
@@ -99,46 +137,53 @@ async function handleSnipPick(bounds) {
   const display = screen.getAllDisplays().find(d => d.id === snipDisplayId)
                 || screen.getPrimaryDisplay();
   closeSnipWindow();
-  // Возвращаем фокус в предыдущее активное приложение ОДИН раз.
-  returnFocusToPreviousApp();
+  // ВАЖНО: app.hide() / Menu hide вызывается ПОСЛЕ всего pipeline (в finally),
+  // а не здесь. Раньше преждевременный hide ломал desktopCapturer на macOS
+  // (иногда возвращал пустой thumbnail) и приводил к пустому буферу обмена.
 
   if (ocrBusy) return;
   ocrBusy = true;
 
   let tmpPath = null;
   try {
-    const sources = await desktopCapturer.getSources({
-      types: ['screen'],
-      thumbnailSize: {
-        width:  Math.round(display.size.width  * dpr),
-        height: Math.round(display.size.height * dpr),
-      },
-      fetchWindowIcons: false,
-    });
+    // Проверяем разрешение Screen Recording ЗАРАНЕЕ — иначе getSources()
+    // на macOS Sequoia/Tahoe просто кидает "Failed to get sources" без
+    // объяснений, и пользователь не понимает что нужно сделать.
+    if (process.platform === 'darwin') {
+      const status = systemPreferences.getMediaAccessStatus('screen');
+      if (status !== 'granted') {
+        showScreenRecordingDialog(status);
+        throw new Error(`Screen Recording permission: ${status}`);
+      }
+    }
+
+    let sources;
+    try {
+      sources = await desktopCapturer.getSources({
+        types: ['screen'],
+        thumbnailSize: {
+          width:  Math.round(display.size.width  * dpr),
+          height: Math.round(display.size.height * dpr),
+        },
+        fetchWindowIcons: false,
+      });
+    } catch (capErr) {
+      // macOS Sequoia/Tahoe: getSources может упасть с "Failed to get sources"
+      // когда разрешение не выдано или сломалось после переустановки бинарника.
+      console.warn('[ocr] desktopCapturer.getSources failed:', capErr.message);
+      if (process.platform === 'darwin') showScreenRecordingDialog('not-determined');
+      throw new Error('Не удалось получить доступ к экрану: ' + capErr.message);
+    }
+
     const src = sources.find(s => s.display_id && Number(s.display_id) === display.id) || sources[0];
-    if (!src) throw new Error('Источник экрана не найден');
+    if (!src) {
+      if (process.platform === 'darwin') showScreenRecordingDialog('not-determined');
+      throw new Error('Источник экрана не найден (вероятно нет разрешения Screen Recording)');
+    }
 
     if (src.thumbnail.isEmpty()) {
       console.warn('[ocr] empty thumbnail — Screen Recording permission missing');
-      if (process.platform === 'darwin') {
-        const appName = app.isPackaged ? app.getName() : 'Electron';
-        dialog.showMessageBox({
-          type: 'warning',
-          title: 'Нужно разрешение Screen Recording',
-          message:
-            `macOS блокирует захват экрана.\n\n` +
-            `1. Откройте «Настройки» → «Конфиденциальность и безопасность» → «Запись экрана и системного звука» (откроем за вас).\n` +
-            `2. Найдите «${appName}» в списке (или добавьте кнопкой «+»).\n` +
-            `3. Включите тумблер.\n` +
-            `4. Перезапустите приложение.`,
-          buttons: ['Открыть настройки', 'OK'],
-          defaultId: 0,
-        }).then(r => {
-          if (r.response === 0) {
-            shell.openExternal('x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture');
-          }
-        });
-      }
+      if (process.platform === 'darwin') showScreenRecordingDialog('denied');
       throw new Error('Нет разрешения на запись экрана');
     }
 
@@ -204,6 +249,9 @@ async function handleSnipPick(bounds) {
   } finally {
     if (tmpPath) { try { fs.unlinkSync(tmpPath); } catch {} }
     ocrBusy = false;
+    // ТОЛЬКО ТЕПЕРЬ возвращаем фокус — после того как буфер обмена
+    // гарантированно записан и pipeline закончился.
+    returnFocusToPreviousApp();
   }
 }
 
