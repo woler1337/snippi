@@ -33,7 +33,9 @@ function createSnipWindow(display) {
     transparent: true,
     backgroundColor: '#00000000',
     resizable: false, movable: false, minimizable: false, maximizable: false,
-    skipTaskbar: true,
+    // skipTaskbar НЕ ставим — это часть causal chain'а с переключением app
+    // в accessory-mode и удалением dock-иконки на macOS Tahoe.
+    // Снип-окно всё равно скрыто за overlay, в Mission Control его не видно.
     show: false,
     focusable: true,
     acceptFirstMouse: true,
@@ -48,8 +50,16 @@ function createSnipWindow(display) {
       sandbox:          false,
     },
   });
-  w.setAlwaysOnTop(true, 'screen-saver');
-  w.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+  // 'floating' вместо 'screen-saver' — последний на macOS Tahoe конвертирует
+  // приложение в accessory-mode (и убирает dock-иконку), потому что уровень
+  // 'screen-saver' зарезервирован для системного screensaver'а без app entity.
+  // 'floating' — стандартный always-on-top, dock остаётся как есть.
+  w.setAlwaysOnTop(true, 'floating');
+  // setVisibleOnAllWorkspaces НЕ вызываем — на Tahoe эта настройка вместе
+  // с visibleOnFullScreen требует accessory activation policy → опять
+  // пропадает dock-иконка. UX trade-off: snip из fullscreen-приложений
+  // (например YouTube в fullscreen) не сработает — пользователь сначала
+  // выйдет из fullscreen.
   w.loadFile(path.join(__dirname, '..', 'renderer', 'snip.html'));
   w.on('closed', () => { snipWindow = null; snipDisplayId = null; });
   return w;
@@ -116,6 +126,12 @@ async function startSnip(mode = 'ocr') {
   const cursor = screen.getCursorScreenPoint();
   const display = screen.getDisplayNearestPoint(cursor);
   snipDisplayId = display.id;
+
+  // Превентивно держим dock-иконку видимой — на случай если snip-window
+  // соберётся её спрятать (в macOS 26 Tahoe бывает с overlay-окнами).
+  if (process.platform === 'darwin' && app.dock) {
+    try { app.dock.show(); } catch {}
+  }
 
   closeSnipWindow();
   snipWindow = createSnipWindow(display);
