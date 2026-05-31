@@ -8,6 +8,7 @@ const path = require('path');
 const zlib = require('zlib');
 const storage = require('./storage');
 const { getOrCreateWindow, sendToMainWindow } = require('./mainWindow');
+const { t } = require('./i18n');
 
 let tray = null;
 let _trayRetryCount = 0;
@@ -89,15 +90,15 @@ function buildTrayMenu() {
   const enabled = storage.getEnabled();
   const paletteHotkeyLabel = process.platform === 'darwin' ? '⌘⇧E' : 'Ctrl+Shift+E';
   const items = [
-    { label: 'Открыть Snippi', click: () => getOrCreateWindow().then(w => { w.show(); w.focus(); }) },
-    { label: `Быстрый поиск сниппета (${paletteHotkeyLabel})`, click: () => {
+    { label: t('tray.open'), click: () => getOrCreateWindow().then(w => { w.show(); w.focus(); }) },
+    { label: t('tray.palette', { hotkey: paletteHotkeyLabel }), click: () => {
         // Ленивый require — palette модуль зависит от mainWindow и переменных.
         try { require('./palette').showPalette(); } catch (e) { console.error(e); }
       }
     },
     { type: 'separator' },
     {
-      label: 'Включён', type: 'checkbox', checked: enabled,
+      label: t('tray.enabled'), type: 'checkbox', checked: enabled,
       click: item => {
         storage.setEnabled(item.checked);
         sendToMainWindow('settings-changed', { enabled: item.checked });
@@ -108,7 +109,7 @@ function buildTrayMenu() {
   ];
   if (process.platform === 'darwin') {
     items.push({
-      label: 'Сбросить menu bar (если иконка пропала)',
+      label: t('tray.resetMenuBar'),
       click: () => {
         const { execFile } = require('child_process');
         execFile('killall', ['SystemUIServer'], () => {
@@ -118,7 +119,7 @@ function buildTrayMenu() {
     });
     items.push({ type: 'separator' });
   }
-  items.push({ label: 'Выйти', click: () => { app.isQuitting = true; app.quit(); } });
+  items.push({ label: t('tray.quit'), click: () => { app.isQuitting = true; app.quit(); } });
   return Menu.buildFromTemplate(items);
 }
 

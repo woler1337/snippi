@@ -15,6 +15,7 @@ const storage    = require('./storage');
 const ocr        = require('./ocr');
 const translator = require('./translator');
 const { sendToMainWindow } = require('./mainWindow');
+const { t } = require('./i18n');
 
 let snipWindow         = null;
 let snipDisplayId      = null;
@@ -92,21 +93,16 @@ function showScreenRecordingDialog(status) {
   setTimeout(() => { _screenDialogShown = false; }, 60_000); // сбрасываем через минуту
 
   const appName = app.isPackaged ? app.getName() : 'Electron';
-  const detail = status === 'not-determined'
-    ? 'macOS ещё не запросил разрешение, либо оно потеряно после переустановки приложения.'
-    : 'Разрешение «Запись экрана» сейчас выключено или отозвано.';
+  const statusDetail = status === 'not-determined'
+    ? t('screenRec.notDetermined')
+    : t('screenRec.denied');
 
   dialog.showMessageBox({
     type: 'warning',
-    title: 'Нужно разрешение «Запись экрана»',
-    message: `Snippi не может сделать скриншот для распознавания текста.\n\n${detail}`,
-    detail:
-      `Чтобы исправить:\n` +
-      `1. Нажмите «Открыть настройки» ниже.\n` +
-      `2. Найдите «${appName}» в списке (или добавьте кнопкой «+»).\n` +
-      `3. Включите тумблер рядом с «${appName}».\n` +
-      `4. Полностью закройте и перезапустите приложение (Snippi → Выйти → запустить снова).`,
-    buttons: ['Открыть настройки', 'Позже'],
+    title:   t('screenRec.title'),
+    message: t('screenRec.message', { detail: statusDetail }),
+    detail:  t('screenRec.detail',  { app: appName }),
+    buttons: [t('btn.openSettings'), t('btn.later')],
     defaultId: 0,
     cancelId: 1,
   }).then(r => {
@@ -187,19 +183,19 @@ async function handleSnipPick(bounds) {
       // когда разрешение не выдано или сломалось после переустановки бинарника.
       console.warn('[ocr] desktopCapturer.getSources failed:', capErr.message);
       if (process.platform === 'darwin') showScreenRecordingDialog('not-determined');
-      throw new Error('Не удалось получить доступ к экрану: ' + capErr.message);
+      throw new Error(t('err.screenAccess', { msg: capErr.message }));
     }
 
     const src = sources.find(s => s.display_id && Number(s.display_id) === display.id) || sources[0];
     if (!src) {
       if (process.platform === 'darwin') showScreenRecordingDialog('not-determined');
-      throw new Error('Источник экрана не найден (вероятно нет разрешения Screen Recording)');
+      throw new Error(t('err.noScreenSource'));
     }
 
     if (src.thumbnail.isEmpty()) {
       console.warn('[ocr] empty thumbnail — Screen Recording permission missing');
       if (process.platform === 'darwin') showScreenRecordingDialog('denied');
-      throw new Error('Нет разрешения на запись экрана');
+      throw new Error(t('err.noScreenPermission'));
     }
 
     const cropRect = {
@@ -220,9 +216,9 @@ async function handleSnipPick(bounds) {
     if (!text || !text.trim()) {
       console.log('[ocr] empty result — clipboard NOT modified');
       if (snipMode === 'translate') {
-        sendTranslateResult({ ok: false, message: 'Не удалось распознать текст на скриншоте' });
+        sendTranslateResult({ ok: false, message: t('translate.err.noText') });
       } else {
-        notifyOcr({ ok: false, message: 'OCR: не удалось распознать текст' });
+        notifyOcr({ ok: false, message: t('ocr.notify.noText') });
       }
       return;
     }
@@ -247,7 +243,7 @@ async function handleSnipPick(bounds) {
         });
       } catch (e) {
         console.error('[translate] error:', e.message);
-        sendTranslateResult({ ok: false, message: 'Перевод: ' + e.message });
+        sendTranslateResult({ ok: false, message: t('translate.err.prefix', { msg: e.message }) });
       }
     } else {
       clipboard.writeText(text);
@@ -257,9 +253,9 @@ async function handleSnipPick(bounds) {
   } catch (err) {
     console.error('[ocr] pipeline error:', err);
     if (snipMode === 'translate') {
-      sendTranslateResult({ ok: false, message: 'Ошибка: ' + err.message });
+      sendTranslateResult({ ok: false, message: t('translate.err.generic', { msg: err.message }) });
     } else {
-      notifyOcr({ ok: false, message: 'OCR: ' + err.message });
+      notifyOcr({ ok: false, message: t('ocr.err.prefix', { msg: err.message }) });
     }
   } finally {
     if (tmpPath) { try { fs.unlinkSync(tmpPath); } catch {} }
@@ -274,8 +270,8 @@ async function handleSnipPick(bounds) {
 
 function notifyOcr(payload) {
   const msg = payload.ok
-    ? `OCR: скопировано ${payload.chars} симв.`
-    : (payload.message || 'OCR: ошибка');
+    ? t('ocr.notify.ok', { chars: payload.chars })
+    : (payload.message || t('ocr.notify.fail'));
   sendToMainWindow('ocr-result', payload);
   try {
     if (Notification.isSupported()) {
@@ -290,14 +286,14 @@ function sendTranslateResult(payload) {
     if (Notification.isSupported()) {
       let title, body;
       if (payload.ok) {
-        title = `Перевод → ${payload.targetLang || ''} (${payload.chars} симв.)`;
+        title = t('translate.notify.title', { lang: payload.targetLang || '', chars: payload.chars });
         const trim = s => (s || '').replace(/\s+/g, ' ').trim();
         body = payload.translated
           ? `${trim(payload.original)}\n→ ${trim(payload.translated)}`
-          : `${payload.chars} симв. скопировано в буфер обмена`;
+          : t('translate.notify.copied', { chars: payload.chars });
       } else {
-        title = 'Ошибка перевода';
-        body  = payload.message || 'Не удалось перевести';
+        title = t('translate.notify.errTitle');
+        body  = payload.message || t('translate.notify.errBody');
       }
       new Notification({ title, body, silent: true }).show();
     }

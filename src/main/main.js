@@ -56,6 +56,7 @@ const { startClipboardWatcher } = require('./clipboardWatcher');
 const { initAutoLaunch } = require('./autolaunch');
 const { checkAccessibilityPermissions } = require('./accessibility');
 const { onExpanderFire } = require('./stats');
+const { initUpdater } = require('./updater');
 const ocr = require('./ocr');
 
 app.on('second-instance', () => {
@@ -131,6 +132,9 @@ app.whenReady().then(async () => {
   registerOcrHotkey();
   registerTranslateHotkey();
   registerPaletteHotkey();
+
+  // Авто-обновления через electron-updater (внутри сам пропустит в dev-режиме)
+  initUpdater();
 
   // Открываем окно сразу при запуске
   getOrCreateWindow().then(w => { w.show(); w.focus(); });

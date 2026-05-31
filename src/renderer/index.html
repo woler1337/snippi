@@ -506,6 +506,33 @@
                 </select>
               </div>
             </section>
+
+            <section class="settings-section" id="updater-section">
+              <h3 class="settings-section-title" data-i18n="updater.title">Обновления</h3>
+              <div class="updater-row">
+                <div class="updater-info">
+                  <div class="updater-version">
+                    <span data-i18n="updater.current">Текущая версия:</span>
+                    <code class="mono" id="updater-current-version">—</code>
+                  </div>
+                  <div class="updater-status" id="updater-status" data-i18n="updater.status.idle">
+                    Готов к проверке
+                  </div>
+                  <div class="updater-progress hidden" id="updater-progress">
+                    <div class="updater-progress-bar"><span id="updater-progress-fill"></span></div>
+                    <span class="updater-progress-text" id="updater-progress-text">0%</span>
+                  </div>
+                </div>
+                <div class="updater-actions">
+                  <button class="btn btn-ghost" id="updater-check-btn" type="button" data-i18n="updater.check">
+                    Проверить
+                  </button>
+                  <button class="btn btn-primary hidden" id="updater-install-btn" type="button" data-i18n="updater.install">
+                    Перезапустить и обновить
+                  </button>
+                </div>
+              </div>
+            </section>
           </main>
         </div>
 
@@ -562,6 +589,62 @@
             <code class="mono">{|}</code>
             <span data-i18n="snippet.field.caretHint2">в любое место — после раскрытия курсор автоматически встанет туда.</span>
           </p>
+          <details class="placeholders-help">
+            <summary data-i18n="snippet.placeholders.summary">Динамические плейсхолдеры</summary>
+            <div class="placeholders-grid" id="placeholders-grid">
+              <button type="button" class="ph-chip" data-insert="{date}">
+                <code class="mono">{date}</code>
+                <span data-i18n="snippet.placeholders.date">сегодняшняя дата</span>
+              </button>
+              <button type="button" class="ph-chip" data-insert="{time}">
+                <code class="mono">{time}</code>
+                <span data-i18n="snippet.placeholders.time">текущее время</span>
+              </button>
+              <button type="button" class="ph-chip" data-insert="{datetime}">
+                <code class="mono">{datetime}</code>
+                <span data-i18n="snippet.placeholders.datetime">дата и время</span>
+              </button>
+              <button type="button" class="ph-chip" data-insert="{date:+7d}">
+                <code class="mono">{date:+7d}</code>
+                <span data-i18n="snippet.placeholders.dateArith">+ 7 дней (s/m/h/d/M/y)</span>
+              </button>
+              <button type="button" class="ph-chip" data-insert="{date:YYYY.MM.DD}">
+                <code class="mono">{date:YYYY.MM.DD}</code>
+                <span data-i18n="snippet.placeholders.dateFmt">свой формат</span>
+              </button>
+              <button type="button" class="ph-chip" data-insert="{clipboard}">
+                <code class="mono">{clipboard}</code>
+                <span data-i18n="snippet.placeholders.clip">из буфера обмена</span>
+              </button>
+              <button type="button" class="ph-chip" data-insert="{clip:1}">
+                <code class="mono">{clip:1}</code>
+                <span data-i18n="snippet.placeholders.clipN">N-й из истории буфера</span>
+              </button>
+              <button type="button" class="ph-chip" data-insert="{uuid}">
+                <code class="mono">{uuid}</code>
+                <span data-i18n="snippet.placeholders.uuid">случайный UUID</span>
+              </button>
+              <button type="button" class="ph-chip" data-insert="{random:1-100}">
+                <code class="mono">{random:1-100}</code>
+                <span data-i18n="snippet.placeholders.random">случайное число</span>
+              </button>
+              <button type="button" class="ph-chip" data-insert="{upper:текст}">
+                <code class="mono">{upper:…}</code>
+                <span data-i18n="snippet.placeholders.upper">ВЕРХНИЙ регистр</span>
+              </button>
+              <button type="button" class="ph-chip" data-insert="{lower:ТЕКСТ}">
+                <code class="mono">{lower:…}</code>
+                <span data-i18n="snippet.placeholders.lower">нижний регистр</span>
+              </button>
+              <button type="button" class="ph-chip" data-insert="{capitalize:текст}">
+                <code class="mono">{capitalize:…}</code>
+                <span data-i18n="snippet.placeholders.capitalize">С большой буквы</span>
+              </button>
+            </div>
+            <p class="placeholders-tip" data-i18n="snippet.placeholders.tip">
+              Кликните по плейсхолдеру, чтобы вставить его в шаблон.
+            </p>
+          </details>
           <span class="form-error" id="snippet-replacement-err"></span>
         </div>
         <div class="form-group">
@@ -624,6 +707,7 @@
         <span class="tpip active" data-step="0"></span>
         <span class="tpip" data-step="1"></span>
         <span class="tpip" data-step="2"></span>
+        <span class="tpip" data-step="3"></span>
       </div>
 
       <div class="tslide active" id="tslide-0">
@@ -662,6 +746,29 @@
             <span class="tex-clip-copy" data-i18n="tutorial.example.copy">Скопировать</span>
           </div>
         </div>
+      </div>
+
+      <div class="tslide" id="tslide-3">
+        <div class="tslide-icon">⚡</div>
+        <h2 class="tslide-title" data-i18n="tutorial.s4.title">Палитра и скриншоты</h2>
+        <p class="tslide-text" data-i18n="tutorial.s4.text" data-i18n-html="1"></p>
+        <div class="tslide-example tslide-example--keys">
+          <div class="tex-key-row">
+            <kbd class="tex-hotkey" id="tex-key-palette">⌘⇧E</kbd>
+            <span class="tex-key-desc" data-i18n="tutorial.s4.palette">Поиск по сниппетам</span>
+          </div>
+          <div class="tex-key-row">
+            <kbd class="tex-hotkey" id="tex-key-ocr">⌘⇧1</kbd>
+            <span class="tex-key-desc" data-i18n="tutorial.s4.ocr">Скриншот → текст</span>
+          </div>
+          <div class="tex-key-row">
+            <kbd class="tex-hotkey" id="tex-key-tr">⌘⇧2</kbd>
+            <span class="tex-key-desc" data-i18n="tutorial.s4.translate">Скриншот → перевод</span>
+          </div>
+        </div>
+        <p class="tslide-seed-hint" id="tut-seed-hint" data-i18n="tutorial.s4.seed">
+          После закрытия мы создадим 4 примера сниппета, чтобы вы могли сразу попробовать.
+        </p>
       </div>
 
       <div class="tutorial-footer">

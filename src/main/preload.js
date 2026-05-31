@@ -73,6 +73,13 @@ contextBridge.exposeInMainWorld('api', {
   translateTest:        (p)     => ipcRenderer.invoke('translate-test', p || {}),
 
 
+  // ── Авто-обновления ───────────────────────────────────────────────────────
+  updaterGetState: ()  => ipcRenderer.invoke('updater-get-state'),
+  updaterCheck:    ()  => ipcRenderer.invoke('updater-check'),
+  updaterInstall:  ()  => ipcRenderer.invoke('updater-install'),
+  getAppVersion:   ()  => ipcRenderer.invoke('app-get-version'),
+  onUpdateState:   (cb) => ipcRenderer.on('update-state', (_, d) => cb(d)),
+
   // ── События из main-процесса ──────────────────────────────────────────────
   onSnippetsChanged:          (cb) => ipcRenderer.on('snippets-changed',          (_, d) => cb(d)),
   onKeybindingsChanged:       (cb) => ipcRenderer.on('keybindings-changed',       (_, d) => cb(d)),

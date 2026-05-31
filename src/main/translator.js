@@ -9,6 +9,7 @@
 ════════════════════════════════════════════════════════════════ */
 
 const { net } = require('electron');
+const { t }   = require('./i18n');
 
 // MyMemory принимает не более ~500 символов за запрос. Длинный текст
 // делим на куски по границам предложений и переводим параллельно.
@@ -69,7 +70,7 @@ function requestOne(text, sourceLang, targetLang) {
           const parsed = JSON.parse(raw);
           const out = parsed && parsed.responseData && parsed.responseData.translatedText;
           if (typeof out !== 'string' || !out) {
-            return reject(new Error(parsed && parsed.responseDetails ? parsed.responseDetails : 'Пустой ответ от переводчика'));
+            return reject(new Error(parsed && parsed.responseDetails ? parsed.responseDetails : t('translator.err.emptyResponse')));
           }
           // MyMemory иногда возвращает «MYMEMORY WARNING: ... » в начале при ошибках конфигурации,
           // и капсом «ENGLISH» если язык неверный. Отфильтруем явные ошибки.
@@ -78,11 +79,11 @@ function requestOne(text, sourceLang, targetLang) {
           }
           resolve(out);
         } catch (e) {
-          reject(new Error('Не удалось разобрать ответ: ' + e.message));
+          reject(new Error(t('translator.err.parse', { msg: e.message })));
         }
       });
     });
-    req.on('error', err => reject(new Error('Сеть: ' + err.message)));
+    req.on('error', err => reject(new Error(t('translator.err.network', { msg: err.message }))));
     req.end();
   });
 }
@@ -142,7 +143,7 @@ async function detectLang(text) {
 
 // Основная функция: переводит произвольный текст (длинный — кусками).
 async function translate(text, { targetLang, sourceLang } = {}) {
-  if (!text || !text.trim()) throw new Error('Пустой текст');
+  if (!text || !text.trim()) throw new Error(t('translator.err.empty'));
   const target = normalizeLang(targetLang) || 'en';
   // Если язык-источник не задан или 'auto' — определяем через franc.
   let source = normalizeLang(sourceLang);

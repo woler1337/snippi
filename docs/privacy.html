@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — Snippi</title>
+  <meta name="description" content="Политика конфиденциальности Snippi. Все данные хранятся локально, OCR офлайн, перевод через MyMemory без аккаунта." />
+  <meta name="theme-color" content="#0a0b0d" />
+
+  <link rel="icon" type="image/png" href="assets/icon.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Минимальные доп-стили только для legal-страниц ── */
+    .legal-page {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 56px 24px 80px;
+    }
+    .legal-page h1 { font-size: 36px; margin: 0 0 6px; letter-spacing: -0.02em; }
+    .legal-page .legal-updated { color: var(--text-3, #8a8d93); font-size: 14px; margin: 0 0 28px; }
+    .legal-page h2 { font-size: 20px; margin: 32px 0 10px; letter-spacing: -0.01em; }
+    .legal-page h3 { font-size: 15px; margin: 22px 0 6px; color: var(--text-2, #b5b7bc); font-weight: 600; }
+    .legal-page p, .legal-page li {
+      font-size: 15.5px;
+      line-height: 1.65;
+      color: var(--text-2, #b5b7bc);
+    }
+    .legal-page ul { padding-left: 22px; margin: 0 0 14px; }
+    .legal-page li { margin-bottom: 6px; }
+    .legal-page code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.06);
+      color: var(--text-1, #fff);
+    }
+    .legal-page a { color: #6aa9ff; text-decoration: none; }
+    .legal-page a:hover { text-decoration: underline; }
+    .legal-page strong { color: var(--text-1, #fff); }
+
+    .lang-switch {
+      display: inline-flex;
+      gap: 2px;
+      padding: 3px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      margin-bottom: 24px;
+    }
+    .lang-switch button {
+      background: transparent;
+      color: var(--text-3, #8a8d93);
+      border: none;
+      padding: 5px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font: inherit;
+      font-size: 13px;
+      transition: all 0.15s;
+    }
+    .lang-switch button.active {
+      background: rgba(255,255,255,0.1);
+      color: var(--text-1, #fff);
+    }
+    .lang-block { display: none; }
+    .lang-block.active { display: block; }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <a href="index.html" class="nav-brand">
+    <img src="assets/icon.png" alt="" class="nav-icon" />
+    <span>Snippi</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html#features">Возможности</a>
+    <a href="index.html#how">Как работает</a>
+    <a href="index.html#faq">FAQ</a>
+    <a href="https://github.com/woler1337/snippi" target="_blank" rel="noopener">GitHub</a>
+    <a href="index.html#download" class="btn btn-primary btn-sm">Скачать</a>
+  </div>
+</nav>
+
+<main class="legal-page">
+
+  <div class="lang-switch" role="tablist" aria-label="Language">
+    <button class="active" data-lang="ru" type="button">Русский</button>
+    <button data-lang="en" type="button">English</button>
+  </div>
+
+  <!-- ══════════ RU ══════════ -->
+  <section class="lang-block active" data-lang-block="ru">
+    <h1>Политика конфиденциальности</h1>
+    <p class="legal-updated">Действует с 31 мая 2026 года</p>
+
+    <h2>Коротко</h2>
+    <p>
+      Snippi — приложение, работающее на вашем компьютере. <strong>Мы не собираем
+      ваши данные.</strong> Сниппеты, история буфера обмена, статистика, настройки —
+      всё хранится только на вашем устройстве.
+    </p>
+
+    <h2>1. Какие данные обрабатываются</h2>
+
+    <h3>1.1 Локально на устройстве</h3>
+    <ul>
+      <li><strong>Сниппеты</strong>: триггеры и текст замен, которые вы создаёте сами.</li>
+      <li><strong>Глобальные хоткеи</strong>: комбинации клавиш и привязанные к ним тексты.</li>
+      <li><strong>Группы сниппетов</strong>: названия и цвета созданных вами групп.</li>
+      <li><strong>История буфера обмена</strong>: последние 50 скопированных текстов (можно очистить в любой момент).</li>
+      <li><strong>Статистика</strong>: число раскрытий, символов и дата первого использования.</li>
+      <li><strong>Настройки</strong>: язык интерфейса, тема, триггер-клавиша, хоткеи OCR и перевода.</li>
+    </ul>
+    <p>
+      Расположение файлов:
+    </p>
+    <ul>
+      <li>macOS: <code>~/Library/Application Support/snippi/</code></li>
+      <li>Windows: <code>%APPDATA%\snippi\</code></li>
+      <li>Linux: <code>~/.config/snippi/</code></li>
+    </ul>
+
+    <h3>1.2 Перехват клавиатуры</h3>
+    <p>
+      Snippi анализирует нажатия клавиш <em>исключительно для распознавания
+      триггеров сниппетов</em>. Введённый текст никогда не передаётся куда-либо,
+      не сохраняется в логи и не отправляется на серверы. Распознавание происходит
+      в памяти приложения и сбрасывается при пробеле, Enter, Esc или после
+      срабатывания триггера.
+    </p>
+
+    <h3>1.3 Скриншоты и OCR</h3>
+    <p>
+      При вызове функции «скриншот → текст» приложение делает захват выбранной
+      области экрана и распознаёт текст:
+    </p>
+    <ul>
+      <li><strong>macOS</strong>: через Apple Vision Framework — полностью офлайн, картинка не покидает устройство.</li>
+      <li><strong>Windows / Linux</strong>: через Tesseract.js — полностью офлайн, без сетевых запросов.</li>
+    </ul>
+    <p>Скриншоты удаляются из временной папки сразу после распознавания.</p>
+
+    <h2>2. Внешние сервисы</h2>
+
+    <h3>2.1 Переводчик (MyMemory API)</h3>
+    <p>
+      Функция «скриншот → перевод» использует
+      <a href="https://mymemory.translated.net/" target="_blank" rel="noopener">MyMemory Translation API</a>
+      — бесплатный публичный сервис без аккаунта и API-ключа.
+    </p>
+    <ul>
+      <li>В API передаётся <strong>только распознанный текст</strong> (не скриншоты).</li>
+      <li>Запрос идёт по HTTPS.</li>
+      <li>Лимит ~1 000 символов в день на один IP-адрес.</li>
+      <li>Snippi не сохраняет ни запросы, ни ответы переводчика.</li>
+      <li>На стороне MyMemory действует <a href="https://mymemory.translated.net/doc/usagelimits.php" target="_blank" rel="noopener">их политика</a>.</li>
+    </ul>
+    <p>
+      Если функция перевода вам не нужна, отключите её в настройках —
+      сетевые запросы прекратятся.
+    </p>
+
+    <h3>2.2 Никакой телеметрии и аналитики</h3>
+    <p>
+      Snippi <strong>не отправляет</strong> анонимную статистику, не использует
+      Google Analytics, Mixpanel и подобные сервисы. У нас нет серверов,
+      на которые могут поступать ваши данные. Лицензия MIT, исходный код
+      открыт — можно проверить на <a href="https://github.com/woler1337/snippi" target="_blank" rel="noopener">GitHub</a>.
+    </p>
+
+    <h2>3. Логи</h2>
+    <p>
+      Локально пишутся файлы диагностики:
+    </p>
+    <ul>
+      <li>macOS: <code>~/Library/Logs/snippi/main.log</code></li>
+      <li>Windows: <code>%APPDATA%\snippi\logs\main.log</code></li>
+      <li>Linux: <code>~/.config/snippi/logs/main.log</code></li>
+    </ul>
+    <p>
+      Логи содержат техническую информацию (ошибки, версии) и хранятся только
+      на вашем устройстве. Никуда автоматически не отправляются.
+    </p>
+
+    <h2>4. Дети</h2>
+    <p>
+      Snippi не предназначен специально для детей младше 13 лет, но и не собирает
+      персональных данных — то есть подходит для любой возрастной группы.
+    </p>
+
+    <h2>5. Изменения политики</h2>
+    <p>
+      Если эта политика изменится, обновлённая версия появится здесь, а в
+      приложении — уведомление при следующем запуске. Дата вверху всегда
+      указывает актуальную редакцию.
+    </p>
+
+    <h2>6. Контакты</h2>
+    <p>
+      Вопросы и замечания — через
+      <a href="https://github.com/woler1337/snippi/issues" target="_blank" rel="noopener">GitHub Issues</a>.
+    </p>
+  </section>
+
+  <!-- ══════════ EN ══════════ -->
+  <section class="lang-block" data-lang-block="en">
+    <h1>Privacy Policy</h1>
+    <p class="legal-updated">Effective May 31, 2026</p>
+
+    <h2>TL;DR</h2>
+    <p>
+      Snippi is a desktop app that runs entirely on your computer. <strong>We do
+      not collect your data.</strong> Snippets, clipboard history, statistics,
+      and settings are stored exclusively on your device.
+    </p>
+
+    <h2>1. What data is processed</h2>
+
+    <h3>1.1 Locally on your device</h3>
+    <ul>
+      <li><strong>Snippets</strong>: triggers and replacement text you create.</li>
+      <li><strong>Global hotkeys</strong>: key combinations and the texts bound to them.</li>
+      <li><strong>Snippet groups</strong>: names and colors you define.</li>
+      <li><strong>Clipboard history</strong>: the last 50 copied texts (clearable any time).</li>
+      <li><strong>Statistics</strong>: expansion count, characters saved, first-used date.</li>
+      <li><strong>Settings</strong>: UI language, theme, trigger key, OCR and translate hotkeys.</li>
+    </ul>
+    <p>File locations:</p>
+    <ul>
+      <li>macOS: <code>~/Library/Application Support/snippi/</code></li>
+      <li>Windows: <code>%APPDATA%\snippi\</code></li>
+      <li>Linux: <code>~/.config/snippi/</code></li>
+    </ul>
+
+    <h3>1.2 Keyboard interception</h3>
+    <p>
+      Snippi analyzes keystrokes <em>solely to detect snippet triggers</em>. The
+      typed text is never transmitted anywhere, never written to logs, and never
+      sent to servers. Detection happens in memory and the buffer is reset on
+      Space, Enter, Esc, or after a trigger fires.
+    </p>
+
+    <h3>1.3 Screenshots and OCR</h3>
+    <p>
+      When you use "Screenshot → Text", the app captures the chosen screen area
+      and recognizes text:
+    </p>
+    <ul>
+      <li><strong>macOS</strong>: via Apple Vision Framework — fully offline, the image never leaves your device.</li>
+      <li><strong>Windows / Linux</strong>: via Tesseract.js — fully offline, no network calls.</li>
+    </ul>
+    <p>Screenshots are removed from the temp folder immediately after recognition.</p>
+
+    <h2>2. External services</h2>
+
+    <h3>2.1 Translator (MyMemory API)</h3>
+    <p>
+      The "Screenshot → Translate" feature uses
+      <a href="https://mymemory.translated.net/" target="_blank" rel="noopener">MyMemory Translation API</a>,
+      a free public service that requires no account or API key.
+    </p>
+    <ul>
+      <li>Only the <strong>recognized text</strong> is sent (not screenshots).</li>
+      <li>The request is sent over HTTPS.</li>
+      <li>Limit: ~1,000 characters per day per IP.</li>
+      <li>Snippi does not retain requests or responses.</li>
+      <li>MyMemory's own <a href="https://mymemory.translated.net/doc/usagelimits.php" target="_blank" rel="noopener">policy</a> applies on their end.</li>
+    </ul>
+    <p>
+      If you don't need translation, disable it in settings — network requests will stop.
+    </p>
+
+    <h3>2.2 No telemetry, no analytics</h3>
+    <p>
+      Snippi does <strong>not</strong> send anonymous statistics; we don't use
+      Google Analytics, Mixpanel, or similar. We have no servers that could
+      receive your data. The source is MIT-licensed and open — verify on
+      <a href="https://github.com/woler1337/snippi" target="_blank" rel="noopener">GitHub</a>.
+    </p>
+
+    <h2>3. Logs</h2>
+    <p>Diagnostic logs are written locally:</p>
+    <ul>
+      <li>macOS: <code>~/Library/Logs/snippi/main.log</code></li>
+      <li>Windows: <code>%APPDATA%\snippi\logs\main.log</code></li>
+      <li>Linux: <code>~/.config/snippi/logs/main.log</code></li>
+    </ul>
+    <p>
+      Logs contain technical info (errors, versions) and stay on your device.
+      They are not transmitted automatically.
+    </p>
+
+    <h2>4. Children</h2>
+    <p>
+      Snippi is not specifically directed at children under 13, but it does not
+      collect any personal data — it's safe for any age group.
+    </p>
+
+    <h2>5. Changes to this policy</h2>
+    <p>
+      If this policy changes, the updated version will appear here and the app
+      will show a notification on next launch. The date at the top always shows
+      the current revision.
+    </p>
+
+    <h2>6. Contact</h2>
+    <p>
+      Questions or concerns — via
+      <a href="https://github.com/woler1337/snippi/issues" target="_blank" rel="noopener">GitHub Issues</a>.
+    </p>
+  </section>
+
+</main>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="assets/icon.png" alt="" class="footer-icon" />
+      <div>
+        <div class="footer-name">Snippi</div>
+        <div class="footer-tag">© 2026 — open source, MIT license</div>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="index.html">Главная</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="https://github.com/woler1337/snippi" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Простой language switcher для legal-страниц
+  const buttons = document.querySelectorAll('.lang-switch button');
+  const blocks  = document.querySelectorAll('.lang-block');
+  const saved   = localStorage.getItem('snippi-legal-lang') || 'ru';
+
+  function setLang(l) {
+    buttons.forEach(b => b.classList.toggle('active', b.dataset.lang === l));
+    blocks .forEach(b => b.classList.toggle('active', b.dataset.langBlock === l));
+    document.documentElement.lang = l;
+    localStorage.setItem('snippi-legal-lang', l);
+  }
+  buttons.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+  setLang(saved);
+</script>
+
+</body>
+</html>

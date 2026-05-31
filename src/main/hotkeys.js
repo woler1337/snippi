@@ -8,17 +8,19 @@ const { globalShortcut, Notification } = require('electron');
 const storage = require('./storage');
 const { startSnip } = require('./snip');
 const { sendToMainWindow } = require('./mainWindow');
+const { t } = require('./i18n');
 
 let registeredOcrAccel       = null;
 let registeredTranslateAccel = null;
 
-function notifyHotkeyConflict(feature, hotkey) {
+function notifyHotkeyConflict(featureKey, hotkey) {
+  const feature = t(featureKey);
   sendToMainWindow('hotkey-conflict', { feature, hotkey });
   try {
     if (Notification.isSupported()) {
       new Notification({
-        title: 'Хоткей занят',
-        body:  `«${hotkey}» уже используется системой или другим приложением. Поменяйте комбинацию для «${feature}» в настройках.`,
+        title: t('hotkey.conflictTitle'),
+        body:  t('hotkey.conflictBody', { hotkey, feature }),
         silent: true,
       }).show();
     }
@@ -45,11 +47,11 @@ function registerTranslateHotkey() {
       registeredTranslateAccel = cfg.hotkey;
     } else {
       console.warn('[translate] hotkey registration failed:', cfg.hotkey);
-      notifyHotkeyConflict('Перевод', cfg.hotkey);
+      notifyHotkeyConflict('hotkey.feature.translate', cfg.hotkey);
     }
   } catch (err) {
     console.warn('[translate] hotkey error:', err.message);
-    notifyHotkeyConflict('Перевод', cfg.hotkey);
+    notifyHotkeyConflict('hotkey.feature.translate', cfg.hotkey);
   }
 }
 
@@ -66,11 +68,11 @@ function registerOcrHotkey() {
       registeredOcrAccel = hotkey;
     } else {
       console.warn('[ocr] hotkey registration failed:', hotkey);
-      notifyHotkeyConflict('Скриншот', hotkey);
+      notifyHotkeyConflict('hotkey.feature.ocr', hotkey);
     }
   } catch (err) {
     console.warn('[ocr] hotkey error:', err.message);
-    notifyHotkeyConflict('Скриншот', hotkey);
+    notifyHotkeyConflict('hotkey.feature.ocr', hotkey);
   }
 }
 

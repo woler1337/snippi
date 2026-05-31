@@ -24,7 +24,7 @@ let capturedHotkey = null; // { display: 'Ctrl+A', data: { code, ctrlKey, … } 
 
 // Туториал
 let tutorialStep = 0;
-const TUTORIAL_STEPS = 3;
+const TUTORIAL_STEPS = 4;
 
 // ── i18n shortcut ─────────────────────────────────────────────────
 const t = (k, p) => window.i18n.t(k, p);
@@ -94,6 +94,14 @@ const dom = {
   clearClipBtn:     $('clear-clipboard-btn'),
   // Настройки
   languageSelect:   $('language-select'),
+  // Updater
+  updaterCurrentVersion: $('updater-current-version'),
+  updaterStatus:         $('updater-status'),
+  updaterProgress:       $('updater-progress'),
+  updaterProgressFill:   $('updater-progress-fill'),
+  updaterProgressText:   $('updater-progress-text'),
+  updaterCheckBtn:       $('updater-check-btn'),
+  updaterInstallBtn:     $('updater-install-btn'),
   ocrEnabledToggle: $('ocr-enabled-toggle'),
   ocrJoinToggle:    $('ocr-join-toggle'),
   ocrHotkeyInput:   $('ocr-hotkey-input'),
@@ -273,6 +281,98 @@ async function init() {
     if (!d) return;
     showToast(t('hotkey.conflict', { feature: d.feature, hotkey: d.hotkey }));
   });
+
+  // ── Updater ──────────────────────────────────────────────────────
+  initUpdaterUI();
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  UPDATER UI
+// ══════════════════════════════════════════════════════════════════
+
+async function initUpdaterUI() {
+  try {
+    const ver = await window.api.getAppVersion();
+    if (dom.updaterCurrentVersion) dom.updaterCurrentVersion.textContent = 'v' + ver;
+  } catch {}
+  // Подтягиваем текущее состояние (вдруг авто-проверка уже отработала).
+  try {
+    const st = await window.api.updaterGetState();
+    if (st) renderUpdaterState(st);
+  } catch {}
+  window.api.onUpdateState(renderUpdaterState);
+
+  if (dom.updaterCheckBtn) {
+    dom.updaterCheckBtn.addEventListener('click', async () => {
+      dom.updaterCheckBtn.disabled = true;
+      try { await window.api.updaterCheck(); }
+      finally { dom.updaterCheckBtn.disabled = false; }
+    });
+  }
+  if (dom.updaterInstallBtn) {
+    dom.updaterInstallBtn.addEventListener('click', () => {
+      window.api.updaterInstall();
+    });
+  }
+}
+
+function renderUpdaterState(st) {
+  if (!st || !dom.updaterStatus) return;
+  const st_ = dom.updaterStatus;
+  const progress = dom.updaterProgress;
+  const install  = dom.updaterInstallBtn;
+  const check    = dom.updaterCheckBtn;
+
+  st_.classList.remove('updater-status--ok', 'updater-status--err');
+  if (install) install.classList.add('hidden');
+  if (progress) progress.classList.add('hidden');
+  if (check)    check.classList.remove('hidden');
+
+  switch (st.status) {
+    case 'checking':
+      st_.textContent = t('updater.status.checking');
+      if (check) check.disabled = true;
+      break;
+    case 'available':
+      st_.textContent = t('updater.status.available', { version: st.version });
+      if (check) check.disabled = true;
+      break;
+    case 'downloading':
+      st_.textContent = t('updater.status.downloading');
+      if (progress) {
+        progress.classList.remove('hidden');
+        if (dom.updaterProgressFill) dom.updaterProgressFill.style.width = (st.percent || 0) + '%';
+        if (dom.updaterProgressText) dom.updaterProgressText.textContent = (st.percent || 0) + '%';
+      }
+      if (check) check.disabled = true;
+      break;
+    case 'downloaded':
+      st_.textContent = t('updater.status.downloaded', { version: st.version });
+      st_.classList.add('updater-status--ok');
+      if (install) install.classList.remove('hidden');
+      if (check)   check.classList.add('hidden');
+      // Ненавязчиво подсвечиваем «обновление готово» в шапке.
+      showToast(t('updater.toast.ready', { version: st.version }));
+      break;
+    case 'not-available':
+      st_.textContent = t('updater.status.notAvailable');
+      if (check) check.disabled = false;
+      break;
+    case 'error':
+      st_.textContent = t('updater.status.error', { msg: st.message || '' });
+      st_.classList.add('updater-status--err');
+      if (check) check.disabled = false;
+      break;
+    case 'idle':
+    default:
+      if (st.reason === 'dev-mode') {
+        st_.textContent = t('updater.status.devMode');
+      } else {
+        st_.textContent = t('updater.status.idle');
+      }
+      if (check) check.disabled = false;
+      break;
+  }
 }
 
 // ── Хоткей-форматтер для UI (показываем как Cmd+Shift+1 на маке) ──
@@ -724,12 +824,67 @@ function relativeTime(ts) {
 function openTutorial() {
   tutorialStep = 0;
   applyTutorialStep();
+  // Подстраиваем хоткеи под платформу (на 4-м слайде).
+  const mac = platform === 'darwin';
+  const setKbd = (id, mac_, other) => { const el = $(id); if (el) el.textContent = mac ? mac_ : other; };
+  setKbd('tex-key-palette', '⌘⇧E', 'Ctrl+Shift+E');
+  setKbd('tex-key-ocr',     '⌘⇧1', 'Ctrl+Shift+1');
+  setKbd('tex-key-tr',      '⌘⇧2', 'Ctrl+Shift+2');
+  // Прячем seed-hint, если у пользователя УЖЕ есть сниппеты (повторное открытие туториала через «?»).
+  const seedHint = $('tut-seed-hint');
+  if (seedHint) seedHint.classList.toggle('hidden', allSnippets.length > 0);
   dom.tutBackdrop.classList.remove('hidden');
 }
 
 function closeTutorial() {
   dom.tutBackdrop.classList.add('hidden');
   window.api.setTutorialShown(true);
+  // Если это первый запуск и сниппетов нет — посеять стартовые.
+  if (allSnippets.length === 0) {
+    seedStarterSnippets().catch(err => console.error('[seed] failed:', err));
+  }
+}
+
+// ── Стартовые сниппеты ────────────────────────────────────────────
+// Локализованные примеры с использованием новых фич: {date}, {|} курсор.
+// Создаются ОДИН раз — при закрытии туториала на пустой библиотеке.
+const STARTER_SNIPPETS = {
+  ru: [
+    { trigger: 'eml',  replacement: 'ivan@example.com' },
+    { trigger: 'sig',  replacement: 'С уважением,\nИван Иванов' },
+    { trigger: 'dt',   replacement: '{date}' },
+    { trigger: 'meet', replacement: 'Встреча {date:+1d} в {|}' },
+  ],
+  en: [
+    { trigger: 'eml',  replacement: 'john@example.com' },
+    { trigger: 'sig',  replacement: 'Best regards,\nJohn Doe' },
+    { trigger: 'dt',   replacement: '{date}' },
+    { trigger: 'meet', replacement: 'Meeting on {date:+1d} at {|}' },
+  ],
+  de: [
+    { trigger: 'eml',  replacement: 'max@example.de' },
+    { trigger: 'sig',  replacement: 'Mit freundlichen Grüßen,\nMax Mustermann' },
+    { trigger: 'dt',   replacement: '{date}' },
+    { trigger: 'meet', replacement: 'Besprechung am {date:+1d} um {|}' },
+  ],
+};
+
+async function seedStarterSnippets() {
+  const lang = (window.i18n.getLang && window.i18n.getLang()) || 'en';
+  const list = STARTER_SNIPPETS[lang] || STARTER_SNIPPETS.en;
+  let added = 0;
+  for (const s of list) {
+    try {
+      await window.api.addSnippet({ trigger: s.trigger, replacement: s.replacement, groupId: null });
+      added++;
+    } catch (e) {
+      // Если триггер уже занят пользователем — пропускаем молча.
+      console.warn('[seed] skipped', s.trigger, ':', e.message);
+    }
+  }
+  console.log(`[seed] добавлено ${added} стартовых сниппетов (${lang})`);
+  // Переключаем на панель сниппетов, чтобы пользователь сразу увидел результат.
+  if (added > 0 && currentPanel !== 'snippets') switchPanel('snippets');
 }
 
 function applyTutorialStep() {
@@ -1278,6 +1433,23 @@ function bindEvents() {
     dom.snippetReplace.style.height = 'auto';
     dom.snippetReplace.style.height = Math.min(dom.snippetReplace.scrollHeight, 220) + 'px';
   });
+
+  // Чипы с динамическими плейсхолдерами — клик вставляет токен в курсор textarea.
+  const placeholdersGrid = document.getElementById('placeholders-grid');
+  if (placeholdersGrid) {
+    placeholdersGrid.addEventListener('click', e => {
+      const btn = e.target.closest('.ph-chip');
+      if (!btn) return;
+      const token = btn.dataset.insert || '';
+      const ta = dom.snippetReplace;
+      const start = ta.selectionStart, end = ta.selectionEnd;
+      const v = ta.value;
+      ta.value = v.slice(0, start) + token + v.slice(end);
+      ta.focus();
+      ta.setSelectionRange(start + token.length, start + token.length);
+      ta.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+  }
 
   // ── Хоткеи ──
   dom.kbSearch.addEventListener('input', () => {

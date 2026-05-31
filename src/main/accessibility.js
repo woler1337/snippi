@@ -5,6 +5,7 @@
 ════════════════════════════════════════════════════════════════ */
 
 const { app, dialog, systemPreferences, shell } = require('electron');
+const { t } = require('./i18n');
 
 async function checkAccessibilityPermissions() {
   if (process.platform !== 'darwin') return true;
@@ -13,10 +14,10 @@ async function checkAccessibilityPermissions() {
   const appName = app.isPackaged ? app.getName() : 'Electron';
   const { response } = await dialog.showMessageBox({
     type:      'warning',
-    title:     'Нужен доступ к Универсальному доступу',
-    message:   `${appName} требует разрешения для перехвата клавиатуры`,
-    detail:    `Системные настройки → Конфиденциальность и безопасность → Универсальный доступ → добавьте «${appName}» → перезапустите.`,
-    buttons:   ['Открыть настройки', 'Позже'],
+    title:     t('accessibility.title'),
+    message:   t('accessibility.message', { app: appName }),
+    detail:    t('accessibility.detail',  { app: appName }),
+    buttons:   [t('btn.openSettings'), t('btn.later')],
     defaultId: 0,
   });
 

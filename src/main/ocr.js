@@ -10,6 +10,7 @@
 const { spawn } = require('child_process');
 const fs        = require('fs');
 const path      = require('path');
+const { t }     = require('./i18n');
 
 // ── Путь к Swift-хелперу (macOS) ──────────────────────────────────
 function getMacOcrHelper() {
@@ -28,7 +29,7 @@ function getMacOcrHelper() {
 function ocrMac(imagePath) {
   const helper = getMacOcrHelper();
   if (!helper || !fs.existsSync(helper)) {
-    return Promise.reject(new Error('ocr-helper не найден. Скомпилируйте через `bash scripts/build-helper.sh`'));
+    return Promise.reject(new Error(t('err.ocrHelperMissing')));
   }
   return new Promise((resolve, reject) => {
     const proc = spawn(helper, [imagePath], { stdio: ['ignore', 'pipe', 'pipe'] });
@@ -128,7 +129,7 @@ function joinParagraphs(text) {
 
 // ── Главная точка входа ───────────────────────────────────────────
 async function recognize(imagePath, { joinParagraphs: doJoin = true } = {}) {
-  if (!fs.existsSync(imagePath)) throw new Error('Файл не найден: ' + imagePath);
+  if (!fs.existsSync(imagePath)) throw new Error(t('err.fileNotFound', { path: imagePath }));
 
   let raw;
   if (process.platform === 'darwin') {

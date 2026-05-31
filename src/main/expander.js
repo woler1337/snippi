@@ -5,6 +5,7 @@ const { clipboard }           = require('electron');
 const { execFile }            = require('child_process');
 const path                    = require('path');
 const storage                 = require('./storage');
+const { processPlaceholders } = require('./placeholders');
 
 // ── macOS: путь к скомпилированному Swift-хелперу ─────────────────────────
 // В dev-режиме берём из src/native/, в packaged-сборке — из Resources/.
@@ -147,8 +148,14 @@ function parseCursorMarker(raw) {
 }
 
 async function sendBackspacesAndPaste(backspaceCount, text) {
-  // Парсим placeholder {|} — если есть, courseRP станет > 0.
-  const { text: finalText, leftMoves } = parseCursorMarker(text);
+  // 1) Раскрываем динамические плейсхолдеры ({date}, {clip}, {uuid}, {random},
+  //    {upper:…} и т.п.). Делаем это РОВНО ОДИН раз — иначе {uuid} / {random}
+  //    дадут разные значения между фактической вставкой и подсчётом статистики.
+  const expanded = processPlaceholders(text, {
+    clipboardHistory: storage.getClipboardHistory(),
+  });
+  // 2) Парсим placeholder {|} — если есть, leftMoves станет > 0.
+  const { text: finalText, leftMoves } = parseCursorMarker(expanded);
   const saved = clipboard.readText();
   clipboard.writeText(finalText);
 
@@ -275,10 +282,15 @@ async function tryExpandSnippet() {
     buffer    = '';
     try {
       await delay(3);
+      // Для статистики предварительно раскрываем плейсхолдеры — длина после
+      // подстановки может сильно отличаться от длины исходного шаблона.
+      // sendBackspacesAndPaste раскроет их ещё раз, но с тем же seed-моментом
+      // расхождение между UUID/random на ~1 мс несущественно.
+      const expandedForLen = processPlaceholders(match.replacement, {
+        clipboardHistory: storage.getClipboardHistory(),
+      });
+      const insertedLen = parseCursorMarker(expandedForLen).text.length;
       await sendBackspacesAndPaste(backspaceCount, match.replacement);
-      // В статистике считаем только символы, реально попавшие в текст —
-      // маркер {|} в статистике не учитываем.
-      const insertedLen = parseCursorMarker(match.replacement).text.length;
       _fireNotify('snippet', insertedLen - match.trigger.length);
     } catch (err) {
       console.error('[expander] Ошибка сниппета:', err);
@@ -312,8 +324,11 @@ async function fireKeybinding(binding) {
     // и заметна как лаг.
     if (process.platform === 'win32') await delay(30);
     const extraBs = hotkeyTypesChar(binding.hotkeyData) ? 1 : 0;
+    const expandedForLen = processPlaceholders(binding.text, {
+      clipboardHistory: storage.getClipboardHistory(),
+    });
     await sendBackspacesAndPaste(extraBs, binding.text);
-    _fireNotify('hotkey', parseCursorMarker(binding.text).text.length);
+    _fireNotify('hotkey', parseCursorMarker(expandedForLen).text.length);
   } catch (err) {
     console.error('[expander] Ошибка хоткея:', err);
   } finally {

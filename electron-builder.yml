@@ -5,6 +5,16 @@ copyright: Copyright © 2024 Snippi
 directories:
   output: dist
 
+# ── Авто-обновления через GitHub Releases ────────────────────────────────
+# Фид latest-mac.yml / latest.yml / latest-linux.yml кладётся в Release-assets
+# и читается electron-updater'ом при запуске. Электрон-билдер
+# заливает их сам при `--publish always` (нужен GH_TOKEN с repo:public_repo).
+publish:
+  - provider: github
+    owner: woler1337
+    repo: snippi
+    releaseType: release
+
 # Файлы, которые войдут в сборку
 files:
   - src/**/*

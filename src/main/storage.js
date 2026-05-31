@@ -4,6 +4,12 @@ const Store = require('electron-store');
 const { EventEmitter } = require('events');
 const crypto = require('crypto');
 
+// Ленивый t() — чтобы избежать циклической зависимости storage ↔ i18n.
+// i18n.js при чтении getLang() сам делает require('./storage'), и если бы мы
+// делали require('./i18n') на верхнем уровне, до завершения module.exports,
+// получили бы пустой объект. Лениво — безопасно.
+function t(key, params) { return require('./i18n').t(key, params); }
+
 // Схема хранилища с дефолтными значениями
 const store = new Store({
   name: 'snippi-data',
@@ -158,13 +164,13 @@ class Storage extends EventEmitter {
 
   addSnippet(data) {
     if (!data.trigger || !data.replacement) {
-      throw new Error('Триггер и замена обязательны');
+      throw new Error(t('storage.err.triggerReplaceRequired'));
     }
 
     const snippets = this.getSnippets();
 
     if (snippets.some(s => s.trigger === data.trigger)) {
-      throw new Error(`Триггер "${data.trigger}" уже существует`);
+      throw new Error(t('storage.err.triggerExists', { trigger: data.trigger }));
     }
 
     const snippet = {
@@ -185,10 +191,10 @@ class Storage extends EventEmitter {
     const snippets = this.getSnippets();
     const index = snippets.findIndex(s => s.id === id);
 
-    if (index === -1) throw new Error('Сниппет не найден');
+    if (index === -1) throw new Error(t('storage.err.snippetNotFound'));
 
     if (data.trigger && snippets.some(s => s.trigger === data.trigger && s.id !== id)) {
-      throw new Error(`Триггер "${data.trigger}" уже используется`);
+      throw new Error(t('storage.err.triggerInUse', { trigger: data.trigger }));
     }
 
     snippets[index] = {
@@ -212,7 +218,7 @@ class Storage extends EventEmitter {
   duplicateSnippet(id) {
     const snippets = this.getSnippets();
     const original = snippets.find(s => s.id === id);
-    if (!original) throw new Error('Сниппет не найден');
+    if (!original) throw new Error(t('storage.err.snippetNotFound'));
 
     // Подбираем уникальный триггер: trigger2, trigger3 …
     let i = 2;
@@ -243,12 +249,12 @@ class Storage extends EventEmitter {
   }
 
   addKeybinding(data) {
-    if (!data.hotkeyData || !data.text) throw new Error('Клавиша и текст обязательны');
+    if (!data.hotkeyData || !data.text) throw new Error(t('storage.err.hotkeyTextRequired'));
 
     const bindings = this.getKeybindings();
 
     if (bindings.some(b => isSameHotkey(b.hotkeyData, data.hotkeyData))) {
-      throw new Error(`Комбинация «${data.hotkey}» уже используется`);
+      throw new Error(t('storage.err.hotkeyInUse', { hotkey: data.hotkey }));
     }
 
     const binding = {
@@ -268,10 +274,10 @@ class Storage extends EventEmitter {
   updateKeybinding(id, data) {
     const bindings = this.getKeybindings();
     const idx = bindings.findIndex(b => b.id === id);
-    if (idx === -1) throw new Error('Хоткей не найден');
+    if (idx === -1) throw new Error(t('storage.err.hotkeyNotFound'));
 
     if (data.hotkeyData && bindings.some(b => b.id !== id && isSameHotkey(b.hotkeyData, data.hotkeyData))) {
-      throw new Error(`Комбинация «${data.hotkey}» уже используется`);
+      throw new Error(t('storage.err.hotkeyInUse', { hotkey: data.hotkey }));
     }
 
     bindings[idx] = { ...bindings[idx], ...data };
@@ -294,12 +300,12 @@ class Storage extends EventEmitter {
 
   addGroup(data) {
     const name = (data.name || '').trim();
-    if (!name) throw new Error('Введите название группы');
-    if (name.length > 30) throw new Error('Максимум 30 символов');
+    if (!name) throw new Error(t('storage.err.groupNameRequired'));
+    if (name.length > 30) throw new Error(t('storage.err.groupNameTooLong'));
 
     const groups = this.getGroups();
     if (groups.some(g => g.name.toLowerCase() === name.toLowerCase())) {
-      throw new Error(`Группа «${name}» уже существует`);
+      throw new Error(t('storage.err.groupExists', { name }));
     }
 
     const group = {
@@ -317,12 +323,12 @@ class Storage extends EventEmitter {
   updateGroup(id, data) {
     const groups = this.getGroups();
     const idx    = groups.findIndex(g => g.id === id);
-    if (idx === -1) throw new Error('Группа не найдена');
+    if (idx === -1) throw new Error(t('storage.err.groupNotFound'));
 
     if (data.name) {
       const newName = data.name.trim();
       if (groups.some(g => g.id !== id && g.name.toLowerCase() === newName.toLowerCase())) {
-        throw new Error(`Группа «${newName}» уже существует`);
+        throw new Error(t('storage.err.groupExists', { name: newName }));
       }
       groups[idx].name = newName;
     }
@@ -398,7 +404,7 @@ class Storage extends EventEmitter {
    * Возвращает статистику: { snippets, keybindings, groups, skipped }.
    */
   importData(data, mode = 'merge') {
-    if (!data || typeof data !== 'object') throw new Error('Неверный формат файла');
+    if (!data || typeof data !== 'object') throw new Error(t('storage.err.invalidFormat'));
     const incomingSnippets = Array.isArray(data.snippets)    ? data.snippets    : [];
     const incomingBindings = Array.isArray(data.keybindings) ? data.keybindings : [];
     const incomingGroups   = Array.isArray(data.groups)      ? data.groups      : [];

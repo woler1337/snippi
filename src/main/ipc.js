@@ -13,6 +13,8 @@ const { startSnip, handleSnipPick, closeSnipWindow, cancelSnip } = require('./sn
 const { registerOcrHotkey, registerTranslateHotkey, runTranslate } = require('./hotkeys');
 const { updateTrayMenu }                 = require('./tray');
 const { getMainWindow }                  = require('./mainWindow');
+const { t }                              = require('./i18n');
+const updater                            = require('./updater');
 
 function setupIPC() {
   // ── Сниппеты ──
@@ -58,7 +60,12 @@ function setupIPC() {
   ipcMain.handle('get-theme',    ()     => storage.getTheme());
   ipcMain.handle('set-theme',    (_, v) => { storage.setTheme(v); return v; });
   ipcMain.handle('get-language', ()     => storage.getLanguage());
-  ipcMain.handle('set-language', (_, v) => { storage.setLanguage(v); return v; });
+  ipcMain.handle('set-language', (_, v) => {
+    storage.setLanguage(v);
+    // Перестраиваем меню трея с новыми переводами
+    try { updateTrayMenu(); } catch {}
+    return v;
+  });
 
   // ── История буфера обмена ──
   ipcMain.handle('get-clipboard-history',   ()      => storage.getClipboardHistory());
@@ -108,12 +115,18 @@ function setupIPC() {
     }
   });
 
+  // ── Авто-обновления ──
+  ipcMain.handle('updater-get-state', () => updater.getState());
+  ipcMain.handle('updater-check',     () => updater.checkForUpdates({ silent: false }));
+  ipcMain.handle('updater-install',   () => updater.installAndRestart());
+  ipcMain.handle('app-get-version',   () => require('electron').app.getVersion());
+
   // ── Импорт / Экспорт ──
   ipcMain.handle('export-data', async () => {
     const win = getMainWindow();
     const defaultName = `snippi-${new Date().toISOString().slice(0,10)}.json`;
     const result = await dialog.showSaveDialog(win || undefined, {
-      title:       'Сохранить настройки',
+      title:       t('dialog.exportTitle'),
       defaultPath: defaultName,
       filters:     [{ name: 'JSON', extensions: ['json'] }],
     });
@@ -136,7 +149,7 @@ function setupIPC() {
   ipcMain.handle('import-data', async (_, mode = 'merge') => {
     const win = getMainWindow();
     const result = await dialog.showOpenDialog(win || undefined, {
-      title:      'Выбрать файл с настройками',
+      title:      t('dialog.importTitle'),
       properties: ['openFile'],
       filters:    [{ name: 'JSON', extensions: ['json'] }],
     });
