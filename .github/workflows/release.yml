@@ -37,6 +37,15 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      # ── Системные библиотеки для Linux ─────────────────────────────
+      # uiohook-napi требует X11/XTest dev-headers для нативной сборки.
+      # На macOS и Windows runner'ах эти deps уже есть.
+      - name: Install Linux system libraries
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libx11-dev libxtst-dev libxkbcommon-dev libxkbfile-dev libpng-dev
+
       # ── Зависимости ────────────────────────────────────────────────
       # npm ci быстрее и строже npm install. postinstall в package.json
       # вызывает `electron-builder install-app-deps`, который пересоберёт
