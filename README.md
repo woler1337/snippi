@@ -19,6 +19,15 @@
 [Privacy](https://woler1337.github.io/snippi/privacy.html) ·
 [Issues](https://github.com/woler1337/snippi/issues)
 
+![Status: Pre-release](https://img.shields.io/badge/status-pre--release-orange?style=flat-square)
+
+> ⚠️ **Work in progress / Pre-release.** Snippi is in active development. The app
+> works, but expect rough edges, occasional bugs, and breaking changes between
+> versions until v1.x stabilizes. Use at your own risk.
+>
+> *Snippi находится в активной разработке. Приложение работает, но возможны
+> шероховатости и баги. Используйте на свой страх и риск.*
+
 </div>
 
 ---
