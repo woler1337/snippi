@@ -31,8 +31,9 @@ contextBridge.exposeInMainWorld('api', {
   setLanguage: (v) => ipcRenderer.invoke('set-language', v),
 
   // ── Импорт / Экспорт ──────────────────────────────────────────────────────
-  exportData: ()        => ipcRenderer.invoke('export-data'),
-  importData: (mode)    => ipcRenderer.invoke('import-data', mode),
+  exportData: ()                => ipcRenderer.invoke('export-data'),
+  importData: (mode)            => ipcRenderer.invoke('import-data', mode),
+  importFromSource: (src, mode) => ipcRenderer.invoke('import-from-source', src, mode),
 
   // ── Настройки ─────────────────────────────────────────────────────────────
   getEnabled:              ()    => ipcRenderer.invoke('get-enabled'),
@@ -79,6 +80,14 @@ contextBridge.exposeInMainWorld('api', {
   updaterInstall:  ()  => ipcRenderer.invoke('updater-install'),
   getAppVersion:   ()  => ipcRenderer.invoke('app-get-version'),
   onUpdateState:   (cb) => ipcRenderer.on('update-state', (_, d) => cb(d)),
+
+  // ── Sentry (opt-in crash reporting) ───────────────────────────────────────
+  sentryGetEnabled:   ()    => ipcRenderer.invoke('sentry-get-enabled'),
+  sentrySetEnabled:   (v)   => ipcRenderer.invoke('sentry-set-enabled', v),
+  sentryIsAvailable:  ()    => ipcRenderer.invoke('sentry-is-available'),
+
+  // ── Emoji-пак ─────────────────────────────────────────────────────────────
+  installEmojiPack:   ()    => ipcRenderer.invoke('install-emoji-pack'),
 
   // ── События из main-процесса ──────────────────────────────────────────────
   onSnippetsChanged:          (cb) => ipcRenderer.on('snippets-changed',          (_, d) => cb(d)),

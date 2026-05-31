@@ -171,8 +171,31 @@
     <p>
       Snippi <strong>не отправляет</strong> анонимную статистику, не использует
       Google Analytics, Mixpanel и подобные сервисы. У нас нет серверов,
-      на которые могут поступать ваши данные. Лицензия MIT, исходный код
-      открыт — можно проверить на <a href="https://github.com/woler1337/snippi" target="_blank" rel="noopener">GitHub</a>.
+      на которые автоматически поступают ваши данные. Лицензия MIT, исходный
+      код открыт — можно проверить на
+      <a href="https://github.com/woler1337/snippi" target="_blank" rel="noopener">GitHub</a>.
+    </p>
+
+    <h3>2.3 Опциональные отчёты об ошибках</h3>
+    <p>
+      В Настройках есть <strong>выключенный по умолчанию</strong> переключатель
+      «Отправлять анонимные отчёты при сбоях». Если вы его включите, при
+      необработанных исключениях в приложение отправятся в сервис
+      <a href="https://sentry.io/privacy/" target="_blank" rel="noopener">Sentry</a>:
+    </p>
+    <ul>
+      <li>стек ошибки (имя функции, файл, строка);</li>
+      <li>версия приложения и операционной системы;</li>
+      <li>тип процессора (arm64 / x64).</li>
+    </ul>
+    <p>
+      <strong>Что НЕ отправляется:</strong> сниппеты, замены, история буфера,
+      настройки, имена файлов в домашней директории (они анонимизируются),
+      содержимое скриншотов и переводов. Сам ваш IP-адрес фиксируется Sentry,
+      но не используется ни для какой персонализации.
+    </p>
+    <p>
+      Отключение в Настройках в любой момент полностью прекращает отправку.
     </p>
 
     <h2>3. Логи</h2>
@@ -280,9 +303,31 @@
     <h3>2.2 No telemetry, no analytics</h3>
     <p>
       Snippi does <strong>not</strong> send anonymous statistics; we don't use
-      Google Analytics, Mixpanel, or similar. We have no servers that could
-      receive your data. The source is MIT-licensed and open — verify on
-      <a href="https://github.com/woler1337/snippi" target="_blank" rel="noopener">GitHub</a>.
+      Google Analytics, Mixpanel, or similar. We have no servers that
+      automatically receive your data. The source is MIT-licensed and open —
+      verify on <a href="https://github.com/woler1337/snippi" target="_blank" rel="noopener">GitHub</a>.
+    </p>
+
+    <h3>2.3 Optional crash reports</h3>
+    <p>
+      In Settings there is an <strong>off-by-default</strong> toggle "Send
+      anonymous reports on crashes". When you turn it on, unhandled exceptions
+      will be sent to
+      <a href="https://sentry.io/privacy/" target="_blank" rel="noopener">Sentry</a>:
+    </p>
+    <ul>
+      <li>error stack trace (function name, file, line);</li>
+      <li>app version and operating system;</li>
+      <li>CPU architecture (arm64 / x64).</li>
+    </ul>
+    <p>
+      <strong>What is NOT sent:</strong> snippets, replacements, clipboard
+      history, settings, file names from your home directory (they are
+      anonymized), contents of screenshots and translations. Your IP address
+      is recorded by Sentry but is not used for any personalization.
+    </p>
+    <p>
+      Disabling it in Settings immediately stops all reporting.
     </p>
 
     <h2>3. Logs</h2>

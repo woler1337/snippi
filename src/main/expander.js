@@ -6,6 +6,7 @@ const { execFile }            = require('child_process');
 const path                    = require('path');
 const storage                 = require('./storage');
 const { processPlaceholders } = require('./placeholders');
+const { markdownToHtml, htmlToPlain } = require('./markdown');
 
 // ── macOS: путь к скомпилированному Swift-хелперу ─────────────────────────
 // В dev-режиме берём из src/native/, в packaged-сборке — из Resources/.
@@ -147,7 +148,7 @@ function parseCursorMarker(raw) {
   return { text: stripped, leftMoves };
 }
 
-async function sendBackspacesAndPaste(backspaceCount, text) {
+async function sendBackspacesAndPaste(backspaceCount, text, opts = {}) {
   // 1) Раскрываем динамические плейсхолдеры ({date}, {clip}, {uuid}, {random},
   //    {upper:…} и т.п.). Делаем это РОВНО ОДИН раз — иначе {uuid} / {random}
   //    дадут разные значения между фактической вставкой и подсчётом статистики.
@@ -157,7 +158,17 @@ async function sendBackspacesAndPaste(backspaceCount, text) {
   // 2) Парсим placeholder {|} — если есть, leftMoves станет > 0.
   const { text: finalText, leftMoves } = parseCursorMarker(expanded);
   const saved = clipboard.readText();
-  clipboard.writeText(finalText);
+
+  // 3) Rich vs plain. Для rich пишем буфер обмена с двумя представлениями
+  //    (text/html + text/plain) — Notion/Gmail/Word возьмут HTML, Terminal /
+  //    редактор кода — plain. Для plain — как раньше через writeText.
+  if (opts.format === 'rich') {
+    const html  = markdownToHtml(finalText);
+    const plain = htmlToPlain(html);
+    clipboard.write({ text: plain, html });
+  } else {
+    clipboard.writeText(finalText);
+  }
 
   try {
     if (process.platform === 'darwin') {
@@ -290,7 +301,9 @@ async function tryExpandSnippet() {
         clipboardHistory: storage.getClipboardHistory(),
       });
       const insertedLen = parseCursorMarker(expandedForLen).text.length;
-      await sendBackspacesAndPaste(backspaceCount, match.replacement);
+      await sendBackspacesAndPaste(backspaceCount, match.replacement, {
+        format: match.format || 'plain',
+      });
       _fireNotify('snippet', insertedLen - match.trigger.length);
     } catch (err) {
       console.error('[expander] Ошибка сниппета:', err);

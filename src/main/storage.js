@@ -89,6 +89,11 @@ class Storage extends EventEmitter {
   getLanguage()      { return store.get('language', 'ru'); }
   setLanguage(val)   { store.set('language', String(val || 'ru')); }
 
+  // Sentry crash reporting (opt-in, выключен по умолчанию — privacy-first).
+  // Включается ТОЛЬКО явным действием пользователя в Настройках.
+  getSentryEnabled()    { return store.get('sentryEnabled', false); }
+  setSentryEnabled(val) { store.set('sentryEnabled', Boolean(val)); }
+
   // ── OCR (скриншот → текст) ─────────────────────────────────────────────────
   getOcrSettings() {
     return {
@@ -178,6 +183,7 @@ class Storage extends EventEmitter {
       trigger:     data.trigger.trim(),
       replacement: data.replacement,
       groupId:     data.groupId ?? null,
+      format:      data.format === 'rich' ? 'rich' : 'plain',
       createdAt:   new Date().toISOString()
     };
 
@@ -201,7 +207,8 @@ class Storage extends EventEmitter {
       ...snippets[index],
       trigger:     data.trigger     !== undefined ? data.trigger.trim()  : snippets[index].trigger,
       replacement: data.replacement !== undefined ? data.replacement      : snippets[index].replacement,
-      groupId:     data.groupId     !== undefined ? data.groupId          : snippets[index].groupId
+      groupId:     data.groupId     !== undefined ? data.groupId          : snippets[index].groupId,
+      format:      data.format      !== undefined ? (data.format === 'rich' ? 'rich' : 'plain') : (snippets[index].format || 'plain'),
     };
 
     store.set('snippets', snippets);

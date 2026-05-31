@@ -57,6 +57,7 @@ const { initAutoLaunch } = require('./autolaunch');
 const { checkAccessibilityPermissions } = require('./accessibility');
 const { onExpanderFire } = require('./stats');
 const { initUpdater } = require('./updater');
+const sentry = require('./sentry');
 const ocr = require('./ocr');
 
 app.on('second-instance', () => {
@@ -109,6 +110,10 @@ app.whenReady().then(async () => {
       }
     } catch (e) { console.warn('[dock] setIcon failed:', e.message); }
   }
+
+  // Sentry — максимально рано, до создания окон. Сам пропустится если
+  // DSN не задан или пользователь не дал согласия в Настройках.
+  sentry.initSentry();
 
   setupIPC();
   setupPaletteIPC();

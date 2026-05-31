@@ -77,6 +77,7 @@ const dom = {
   snippetsList:     $('snippets-list'),
   snippetsEmpty:    $('snippets-empty'),
   snippetsEmptyAdd: $('snippets-empty-add'),
+  snippetsEmptyEmoji: $('snippets-empty-emoji'),
   snippetsNoRes:    $('snippets-no-results'),
   groupsBar:        $('groups-bar'),
   snippetGroupSel:  $('snippet-group'),
@@ -102,6 +103,16 @@ const dom = {
   updaterProgressText:   $('updater-progress-text'),
   updaterCheckBtn:       $('updater-check-btn'),
   updaterInstallBtn:     $('updater-install-btn'),
+  // Sentry
+  sentrySection:         $('sentry-section'),
+  sentryToggle:          $('sentry-toggle'),
+  // About
+  sidebarBrandBtn:       $('sidebar-brand-btn'),
+  brandVersion:          $('brand-version'),
+  aboutBackdrop:         $('about-backdrop'),
+  aboutClose:            $('about-close'),
+  aboutVersion:          $('about-version'),
+  aboutCheckUpdates:     $('about-check-updates'),
   ocrEnabledToggle: $('ocr-enabled-toggle'),
   ocrJoinToggle:    $('ocr-join-toggle'),
   ocrHotkeyInput:   $('ocr-hotkey-input'),
@@ -141,6 +152,7 @@ const dom = {
   snippetTrigger:   $('snippet-trigger'),
   snippetTrigErr:   $('snippet-trigger-err'),
   snippetReplace:   $('snippet-replacement'),
+  snippetRichToggle: $('snippet-rich-toggle'),
   snippetRepErr:    $('snippet-replacement-err'),
   snippetInsertCaret: $('snippet-insert-caret'),
   snippetCancel:    $('snippet-cancel'),
@@ -284,6 +296,84 @@ async function init() {
 
   // ── Updater ──────────────────────────────────────────────────────
   initUpdaterUI();
+
+  // ── Sentry (opt-in crash reporting) ─────────────────────────────
+  initSentryUI();
+
+  // ── «О программе» ────────────────────────────────────────────────
+  initAboutUI();
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  ABOUT (модалка «О программе»)
+// ══════════════════════════════════════════════════════════════════
+
+async function initAboutUI() {
+  // Версия — единый источник истины: app.getVersion() из main.
+  try {
+    const ver = await window.api.getAppVersion();
+    const tag = 'v' + ver;
+    if (dom.brandVersion) dom.brandVersion.textContent = tag;
+    if (dom.aboutVersion) dom.aboutVersion.textContent = tag;
+  } catch {}
+
+  if (dom.sidebarBrandBtn) {
+    dom.sidebarBrandBtn.addEventListener('click', openAbout);
+  }
+  if (dom.aboutClose) {
+    dom.aboutClose.addEventListener('click', closeAbout);
+  }
+  if (dom.aboutBackdrop) {
+    dom.aboutBackdrop.addEventListener('click', e => {
+      if (e.target === dom.aboutBackdrop) closeAbout();
+    });
+  }
+  if (dom.aboutCheckUpdates) {
+    dom.aboutCheckUpdates.addEventListener('click', async () => {
+      // Закрываем модалку, переключаем на Настройки и дёргаем check.
+      closeAbout();
+      switchPanel('settings');
+      try { await window.api.updaterCheck(); } catch {}
+    });
+  }
+}
+
+function openAbout()  { if (dom.aboutBackdrop) dom.aboutBackdrop.classList.remove('hidden'); }
+function closeAbout() { if (dom.aboutBackdrop) dom.aboutBackdrop.classList.add('hidden'); }
+
+// ══════════════════════════════════════════════════════════════════
+//  SENTRY UI
+// ══════════════════════════════════════════════════════════════════
+
+async function initSentryUI() {
+  // Показываем секцию только если в сборку зашит DSN.
+  // В dev / в публичной MIT-сборке без SENTRY_DSN секция остаётся скрытой —
+  // не путаем пользователя «настройка которая ничего не делает».
+  try {
+    const available = await window.api.sentryIsAvailable();
+    if (!available) {
+      if (dom.sentrySection) dom.sentrySection.classList.add('hidden');
+      return;
+    }
+    if (dom.sentrySection) dom.sentrySection.classList.remove('hidden');
+
+    const enabled = await window.api.sentryGetEnabled();
+    if (dom.sentryToggle) dom.sentryToggle.checked = !!enabled;
+  } catch (e) {
+    console.warn('[sentry] init UI failed:', e.message);
+    return;
+  }
+
+  if (dom.sentryToggle) {
+    dom.sentryToggle.addEventListener('change', async () => {
+      try {
+        await window.api.sentrySetEnabled(dom.sentryToggle.checked);
+        showToast(t('sentry.toast.changed'));
+      } catch (e) {
+        showToast(e.message);
+      }
+    });
+  }
 }
 
 // ══════════════════════════════════════════════════════════════════
@@ -911,6 +1001,7 @@ function openSnippetModal(s = null) {
   dom.snippetTitle.textContent = s ? t('snippet.modal.edit') : t('snippet.modal.new');
   dom.snippetTrigger.value     = s ? s.trigger      : '';
   dom.snippetReplace.value     = s ? s.replacement  : '';
+  if (dom.snippetRichToggle) dom.snippetRichToggle.checked = !!(s && s.format === 'rich');
 
   // Заполняем селект групп
   const sel = dom.snippetGroupSel;
@@ -966,12 +1057,13 @@ async function saveSnippet() {
 
   dom.snippetSave.disabled = true;
   const groupId = dom.snippetGroupSel.value || null;
+  const format  = dom.snippetRichToggle && dom.snippetRichToggle.checked ? 'rich' : 'plain';
   try {
     if (editingSnippetId) {
-      await window.api.updateSnippet(editingSnippetId, { trigger, replacement, groupId });
+      await window.api.updateSnippet(editingSnippetId, { trigger, replacement, groupId, format });
       showToast(t('snippet.updated'));
     } else {
-      await window.api.addSnippet({ trigger, replacement, groupId });
+      await window.api.addSnippet({ trigger, replacement, groupId, format });
       showToast(t('snippet.created'));
     }
     closeSnippetModal();
@@ -1372,10 +1464,11 @@ function bindEvents() {
     if (e.target === dom.importBackdrop) dom.importBackdrop.classList.add('hidden');
   });
   dom.importConfirm.addEventListener('click', async () => {
-    const mode = document.querySelector('input[name="import-mode"]:checked')?.value || 'merge';
+    const mode   = document.querySelector('input[name="import-mode"]:checked')?.value   || 'merge';
+    const source = document.querySelector('input[name="import-source"]:checked')?.value || 'snippi';
     dom.importBackdrop.classList.add('hidden');
     try {
-      const r = await window.api.importData(mode);
+      const r = await window.api.importFromSource(source, mode);
       if (r.canceled) return;
       if (r.error)    { showToast(t('common.error') + ': ' + r.error); return; }
       const parts = [];
@@ -1408,6 +1501,19 @@ function bindEvents() {
   });
   dom.addSnippetBtn.addEventListener('click',    () => openSnippetModal());
   dom.snippetsEmptyAdd.addEventListener('click', () => openSnippetModal());
+  if (dom.snippetsEmptyEmoji) {
+    dom.snippetsEmptyEmoji.addEventListener('click', async () => {
+      dom.snippetsEmptyEmoji.disabled = true;
+      try {
+        const r = await window.api.installEmojiPack();
+        showToast(t('emoji.toast.installed', { n: r.added }));
+      } catch (e) {
+        showToast(e.message);
+      } finally {
+        dom.snippetsEmptyEmoji.disabled = false;
+      }
+    });
+  }
 
   dom.snippetClose.addEventListener('click', closeSnippetModal);
   dom.snippetCancel.addEventListener('click', closeSnippetModal);

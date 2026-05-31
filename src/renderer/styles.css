@@ -1289,7 +1289,17 @@ form { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px
   padding: 6px 6px 12px;
   margin-bottom: 4px;
   border-bottom: 1px solid var(--border);
+  /* кнопка-сброс — выглядит как раньше div, но кликабельная */
+  background: transparent;
+  border-left: none; border-right: none; border-top: none;
+  width: 100%;
+  cursor: pointer;
+  font: inherit; color: inherit;
+  text-align: left;
+  transition: background 0.12s;
 }
+.sidebar-brand:hover { background: rgba(255,255,255,0.03); }
+.sidebar-brand:active { transform: scale(0.99); }
 .brand-icon {
   width: 40px; height: 40px;
   border-radius: 10px;
@@ -1303,6 +1313,104 @@ form { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px
 .brand-text { display: flex; flex-direction: column; }
 .brand-name { font-size: 13.5px; font-weight: 600; color: var(--text-1); letter-spacing: -0.01em; }
 .brand-version { font-size: 11px; color: var(--text-3); margin-top: 1px; }
+
+/* ── Модалка «О программе» ───────────────────────────────────── */
+.about-modal {
+  width: 460px;
+  max-width: 90vw;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+.about-modal .modal-close {
+  position: absolute; top: 12px; right: 16px;
+  z-index: 2;
+}
+.about-hero {
+  padding: 36px 24px 20px;
+  text-align: center;
+  background: radial-gradient(circle at top, rgba(106,169,255,0.08), transparent 70%);
+}
+.about-icon {
+  width: 72px; height: 72px;
+  margin: 0 auto 14px;
+  border-radius: 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-1);
+  box-shadow: 0 8px 32px -8px rgba(106,169,255,0.25);
+}
+.about-icon svg { width: 38px; height: 38px; }
+.about-name {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-1);
+}
+.about-version {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-3);
+  margin-top: 4px;
+}
+.about-tagline {
+  font-size: 13px;
+  color: var(--text-2);
+  margin-top: 10px;
+  line-height: 1.5;
+  padding: 0 12px;
+}
+.about-actions {
+  display: flex; gap: 8px; justify-content: center;
+  padding: 0 24px 18px;
+}
+.about-actions .btn { flex: 1; max-width: 180px; text-decoration: none; }
+.about-links {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+  gap: 6px;
+  padding: 14px 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+}
+.about-links a {
+  color: #6aa9ff;
+  text-decoration: none;
+}
+.about-links a:hover { text-decoration: underline; }
+.about-sep { color: var(--text-3); opacity: 0.5; }
+.about-credits {
+  padding: 14px 24px;
+  border-top: 1px solid var(--border);
+  background: rgba(255,255,255,0.02);
+}
+.about-credits-title {
+  font-size: 11px;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+.about-credits-list {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  font-size: 12px;
+}
+.about-credits-list a, .about-credits-list span {
+  padding: 3px 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--text-2);
+  text-decoration: none;
+  transition: border-color 0.12s, color 0.12s;
+}
+.about-credits-list a:hover { border-color: #6aa9ff; color: var(--text-1); }
+.about-footer {
+  padding: 12px 24px 18px;
+  text-align: center;
+  font-size: 11.5px;
+  color: var(--text-3);
+}
 
 /* Карточка «Перехватчик активен» */
 .sidebar-status {
@@ -1540,6 +1648,90 @@ form { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px
   border: 1px solid var(--border);
   border-radius: 4px;
   color: var(--text-1);
+}
+
+/* ── Import source grid (выбор откуда импортируем) ────────────── */
+.import-source-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.import-source {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: border-color 0.12s, background 0.12s;
+}
+.import-source:hover { border-color: rgba(106,169,255,0.4); }
+.import-source input[type="radio"] { cursor: pointer; flex-shrink: 0; }
+.import-source:has(input:checked) {
+  border-color: #6aa9ff;
+  background: rgba(106,169,255,0.06);
+}
+.import-source > span { display: flex; flex-direction: column; gap: 1px; }
+.import-source small {
+  font-size: 10.5px;
+  color: var(--text-3);
+  font-weight: normal;
+}
+
+/* ── Form toggle row (богатый текст и т.п.) ───────────────────── */
+.form-toggle-row {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.12s;
+}
+.form-toggle-row:hover { border-color: rgba(106,169,255,0.4); }
+.form-toggle-row input[type="checkbox"] { margin-top: 2px; cursor: pointer; }
+.form-toggle-label { font-size: 13px; font-weight: 500; color: var(--text-1); }
+.form-toggle-hint {
+  font-size: 11.5px;
+  color: var(--text-3);
+  margin-top: 4px;
+  line-height: 1.5;
+}
+.form-toggle-hint code {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  padding: 1px 5px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 3px;
+  color: var(--text-2);
+}
+
+/* ── Empty state actions (несколько кнопок в ряд) ─────────────── */
+.empty-actions {
+  display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+  margin-top: 14px;
+}
+
+/* ── Sentry-настройки ─────────────────────────────────────────── */
+.settings-row--toggle {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+}
+.settings-row-info { flex: 1; }
+.settings-row-label { font-size: 14px; color: var(--text-1); margin-bottom: 4px; }
+.settings-row-hint {
+  font-size: 12px;
+  color: var(--text-3);
+  line-height: 1.5;
+}
+.settings-row-hint a { color: #6aa9ff; text-decoration: none; }
+.settings-row-hint a:hover { text-decoration: underline; }
+.settings-row-note {
+  margin: 8px 0 0;
+  font-size: 11.5px;
+  color: var(--text-3);
+  font-style: italic;
 }
 
 /* ── Updater (Настройки → Обновления) ──────────────────────────── */

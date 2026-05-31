@@ -37,8 +37,8 @@
       <!-- ── Боковая панель ── -->
       <nav class="sidebar">
 
-        <!-- Бренд / версия -->
-        <div class="sidebar-brand">
+        <!-- Бренд / версия — клик открывает «О программе» -->
+        <button class="sidebar-brand" id="sidebar-brand-btn" type="button" data-i18n-title="about.openTitle" title="О программе">
           <div class="brand-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none">
               <path d="M5 7h14M12 7v10M9 17h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -47,9 +47,9 @@
           </div>
           <div class="brand-text">
             <div class="brand-name">Snippi</div>
-            <div class="brand-version">v1.0.0</div>
+            <div class="brand-version" id="brand-version">v1.0.0</div>
           </div>
-        </div>
+        </button>
 
         <!-- Карточка статуса перехватчика + триггер -->
         <label class="sidebar-status" for="enabled-toggle">
@@ -205,7 +205,10 @@
             <div class="empty-icon">📝</div>
             <h3 data-i18n="snippets.empty.title">Нет сниппетов</h3>
             <p data-i18n="snippets.empty.desc">Создайте триггер — при наборе + нажатии триггер-клавиши он автоматически раскроется</p>
-            <button class="btn btn-primary" id="snippets-empty-add" data-i18n="snippets.empty.add">Добавить сниппет</button>
+            <div class="empty-actions">
+              <button class="btn btn-primary" id="snippets-empty-add" data-i18n="snippets.empty.add">Добавить сниппет</button>
+              <button class="btn btn-ghost"   id="snippets-empty-emoji" data-i18n="snippets.empty.emoji">😊 Установить emoji-пак</button>
+            </div>
           </div>
           <div id="snippets-no-results" class="empty-state hidden">
             <div class="empty-icon">🔍</div>
@@ -507,6 +510,25 @@
               </div>
             </section>
 
+            <section class="settings-section hidden" id="sentry-section">
+              <h3 class="settings-section-title" data-i18n="sentry.title">Отчёты об ошибках</h3>
+              <div class="settings-row settings-row--toggle">
+                <div class="settings-row-info">
+                  <div class="settings-row-label" data-i18n="sentry.label">Отправлять анонимные отчёты при сбоях</div>
+                  <div class="settings-row-hint" data-i18n="sentry.hint" data-i18n-html="1">
+                    Включено: только стек ошибки и версия приложения. Никаких сниппетов, текстов, истории буфера. См. <a href="https://github.com/woler1337/snippi/blob/main/docs/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.
+                  </div>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="sentry-toggle" />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </label>
+              </div>
+              <p class="settings-row-note" id="sentry-restart-note" data-i18n="sentry.restartNote">
+                Изменение вступит в силу после перезапуска приложения.
+              </p>
+            </section>
+
             <section class="settings-section" id="updater-section">
               <h3 class="settings-section-title" data-i18n="updater.title">Обновления</h3>
               <div class="updater-row">
@@ -650,6 +672,17 @@
         <div class="form-group">
           <label class="form-label" data-i18n="snippet.field.group">Группа</label>
           <select id="snippet-group" class="form-input"></select>
+        </div>
+        <div class="form-group">
+          <label class="form-toggle-row">
+            <input type="checkbox" id="snippet-rich-toggle" />
+            <div>
+              <div class="form-toggle-label" data-i18n="snippet.field.rich">Богатый текст (Markdown)</div>
+              <div class="form-toggle-hint" data-i18n="snippet.field.richHint" data-i18n-html="1">
+                Используйте <code>**жирный**</code>, <code>*курсив*</code>, <code>[ссылку](url)</code>, списки, <code>## заголовки</code>. Сохраняет форматирование в Notion, Gmail, Word.
+              </div>
+            </div>
+          </label>
         </div>
         <div class="modal-actions">
           <button type="button" class="btn btn-ghost" id="snippet-cancel" data-i18n="common.cancel">Отмена</button>
@@ -813,6 +846,22 @@
         <button class="modal-close" id="import-modal-close">&times;</button>
       </div>
       <div style="padding:14px 20px 18px">
+        <p style="font-size:13px;color:var(--text-1);margin-bottom:10px;font-weight:600"
+           data-i18n="import.sourceLabel">Из какого приложения импортируем?</p>
+        <div class="import-source-grid">
+          <label class="import-source"><input type="radio" name="import-source" value="snippi" checked>
+            <span>Snippi <small data-i18n="import.source.snippi">наш JSON</small></span>
+          </label>
+          <label class="import-source"><input type="radio" name="import-source" value="espanso">
+            <span>Espanso <small data-i18n="import.source.espanso">YAML match</small></span>
+          </label>
+          <label class="import-source"><input type="radio" name="import-source" value="raycast">
+            <span>Raycast <small data-i18n="import.source.raycast">JSON-экспорт</small></span>
+          </label>
+          <label class="import-source"><input type="radio" name="import-source" value="textexpander">
+            <span>TextExpander <small data-i18n="import.source.te">через JSON</small></span>
+          </label>
+        </div>
         <p style="font-size:13px;color:var(--text-2);margin-bottom:14px;line-height:1.6"
            data-i18n="import.question">
           Как поступить с уже существующими сниппетами и хоткеями?
@@ -837,6 +886,63 @@
           <button type="button" class="btn btn-ghost"   id="import-cancel"  data-i18n="common.cancel">Отмена</button>
           <button type="button" class="btn btn-primary" id="import-confirm" data-i18n="import.choose">Выбрать файл…</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       Модалка: «О программе»
+  ══════════════════════════════════════════════════ -->
+  <div id="about-backdrop" class="modal-backdrop hidden">
+    <div class="modal about-modal">
+      <button class="modal-close" id="about-close">&times;</button>
+      <div class="about-hero">
+        <div class="about-icon">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M5 7h14M12 7v10M9 17h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M16 12l3 0m-1.5-2l2 2-2 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="about-name">Snippi</div>
+        <div class="about-version" id="about-version">v1.0.0</div>
+        <div class="about-tagline" data-i18n="about.tagline">
+          Кроссплатформенный текст-экспандер с OCR и переводом
+        </div>
+      </div>
+
+      <div class="about-actions">
+        <button class="btn btn-ghost" id="about-check-updates" type="button" data-i18n="about.checkUpdates">
+          Проверить обновления
+        </button>
+        <a class="btn btn-ghost" href="https://github.com/woler1337/snippi" target="_blank" rel="noopener" data-i18n="about.github">
+          GitHub
+        </a>
+      </div>
+
+      <div class="about-links">
+        <a href="https://woler1337.github.io/snippi/" target="_blank" rel="noopener" data-i18n="about.website">Сайт</a>
+        <span class="about-sep">·</span>
+        <a href="https://woler1337.github.io/snippi/privacy.html" target="_blank" rel="noopener" data-i18n="about.privacy">Privacy Policy</a>
+        <span class="about-sep">·</span>
+        <a href="https://woler1337.github.io/snippi/terms.html" target="_blank" rel="noopener" data-i18n="about.terms">Terms of Service</a>
+        <span class="about-sep">·</span>
+        <a href="https://github.com/woler1337/snippi/issues" target="_blank" rel="noopener" data-i18n="about.issues">Сообщить о баге</a>
+      </div>
+
+      <div class="about-credits">
+        <div class="about-credits-title" data-i18n="about.builtWith">Сделано на:</div>
+        <div class="about-credits-list">
+          <a href="https://www.electronjs.org/" target="_blank" rel="noopener">Electron</a>
+          <a href="https://github.com/SnosMe/uiohook-napi" target="_blank" rel="noopener">uiohook-napi</a>
+          <a href="https://tesseract.projectnaptha.com/" target="_blank" rel="noopener">tesseract.js</a>
+          <a href="https://github.com/wooorm/franc" target="_blank" rel="noopener">franc</a>
+          <a href="https://mymemory.translated.net/" target="_blank" rel="noopener">MyMemory</a>
+          <span data-i18n="about.appleVision">Apple Vision Framework</span>
+        </div>
+      </div>
+
+      <div class="about-footer">
+        <span data-i18n="about.copyright">© 2026 Daniil Limarenkov · MIT License</span>
       </div>
     </div>
   </div>

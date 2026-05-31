@@ -1,112 +1,168 @@
+<div align="center">
+
+<img src="assets/icon.png" alt="Snippi" width="120" />
+
 # Snippi
 
-Кроссплатформенное desktop-приложение на Electron, которое живёт в системном трее и помогает быстро вставлять часто используемые тексты, распознавать текст со скриншотов и переводить любой текст с экрана.
+**Cross-platform text expander with OCR and screen translation**
+
+*Кроссплатформенный текст-экспандер с распознаванием и переводом со скриншота*
+
+[![Release](https://img.shields.io/github/v/release/woler1337/snippi?style=flat-square&color=4f46e5)](https://github.com/woler1337/snippi/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/woler1337/snippi/total?style=flat-square&color=10b981)](https://github.com/woler1337/snippi/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
+[![Platforms](https://img.shields.io/badge/platforms-macOS%20%7C%20Windows%20%7C%20Linux-blue?style=flat-square)](#-download--скачать)
+[![Stars](https://img.shields.io/github/stars/woler1337/snippi?style=flat-square&color=fbbf24)](https://github.com/woler1337/snippi/stargazers)
+
+[Website](https://woler1337.github.io/snippi/) ·
+[Download](https://github.com/woler1337/snippi/releases/latest) ·
+[Privacy](https://woler1337.github.io/snippi/privacy.html) ·
+[Issues](https://github.com/woler1337/snippi/issues)
+
+</div>
 
 ---
 
-## 📥 Скачать
+## 📥 Download / Скачать
 
-Все версии лежат на странице **[Releases](https://github.com/woler1337/snippi/releases/latest)** — выберите свою систему:
+Pick the file for your system on the **[Releases page](https://github.com/woler1337/snippi/releases/latest)**:
 
-| Платформа | Файл | Архитектура |
+| Platform | File | Architecture |
 |-----------|------|-------------|
 | 🍎 **macOS** (Apple Silicon — M1/M2/M3/M4) | `Snippi-X.Y.Z-arm64.dmg` | arm64 |
-| 🍎 **macOS** (Intel) | `Snippi-X.Y.Z-x64.dmg` | x64 |
+| 🍎 **macOS** (Intel) | `Snippi-X.Y.Z.dmg` | x64 |
 | 🪟 **Windows** (10 / 11) | `Snippi-X.Y.Z-portable.exe` | x64 |
 | 🐧 **Linux** | `Snippi-X.Y.Z.AppImage` | x64 |
 
-> Не уверены какой нужен? На macOS — меню Apple → «Об этом Mac», смотрите чип (Apple M-series → arm64; Intel → x64).
+> Not sure which one? On macOS: Apple menu → "About This Mac" → look for the chip (Apple M-series → arm64; Intel → x64).
+> **Не уверены какой нужен?** На macOS — меню Apple → «Об этом Mac» → смотрите чип.
 
-📖 **Подробная инструкция установки для каждой ОС:** [INSTALL.md](INSTALL.md)
-
----
-
-## ✨ Возможности
-
-- **Сниппеты** — короткие триггеры (`gm`, `eml`) автоматически раскрываются в длинный текст по нажатию триггер-клавиши (Tab / Right Shift / Caps Lock и т.п.).
-- **Глобальные хоткеи** — назначайте произвольной комбинации клавиш вставку любого текста.
-- **Группы сниппетов** — сортируйте по контексту (работа, личное, шаблоны).
-- **Скриншот → текст (OCR)** — выделите любую область экрана, текст из неё распознаётся и копируется в буфер обмена. Apple Vision (macOS), Tesseract (Windows/Linux).
-- **Скриншот → перевод** — то же самое, но распознанный текст автоматически переводится на выбранный язык (~80 языков, без API-ключа).
-- **Палитра быстрого поиска** — `⌘⇧E` / `Ctrl+Shift+E` открывает плавающее окно fuzzy-поиска по сниппетам, как в Raycast/Alfred.
-- **История буфера обмена** — последние 50 скопированных текстов.
-- **Статистика** — сколько раз сработали сниппеты, сколько времени и символов сэкономлено.
-- **Автозапуск, тёмная тема, экспорт/импорт настроек, мультиязычный UI (ru/en/de).**
+📖 **Detailed installation guide / Подробная инструкция:** [INSTALL.md](INSTALL.md)
 
 ---
 
-## ⌨️ Хоткеи по умолчанию
+## ✨ Features / Возможности
 
-| Действие | Хоткей |
-| -------- | ------ |
-| Раскрыть сниппет | Триггер-клавиша (по умолчанию **Right Shift**) после набора триггера |
-| Скриншот → текст | `⌘⇧1` (macOS) / `Ctrl+Shift+1` |
-| Скриншот → перевод | `⌘⇧2` (macOS) / `Ctrl+Shift+2` |
-| Палитра быстрого поиска | `⌘⇧E` (macOS) / `Ctrl+Shift+E` |
+<table>
+<tr><td>
 
-Все хоткеи меняются в окне приложения → «Настройки».
+### 🇬🇧 English
+
+- **Snippets** — short triggers (`gm`, `eml`) expand into long text on a trigger key (Tab / Right Shift / Caps Lock / F1–F12)
+- **Dynamic placeholders** — `{date}`, `{date:+7d}`, `{clipboard}`, `{uuid}`, `{random:1-100}`, `{upper:…}`, `{|}` cursor
+- **Global hotkeys** — bind any key combo to insert any text
+- **Snippet groups** — organize by context (work, personal, templates)
+- **Screenshot → text (OCR)** — select an area, recognized text goes to clipboard. Apple Vision on macOS, Tesseract on Win/Linux. Fully offline.
+- **Screenshot → translate** — same as above + auto-translate to your target language (~80 languages, no API key)
+- **Quick-search palette** — `⌘⇧E` / `Ctrl+Shift+E` opens fuzzy search across your snippets, like Raycast/Alfred
+- **Clipboard history** — last 50 copied texts
+- **Emoji pack** — 1-click install of 180+ `:smile:`-style snippets
+- **Stats** — expansion count, time and characters saved
+- **Auto-launch, dark theme, import/export, multilingual UI (en/ru/de)**
+
+</td><td>
+
+### 🇷🇺 По-русски
+
+- **Сниппеты** — короткие триггеры (`gm`, `eml`) автоматически раскрываются по нажатию триггер-клавиши (Tab / Right Shift / Caps Lock / F1–F12)
+- **Динамические плейсхолдеры** — `{date}`, `{date:+7d}`, `{clipboard}`, `{uuid}`, `{random:1-100}`, `{upper:…}`, `{|}` курсор
+- **Глобальные хоткеи** — назначайте произвольной комбинации вставку любого текста
+- **Группы сниппетов** — сортируйте по контексту (работа, личное, шаблоны)
+- **Скриншот → текст (OCR)** — выделите область, текст из неё распознаётся и копируется в буфер. Apple Vision (mac), Tesseract (Win/Linux). Полностью офлайн.
+- **Скриншот → перевод** — то же + автоперевод на выбранный язык (~80 языков, без API-ключа)
+- **Палитра быстрого поиска** — `⌘⇧E` / `Ctrl+Shift+E` открывает fuzzy-поиск как в Raycast/Alfred
+- **История буфера обмена** — последние 50 скопированных текстов
+- **Emoji-пак** — установка 180+ сниппетов вида `:smile:` в один клик
+- **Статистика** — сколько раз сработали, сколько символов сэкономлено
+- **Автозапуск, тёмная тема, импорт/экспорт, мультиязычный UI (en/ru/de)**
+
+</td></tr>
+</table>
 
 ---
 
-## 🛠 Запуск из исходников (для разработчиков)
+## ⌨️ Default hotkeys / Хоткеи по умолчанию
+
+| Action / Действие | Hotkey |
+| ------ | ------ |
+| Expand snippet / Раскрыть сниппет | Trigger key (default **Right Shift**) after typing the trigger |
+| Screenshot → text / Скриншот → текст | `⌘⇧1` (macOS) / `Ctrl+Shift+1` |
+| Screenshot → translate / Скриншот → перевод | `⌘⇧2` (macOS) / `Ctrl+Shift+2` |
+| Quick palette / Палитра поиска | `⌘⇧E` (macOS) / `Ctrl+Shift+E` |
+
+All hotkeys are customizable in app settings. / Все хоткеи меняются в Настройках.
+
+---
+
+## 🔒 Privacy / Конфиденциальность
+
+- **All data stays on your device** — `~/Library/Application Support/snippi/` (macOS), `%APPDATA%/snippi/` (Windows), `~/.config/snippi/` (Linux)
+- **OCR works fully offline** — screenshots are never uploaded
+- **Translation** uses [MyMemory API](https://mymemory.translated.net/) — free public service, no API key, ~1000 chars/day per IP. Only recognized text is sent; screenshots are NOT uploaded.
+- **No telemetry by default.** Optional opt-in crash reporting via Sentry (off by default, full details in [Privacy Policy](https://woler1337.github.io/snippi/privacy.html))
+- **MIT-licensed open source** — verify everything yourself
+
+Full details: [Privacy Policy](https://woler1337.github.io/snippi/privacy.html) · [Terms](https://woler1337.github.io/snippi/terms.html)
+
+---
+
+## 🛠 Build from source / Запуск из исходников
 
 ```bash
 git clone https://github.com/woler1337/snippi.git
 cd snippi
 npm install
-npm start              # запуск в dev-режиме
-npm run build:mac      # сборка DMG (macOS, x64 + arm64)
-npm run build:win      # сборка portable .exe (Windows)
-npm run build:linux    # сборка .AppImage (Linux)
+npm start              # dev mode
+npm run build:mac      # DMG (macOS, x64 + arm64)
+npm run build:win      # portable .exe (Windows)
+npm run build:linux    # .AppImage (Linux)
 ```
 
-### Стек
+Releases are built automatically by [GitHub Actions](.github/workflows/release.yml) on every `v*` tag. See [.github/RELEASE.md](.github/RELEASE.md).
 
-- **Electron 42**, **electron-store**, **electron-log**
-- **uiohook-napi** — глобальный перехват клавиатуры
-- **tesseract.js** — OCR на Windows/Linux
-- **franc-min** — детекция языка для переводчика
-- **MyMemory Translation API** — бесплатный переводчик
-- **Swift-хелперы** на macOS (`key-helper`, `ocr-helper`) — нативная эмуляция клавиш + OCR через Vision
+### Stack
 
-### Структура проекта
+- **Electron 42**, `electron-store`, `electron-log`, `electron-updater`
+- **uiohook-napi** — global keyboard interception
+- **tesseract.js** — OCR on Windows/Linux
+- **franc-min** — language detection for the translator
+- **MyMemory Translation API** — free translator
+- **Swift helpers** on macOS (`key-helper`, `ocr-helper`) — native key emulation + Vision-based OCR
+
+### Project structure / Структура
 
 ```
 src/
-├── main/                  # Main-процесс (10 модулей)
-│   ├── main.js            # Точка входа, lifecycle
-│   ├── tray.js            # Иконка в menu bar
-│   ├── mainWindow.js      # Главное окно
-│   ├── snip.js            # Выделение области + OCR + перевод
-│   ├── palette.js         # Палитра быстрого поиска
-│   ├── hotkeys.js         # Глобальные горячие клавиши
-│   ├── ipc.js             # Все ipcMain.handle
-│   ├── expander.js        # Перехват клавиатуры
-│   ├── ocr.js, translator.js, storage.js, stats.js …
-│   └── preload.js, palette-preload.js
-├── renderer/              # UI (HTML/CSS/JS, без фреймворков)
+├── main/                  # Main process (10+ modules)
+│   ├── main.js            # Entry point, lifecycle
+│   ├── tray.js            # Menu bar icon
+│   ├── mainWindow.js      # Main window
+│   ├── snip.js            # Area selector + OCR + translate
+│   ├── palette.js         # Quick search palette
+│   ├── hotkeys.js         # Global hotkeys
+│   ├── ipc.js             # All ipcMain.handle's
+│   ├── expander.js        # Keyboard interception
+│   ├── placeholders.js    # {date}/{clip}/{uuid}/… engine
+│   ├── updater.js         # Auto-updates via GitHub Releases
+│   ├── sentry.js          # Opt-in crash reporting
+│   ├── emoji-pack.js      # 180+ emoji snippets
+│   ├── i18n.js            # Main-side translations
+│   └── ocr.js, translator.js, storage.js, stats.js, …
+├── renderer/              # UI (vanilla HTML/CSS/JS)
 │   ├── index.html, app.js, styles.css, i18n.js
-│   ├── snip.*             # Оверлей выделения области
-│   └── palette.*          # Палитра быстрого поиска
-└── native/                # Swift-хелперы для macOS
+│   ├── snip.*             # Area selection overlay
+│   └── palette.*          # Quick-search palette
+└── native/                # Swift helpers for macOS
 ```
 
 ---
 
-## 🔒 Конфиденциальность
+## 📝 License / Лицензия
 
-- **Все данные хранятся локально** — `~/Library/Application Support/snippi/` (macOS), `%APPDATA%/snippi/` (Windows), `~/.config/snippi/` (Linux).
-- **OCR работает офлайн** — изображения никуда не отправляются.
-- **Перевод** идёт через [MyMemory Translated API](https://mymemory.translated.net/) — бесплатный публичный сервис, без API-ключа. Лимит ~1000 символов/день на IP. Только распознанный текст передаётся в API; скриншоты не загружаются.
+[MIT](LICENSE) © 2026 Daniil Limarenkov
 
-### Где смотреть логи
+<div align="center">
 
-- **macOS:** `~/Library/Logs/snippi/main.log`
-- **Windows:** `%APPDATA%\snippi\logs\main.log`
-- **Linux:** `~/.config/snippi/logs/main.log`
+⭐ **Like Snippi? Give it a star — helps a lot!** ⭐
 
----
-
-## 📝 Лицензия
-
-MIT
+</div>

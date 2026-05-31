@@ -15,6 +15,7 @@ const { updateTrayMenu }                 = require('./tray');
 const { getMainWindow }                  = require('./mainWindow');
 const { t }                              = require('./i18n');
 const updater                            = require('./updater');
+const sentry                             = require('./sentry');
 
 function setupIPC() {
   // ── Сниппеты ──
@@ -121,6 +122,33 @@ function setupIPC() {
   ipcMain.handle('updater-install',   () => updater.installAndRestart());
   ipcMain.handle('app-get-version',   () => require('electron').app.getVersion());
 
+  // ── Sentry (opt-in crash reporting) ──
+  ipcMain.handle('sentry-get-enabled', () => sentry.isEnabled());
+  ipcMain.handle('sentry-set-enabled', (_, v) => { sentry.setEnabled(v); return v; });
+  ipcMain.handle('sentry-is-available', () => sentry.isAvailable());
+
+  // ── Emoji-пак (стартовый набор сниппетов) ──
+  ipcMain.handle('install-emoji-pack', () => {
+    const { getEmojiSnippets } = require('./emoji-pack');
+    // Создаём (или находим существующую) группу "Emoji"
+    let group;
+    try {
+      group = storage.addGroup({ name: 'Emoji', color: '#fbbf24' });
+    } catch (e) {
+      // если уже есть — берём ту что есть
+      const existing = storage.getGroups().find(g => g.name.toLowerCase() === 'emoji');
+      if (!existing) throw e;
+      group = existing;
+    }
+    const list = getEmojiSnippets(group.id);
+    let added = 0, skipped = 0;
+    for (const s of list) {
+      try { storage.addSnippet(s); added++; }
+      catch { skipped++; /* триггер уже занят пользователем */ }
+    }
+    return { added, skipped, groupId: group.id, total: list.length };
+  });
+
   // ── Импорт / Экспорт ──
   ipcMain.handle('export-data', async () => {
     const win = getMainWindow();
@@ -141,6 +169,35 @@ function setupIPC() {
         keybindings: data.keybindings.length,
         groups: data.groups.length,
       };
+    } catch (err) {
+      return { canceled: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('import-from-source', async (_, source = 'snippi', mode = 'merge') => {
+    const { parseImport } = require('./importers');
+    const win = getMainWindow();
+    const filters = source === 'espanso'
+      ? [{ name: 'YAML', extensions: ['yml', 'yaml'] }]
+      : [{ name: 'JSON', extensions: ['json'] }];
+    const result = await dialog.showOpenDialog(win || undefined, {
+      title:      t('dialog.importTitle'),
+      properties: ['openFile'],
+      filters,
+    });
+    if (result.canceled || !result.filePaths || !result.filePaths.length) return { canceled: true };
+    try {
+      const raw = fs.readFileSync(result.filePaths[0], 'utf8');
+      const parsed = parseImport(source, raw);
+      let stats;
+      if (parsed.kind === 'snippi-full') {
+        // Полный экспорт Snippi — отдаём в существующий importData (с группами/хоткеями)
+        stats = storage.importData(parsed.data, mode);
+      } else {
+        // Snippets-only — обёртка под importData
+        stats = storage.importData({ snippets: parsed.snippets }, mode);
+      }
+      return { canceled: false, source, ...stats };
     } catch (err) {
       return { canceled: false, error: err.message };
     }
