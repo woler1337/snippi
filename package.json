@@ -1,6 +1,6 @@
 {
   "name": "snippi",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "description": "Cross-platform text expander with OCR, screen translation and clipboard history",
   "author": "Daniil Limarenkov",
