@@ -89,6 +89,11 @@ contextBridge.exposeInMainWorld('api', {
   // ── Emoji-пак ─────────────────────────────────────────────────────────────
   installEmojiPack:   ()    => ipcRenderer.invoke('install-emoji-pack'),
 
+  // ── Лицензия (Pro) ────────────────────────────────────────────────────────
+  licenseGetStatus:   ()     => ipcRenderer.invoke('license-get-status'),
+  licenseActivate:    (key)  => ipcRenderer.invoke('license-activate', key),
+  licenseDeactivate:  ()     => ipcRenderer.invoke('license-deactivate'),
+
   // ── События из main-процесса ──────────────────────────────────────────────
   onSnippetsChanged:          (cb) => ipcRenderer.on('snippets-changed',          (_, d) => cb(d)),
   onKeybindingsChanged:       (cb) => ipcRenderer.on('keybindings-changed',       (_, d) => cb(d)),

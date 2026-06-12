@@ -115,7 +115,7 @@ function pickCurrent() {
   if (filtered.length === 0) return;
   const s = filtered[selected];
   if (!s) return;
-  window.paletteApi.paste(s.replacement || '');
+  window.paletteApi.paste(s.replacement || '', s.format);
 }
 
 // ── Обработчики ввода ──────────────────────────────────────────

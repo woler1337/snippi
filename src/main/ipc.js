@@ -16,6 +16,7 @@ const { getMainWindow }                  = require('./mainWindow');
 const { t }                              = require('./i18n');
 const updater                            = require('./updater');
 const sentry                             = require('./sentry');
+const license                            = require('./license');
 
 function setupIPC() {
   // ── Сниппеты ──
@@ -109,7 +110,7 @@ function setupIPC() {
       const cfg = storage.getTranslateSettings();
       const lang = targetLang || cfg.targetLang || 'EN';
       const sample = source || 'Hello, world!';
-      const r = await translator.translate(sample, { targetLang: lang });
+      const r = await translator.translate(sample, { targetLang: lang, email: cfg.email });
       return { ok: true, source: sample, translated: r.text, targetLang: lang };
     } catch (e) {
       return { ok: false, message: e.message || String(e) };
@@ -126,6 +127,11 @@ function setupIPC() {
   ipcMain.handle('sentry-get-enabled', () => sentry.isEnabled());
   ipcMain.handle('sentry-set-enabled', (_, v) => { sentry.setEnabled(v); return v; });
   ipcMain.handle('sentry-is-available', () => sentry.isAvailable());
+
+  // ── Лицензия (Pro) ──
+  ipcMain.handle('license-get-status', () => license.getStatus());
+  ipcMain.handle('license-activate',   (_, key) => license.activate(key));
+  ipcMain.handle('license-deactivate', () => license.deactivate());
 
   // ── Emoji-пак (стартовый набор сниппетов) ──
   ipcMain.handle('install-emoji-pack', () => {

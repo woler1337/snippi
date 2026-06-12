@@ -67,6 +67,9 @@ const dom = {
   translateEnabledToggle: $('translate-enabled-toggle'),
   translateTargetLang:    $('translate-target-lang'),
   translateHotkeyInput:   $('translate-hotkey-input'),
+  translateEmailInput:    $('translate-email-input'),
+  translateEmailSave:     $('translate-email-save'),
+  translateEmailStatus:   $('translate-email-status'),
   translateTriggerBtn:    $('translate-trigger-btn'),
   translateHotkeyChip:    $('translate-hotkey-chip'),
   translateTestBtn:       $('translate-test-btn'),
@@ -106,6 +109,15 @@ const dom = {
   // Sentry
   sentrySection:         $('sentry-section'),
   sentryToggle:          $('sentry-toggle'),
+  // License
+  licensePlan:           $('license-plan'),
+  licenseEmail:          $('license-email'),
+  licenseActivateBlock:  $('license-activate-block'),
+  licenseActiveBlock:    $('license-active-block'),
+  licenseInput:          $('license-input'),
+  licenseActivateBtn:    $('license-activate-btn'),
+  licenseStatus:         $('license-status'),
+  licenseDeactivateBtn:  $('license-deactivate-btn'),
   // About
   sidebarBrandBtn:       $('sidebar-brand-btn'),
   brandVersion:          $('brand-version'),
@@ -253,6 +265,7 @@ async function init() {
     if (dom.translateEnabledToggle) dom.translateEnabledToggle.checked = !!translateSettings.enabled;
     if (dom.translateTargetLang)    dom.translateTargetLang.value      = translateSettings.targetLang || 'EN';
     if (dom.translateHotkeyInput)   dom.translateHotkeyInput.value     = formatHotkeyForUi(translateSettings.hotkey, plt);
+    if (dom.translateEmailInput)    dom.translateEmailInput.value      = translateSettings.email || '';
     updateTranslateHotkeyChip();
 
     renderGroups();
@@ -302,6 +315,71 @@ async function init() {
 
   // ── «О программе» ────────────────────────────────────────────────
   initAboutUI();
+
+  // ── Лицензия (Pro) ───────────────────────────────────────────────
+  initLicenseUI();
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  LICENSE UI
+// ══════════════════════════════════════════════════════════════════
+
+function renderLicense(status) {
+  const pro = !!(status && status.pro);
+  if (dom.licensePlan) {
+    dom.licensePlan.textContent = pro ? 'PRO' : 'Free';
+    dom.licensePlan.classList.toggle('is-pro', pro);
+  }
+  if (dom.licenseEmail) dom.licenseEmail.textContent = pro && status.email ? status.email : '';
+  if (dom.licenseActivateBlock) dom.licenseActivateBlock.classList.toggle('hidden', pro);
+  if (dom.licenseActiveBlock)   dom.licenseActiveBlock.classList.toggle('hidden', !pro);
+}
+
+async function initLicenseUI() {
+  try {
+    const status = await window.api.licenseGetStatus();
+    renderLicense(status);
+  } catch {}
+
+  if (dom.licenseActivateBtn && dom.licenseInput) {
+    const st = dom.licenseStatus;
+    const showStatus = (text, kind) => {
+      if (!st) return;
+      st.textContent = text;
+      st.classList.remove('ok', 'err');
+      st.classList.add('show', kind);
+      setTimeout(() => st.classList.remove('show'), 3000);
+    };
+    const doActivate = async () => {
+      const key = (dom.licenseInput.value || '').trim();
+      if (!key) return;
+      try {
+        const r = await window.api.licenseActivate(key);
+        if (r.ok) {
+          renderLicense(r.status);
+          showStatus(t('license.activated'), 'ok');
+          dom.licenseInput.value = '';
+          showToast(t('license.toastPro'));
+        } else {
+          showStatus(t('license.invalid'), 'err');
+        }
+      } catch (e) { showStatus(e.message, 'err'); }
+    };
+    dom.licenseActivateBtn.addEventListener('click', doActivate);
+    dom.licenseInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); doActivate(); }
+    });
+  }
+
+  if (dom.licenseDeactivateBtn) {
+    dom.licenseDeactivateBtn.addEventListener('click', async () => {
+      try {
+        const r = await window.api.licenseDeactivate();
+        renderLicense(r.status);
+        showToast(t('license.toastFree'));
+      } catch (e) { showToast(e.message); }
+    });
+  }
 }
 
 // ══════════════════════════════════════════════════════════════════
@@ -1400,6 +1478,55 @@ function bindEvents() {
     });
     dom.translateHotkeyInput.addEventListener('input', e => { e.target.value = e.target._lastValue || ''; });
     dom.translateHotkeyInput.addEventListener('focus', () => { dom.translateHotkeyInput._lastValue = dom.translateHotkeyInput.value; });
+  }
+  if (dom.translateEmailInput && dom.translateEmailSave) {
+    const inp    = dom.translateEmailInput;
+    const status = dom.translateEmailStatus;
+    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let statusTimer = null;
+
+    function flash(cls) {
+      inp.classList.remove('saved-flash', 'invalid-flash');
+      void inp.offsetWidth;             // рестарт CSS-перехода
+      inp.classList.add(cls);
+      setTimeout(() => inp.classList.remove(cls), 2500);
+    }
+    function showStatus(text, kind) {
+      if (!status) return;
+      status.textContent = text;
+      status.classList.remove('ok', 'err');
+      status.classList.add('show', kind);
+      clearTimeout(statusTimer);
+      statusTimer = setTimeout(() => status.classList.remove('show'), 2800);
+    }
+
+    async function saveEmail() {
+      const v = (inp.value || '').trim();
+      // Непустой и невалидный — не сохраняем, подсвечиваем красным.
+      if (v && !EMAIL_RE.test(v)) {
+        flash('invalid-flash');
+        showStatus(t('translate.emailInvalid'), 'err');
+        return;
+      }
+      try {
+        await window.api.setTranslateSettings({ email: v });
+        flash('saved-flash');
+        showStatus(v ? t('translate.emailOk') : t('translate.emailCleared'), 'ok');
+      } catch (e) {
+        flash('invalid-flash');
+        showStatus(e.message, 'err');
+      }
+    }
+
+    dom.translateEmailSave.addEventListener('click', saveEmail);
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); saveEmail(); }
+    });
+    // Сбрасываем подсветку статуса при редактировании.
+    inp.addEventListener('input', () => {
+      inp.classList.remove('saved-flash', 'invalid-flash');
+      if (status) status.classList.remove('show');
+    });
   }
   if (dom.translateTriggerBtn) {
     dom.translateTriggerBtn.addEventListener('click', () => { try { window.api.translateTrigger(); } catch {} });

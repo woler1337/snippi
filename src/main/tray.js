@@ -84,6 +84,24 @@ function buildTrayIconBuffer() {
   return Buffer.concat([sig, chunk('IHDR', ihdr), chunk('IDAT', zlib.deflateSync(Buffer.from(rows))), chunk('IEND', Buffer.alloc(0))]);
 }
 
+// Перекрашивает непрозрачные пиксели nativeImage в белый, сохраняя alpha.
+// Нужно для Windows/Linux, где чёрная template-иконка не видна на тёмной панели.
+function recolorOpaqueToWhite(img) {
+  try {
+    const s = img.getSize();
+    const bmp = img.toBitmap();          // BGRA
+    if (!s.width || !s.height || bmp.length !== s.width * s.height * 4) return img;
+    for (let i = 0; i < bmp.length; i += 4) {
+      if (bmp[i + 3] > 0) {              // есть alpha → красим в белый
+        bmp[i] = 255; bmp[i + 1] = 255; bmp[i + 2] = 255;
+      }
+    }
+    return nativeImage.createFromBitmap(bmp, { width: s.width, height: s.height });
+  } catch {
+    return img;                          // при любой ошибке отдаём оригинал
+  }
+}
+
 // ── Контекстное меню ──────────────────────────────────────────────────
 
 function buildTrayMenu() {
@@ -149,6 +167,14 @@ function createTray() {
 
   // Fallback: если ассеты не загрузились, генерим иконку из кода.
   if (!icon1x) icon1x = nativeImage.createFromBuffer(buildTrayIconBuffer());
+
+  // Windows/Linux: наша tray-иконка нарисована ЧЁРНОЙ (это macOS template).
+  // На тёмной панели задач Windows 10/11 чёрная иконка невидима. Перекрашиваем
+  // непрозрачные пиксели в белый (форма сохраняется, alpha не трогаем).
+  if (process.platform !== 'darwin') {
+    icon1x = recolorOpaqueToWhite(icon1x);
+    if (icon2x) icon2x = recolorOpaqueToWhite(icon2x);
+  }
 
   // Собираем nativeImage с @1x и @2x представлениями. На обычных дисплеях macOS
   // возьмёт @1x, на Retina — @2x (если есть). Без явного @2x иконка размывается.

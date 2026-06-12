@@ -67,6 +67,7 @@ const store = new Store({
           trigger:     { type: 'string' },
           replacement: { type: 'string' },
           groupId:     { type: ['string', 'null'] },
+          format:      { type: 'string' },
           createdAt:   { type: 'string' }
         }
       }
@@ -94,6 +95,10 @@ class Storage extends EventEmitter {
   getSentryEnabled()    { return store.get('sentryEnabled', false); }
   setSentryEnabled(val) { store.set('sentryEnabled', Boolean(val)); }
 
+  // Лицензионный ключ Pro (Ed25519-подписанный). Пусто = Free.
+  getLicenseKey()    { return store.get('licenseKey', ''); }
+  setLicenseKey(val) { store.set('licenseKey', String(val || '')); }
+
   // ── OCR (скриншот → текст) ─────────────────────────────────────────────────
   getOcrSettings() {
     return {
@@ -117,12 +122,16 @@ class Storage extends EventEmitter {
       enabled:    store.get('translateEnabled',    true),
       hotkey:     store.get('translateHotkey',     'CommandOrControl+Shift+2'),
       targetLang: store.get('translateTargetLang', 'EN'),
+      // Опциональный email для MyMemory — поднимает дневной лимит с 5000
+      // до 50 000 символов/день.
+      email:      store.get('translateEmail',      ''),
     };
   }
   setTranslateSettings(patch) {
     if (patch.enabled    !== undefined) store.set('translateEnabled',    Boolean(patch.enabled));
     if (patch.hotkey     !== undefined) store.set('translateHotkey',     String(patch.hotkey));
     if (patch.targetLang !== undefined) store.set('translateTargetLang', String(patch.targetLang));
+    if (patch.email      !== undefined) store.set('translateEmail',      String(patch.email || '').trim());
     const s = this.getTranslateSettings();
     this.emit('translate-settings-changed', s);
     return s;
@@ -240,6 +249,7 @@ class Storage extends EventEmitter {
       trigger:     newTrigger,
       replacement: original.replacement,
       groupId:     original.groupId ?? null,
+      format:      original.format === 'rich' ? 'rich' : 'plain',
       createdAt:   new Date().toISOString()
     };
 
@@ -434,6 +444,7 @@ class Storage extends EventEmitter {
         trigger:     s.trigger,
         replacement: s.replacement,
         groupId:     s.groupId ? (groupIdMap.get(s.groupId) ?? null) : null,
+        format:      s.format === 'rich' ? 'rich' : 'plain',
         createdAt:   s.createdAt || new Date().toISOString()
       }));
 
@@ -486,6 +497,7 @@ class Storage extends EventEmitter {
           trigger:     s.trigger,
           replacement: s.replacement,
           groupId:     s.groupId ? (groupIdMap.get(s.groupId) ?? null) : null,
+          format:      s.format === 'rich' ? 'rich' : 'plain',
           createdAt:   s.createdAt || new Date().toISOString()
         });
         triggerSet.add(s.trigger);

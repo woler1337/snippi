@@ -2,7 +2,8 @@
 /* ════════════════════════════════════════════════════════════════
    Встроенный переводчик.
    Текущий движок: MyMemory Translation API (бесплатный, без ключа,
-   разрешён для коммерческого использования, лимит ~5000 слов/IP/день).
+   разрешён для коммерческого использования, лимит 5000 символов/день анонимно,
+   50 000 символов/день с указанным email).
 
    В будущем планируется заменить на Apple Translation framework
    через нативный Swift-хелпер для полностью офлайн-перевода на macOS.
@@ -43,15 +44,24 @@ function splitIntoChunks(text) {
   return chunks;
 }
 
+// Простая валидация email — MyMemory строго проверяет формат и иначе
+// возвращает ошибку. Лучше не слать кривой email вовсе.
+function isValidEmail(s) {
+  return typeof s === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s.trim());
+}
+
 // Один запрос к MyMemory.
-function requestOne(text, sourceLang, targetLang) {
+// email (опц.) — параметр `de`. Указание валидного email поднимает дневной
+// лимит с 5000 символов (анонимно) до 50 000 символов/день. Передаётся ТОЛЬКО
+// если пользователь сам ввёл его в настройках (явное согласие).
+function requestOne(text, sourceLang, targetLang, email) {
   return new Promise((resolve, reject) => {
-    const url = 'https://api.mymemory.translated.net/get?'
+    let url = 'https://api.mymemory.translated.net/get?'
       + 'q='        + encodeURIComponent(text)
       + '&langpair=' + encodeURIComponent(sourceLang) + '%7C' + encodeURIComponent(targetLang);
-      // де-параметр опционален; раньше он использовался для повышенного лимита,
-      // но MyMemory строго проверяет формат email, а слать настоящий email
-      // пользователя без его согласия мы не хотим. Работаем на дефолтном лимите.
+    if (isValidEmail(email)) {
+      url += '&de=' + encodeURIComponent(email.trim());
+    }
 
     const req = net.request({ method: 'GET', url });
     req.setHeader('User-Agent', 'Snippi/1.0');
@@ -142,7 +152,8 @@ async function detectLang(text) {
 }
 
 // Основная функция: переводит произвольный текст (длинный — кусками).
-async function translate(text, { targetLang, sourceLang } = {}) {
+// email (опц.) пробрасывается в MyMemory для повышенного лимита.
+async function translate(text, { targetLang, sourceLang, email } = {}) {
   if (!text || !text.trim()) throw new Error(t('translator.err.empty'));
   const target = normalizeLang(targetLang) || 'en';
   // Если язык-источник не задан или 'auto' — определяем через franc.
@@ -168,9 +179,10 @@ async function translate(text, { targetLang, sourceLang } = {}) {
   const chunks = splitIntoChunks(text);
   const translatedChunks = [];
   // Делаем последовательно, чтобы не превышать rate-limit бесплатного API.
+  // Переменную НЕ называем `t` — это затенило бы импортированную i18n-функцию t().
   for (const c of chunks) {
-    const t = await requestOne(c, source, target);
-    translatedChunks.push(t);
+    const tr = await requestOne(c, source, target, email);
+    translatedChunks.push(tr);
   }
   return {
     text:       translatedChunks.join(''),

@@ -37,7 +37,8 @@ function createPaletteWindow() {
     },
   });
   win.loadFile(path.join(__dirname, '..', 'renderer', 'palette.html'));
-  win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+  // На Windows — no-op, на части Linux-WM может бросить → защищаем.
+  try { win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true }); } catch {}
   if (process.platform === 'darwin') {
     try { win.setAlwaysOnTop(true, 'screen-saver'); } catch {}
   }
@@ -95,14 +96,14 @@ function registerPaletteHotkey() {
 
 function setupPaletteIPC() {
   ipcMain.handle('palette-close', () => { hidePalette(); });
-  ipcMain.handle('palette-paste', async (_, text) => {
+  ipcMain.handle('palette-paste', async (_, text, format) => {
     if (!text) return false;
     hidePalette();
     // Ждём, пока macOS реально переведёт фокус (app.hide имеет анимацию).
     await new Promise(r => setTimeout(r, process.platform === 'darwin' ? 180 : 130));
     try {
       const { pasteText } = require('./expander');
-      await pasteText(text);
+      await pasteText(text, format);
       // Засчитываем как expansion в статистику.
       try { require('./stats').onExpanderFire({ type: 'snippet', chars: text.length }); } catch {}
       return true;

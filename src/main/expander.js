@@ -87,8 +87,22 @@ function ensurePS() {
     '-NoProfile', '-NonInteractive', '-WindowStyle', 'Hidden', '-Command', '-'
   ], { windowsHide: true, stdio: ['pipe', 'pipe', 'ignore'] });
 
-  // Загружаем сборку один раз при старте
-  _ps.stdin.write('Add-Type -AssemblyName System.Windows.Forms\n');
+  // КРИТИЧНО: без обработчика 'error' неудачный spawn powershell.exe
+  // (нет в PATH, ExecutionPolicy, антивирус заблокировал) выбрасывает
+  // НЕперехваченное исключение и роняет main-процесс целиком.
+  _ps.on('error', err => {
+    console.error('[expander] PowerShell spawn failed:', err.message);
+    _ps = null;
+    _psBuf = '';
+    _psCbs.forEach(cb => cb());   // разблокируем зависшие вызовы
+    _psCbs.clear();
+  });
+
+  // stdin тоже может выдать EPIPE, если процесс умер между проверкой и записью.
+  _ps.stdin.on('error', err => { console.error('[expander] PS stdin error:', err.message); });
+
+  // Загружаем сборку один раз при старте (защищённо — stdin может быть уже мёртв).
+  try { _ps.stdin.write('Add-Type -AssemblyName System.Windows.Forms\n'); } catch {}
 
   _ps.stdout.on('data', d => {
     _psBuf += d.toString();
@@ -126,9 +140,16 @@ function sendKeysWin(backspaceCount, leftMoves = 0) {
     }, 8000);
 
     _psCbs.set(token, () => { clearTimeout(t); resolve(); });
-    ps.stdin.write(
-      `[System.Windows.Forms.SendKeys]::SendWait('${keys}'); Write-Host '${token}'\n`
-    );
+    try {
+      ps.stdin.write(
+        `[System.Windows.Forms.SendKeys]::SendWait('${keys}'); Write-Host '${token}'\n`
+      );
+    } catch (err) {
+      // stdin умер (EPIPE) — снимаем таймаут и отклоняем, чтобы не висло 8с.
+      clearTimeout(t);
+      _psCbs.delete(token);
+      reject(new Error('PowerShell stdin write failed: ' + err.message));
+    }
   });
 }
 
@@ -277,6 +298,19 @@ const KEY_CHAR_MAP = new Map([
   [UiohookKey.Num3,'3'],[UiohookKey.Num4,'4'],[UiohookKey.Num5,'5'],
   [UiohookKey.Num6,'6'],[UiohookKey.Num7,'7'],[UiohookKey.Num8,'8'],
   [UiohookKey.Num9,'9'],
+  // Знаки пунктуации (коды совпадают с DOM_CODE_TO_UIOHOOK). Нужны для
+  // триггеров вида `:smile:` (эмодзи-пак), `;tag`, `.cmd` и т.п. Коды —
+  // raw uiohook keycodes для US-раскладки.
+  [39,';'],[40,"'"],[51,','],[52,'.'],[53,'/'],[12,'-'],[13,'='],
+  [26,'['],[27,']'],[43,'\\'],[41,'`'],
+]);
+
+// Shift-варианты пунктуации (US-раскладка). Для букв используется
+// char.toUpperCase() как fallback — поэтому здесь только пунктуация.
+// Критично для эмодзи: Shift+';' = ':' → триггеры `:smile:`.
+const SHIFT_CHAR_MAP = new Map([
+  [39,':'],[40,'"'],[51,'<'],[52,'>'],[53,'?'],[12,'_'],[13,'+'],
+  [26,'{'],[27,'}'],[43,'|'],[41,'~'],
 ]);
 
 function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
@@ -403,7 +437,7 @@ function initExpander() {
 
         let char = KEY_CHAR_MAP.get(keycode);
         if (char !== undefined) {
-          if (event.shiftKey) char = char.toUpperCase();
+          if (event.shiftKey) char = SHIFT_CHAR_MAP.get(keycode) || char.toUpperCase();
           buffer += char;
           if (buffer.length > 50) buffer = buffer.slice(-50);
         }
@@ -435,9 +469,9 @@ function stopExpander() {
 
 // Публичный API для вставки произвольного текста (палитра, AI-фичи и т.п.):
 // просто кладёт текст в буфер и эмулирует Cmd/Ctrl+V в активном окне.
-async function pasteText(text) {
+async function pasteText(text, format) {
   if (!text) return;
-  await sendBackspacesAndPaste(0, text);
+  await sendBackspacesAndPaste(0, text, { format: format === 'rich' ? 'rich' : 'plain' });
 }
 
 module.exports = { initExpander, stopExpander, setOnFire, pasteText, AVAILABLE_TRIGGER_KEYS };

@@ -53,14 +53,35 @@ function ocrMac(imagePath) {
 // Используем eng+rus как разумный default — Tesseract нормально работает
 // со смешанным контентом и без auto-detect.
 let _tesseractWorker = null;
+
+// Writable-папка для кеша языковых паков (.traineddata, ~10-15 МБ каждый).
+// КРИТИЧНО для Windows: по умолчанию tesseract.js пишет кеш в process.cwd(),
+// который у portable .exe часто read-only (Program Files / сетевая шара) →
+// запись падает и OCR не работает. userData — гарантированно writable per-user.
+function getTesseractCachePath() {
+  try {
+    const { app } = require('electron');
+    const path = require('path');
+    const fs   = require('fs');
+    const dir  = path.join(app.getPath('userData'), 'tessdata');
+    fs.mkdirSync(dir, { recursive: true });
+    return dir;
+  } catch {
+    return undefined; // fallback на дефолтное поведение
+  }
+}
+
 async function ocrTesseract(imagePath) {
   // Ленивая загрузка модуля чтобы не платить памятью на macOS
   const Tesseract = require('tesseract.js');
   if (!_tesseractWorker) {
+    const cachePath = getTesseractCachePath();
     // eng + rus + ukr + deu — наиболее частый набор для нашей аудитории
     _tesseractWorker = await Tesseract.createWorker(['eng', 'rus', 'ukr', 'deu'], 1, {
       // Прячем шумный лог в консоль
       logger: () => {},
+      // Кеш .traineddata в writable-папку (см. getTesseractCachePath).
+      ...(cachePath ? { cachePath } : {}),
     });
   }
   const { data } = await _tesseractWorker.recognize(imagePath);

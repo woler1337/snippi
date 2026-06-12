@@ -27,6 +27,12 @@ files:
   - "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}"
   - "!**/node_modules/.bin"
 
+# tesseract.js на Windows/Linux запускает worker_threads из своего worker-script.
+# Внутри asar путь к воркеру нестабилен между версиями Electron → распаковываем
+# tesseract.js в app.asar.unpacked, чтобы Worker получил реальный файловый путь.
+asarUnpack:
+  - "**/node_modules/tesseract.js/**"
+
 # macOS: Swift-хелперы кладём в Resources/ (доступны через process.resourcesPath)
 extraResources:
   - from: src/native/key-helper
@@ -59,9 +65,24 @@ dmg:
 # ── Windows ───────────────────────────────────────────────────────────────
 win:
   target:
-    - target: portable           # один .exe файл, не требует установки
-      arch: [x64]                # стандартная архитектура Windows
+    # NSIS-installer — поддерживает авто-обновления electron-updater
+    # (portable target обновления НЕ поддерживает). latest.yml в релизе
+    # указывает на этот installer.
+    - target: nsis
+      arch: [x64]
+    # portable — один .exe без установки, для тех кто не хочет installer.
+    # НЕ участвует в авто-обновлениях, но скачать и запустить можно.
+    - target: portable
+      arch: [x64]
   icon: assets/icon-win.png      # чистый тёмный фон без обводки — для taskbar
+
+# NSIS: не one-click — даём пользователю выбрать папку и создать ярлыки.
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  perMachine: false              # установка для текущего пользователя (без UAC)
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
 
 # ── Linux ─────────────────────────────────────────────────────────────────
 linux:

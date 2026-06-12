@@ -4,20 +4,25 @@
 ══════════════════════════════════════════════════════════════════ */
 
 :root {
-  --bg:          #0a0b0d;
-  --bg-card:     rgba(255, 255, 255, 0.04);
-  --bg-card-2:   rgba(255, 255, 255, 0.06);
-  --bg-hover:    rgba(255, 255, 255, 0.08);
-  --accent:      #ffffff;
-  --accent-dim:  rgba(255, 255, 255, 0.12);
-  --text-1:      rgba(245, 246, 250, 0.96);
-  --text-2:      rgba(220, 222, 230, 0.66);
-  --text-3:      rgba(200, 204, 215, 0.42);
-  --border:      rgba(255, 255, 255, 0.08);
-  --border-2:    rgba(255, 255, 255, 0.14);
+  /* Палитра v2: тёплый глубокий zinc + единственный изумрудный акцент.
+     По taste-skill: нейтральная база, 1 акцент, насыщенность < 80%,
+     никакого «AI purple». */
+  --bg:          #0b0d0c;
+  --bg-card:     rgba(236, 253, 245, 0.035);
+  --bg-card-2:   rgba(236, 253, 245, 0.055);
+  --bg-hover:    rgba(236, 253, 245, 0.08);
+  --accent:      #34d399;          /* emerald-400 */
+  --accent-strong: #10b981;        /* emerald-500 */
+  --accent-soft: rgba(52, 211, 153, 0.14);
+  --accent-dim:  rgba(52, 211, 153, 0.28);
+  --text-1:      rgba(244, 248, 246, 0.96);
+  --text-2:      rgba(216, 226, 221, 0.66);
+  --text-3:      rgba(196, 208, 202, 0.42);
+  --border:      rgba(236, 253, 245, 0.08);
+  --border-2:    rgba(236, 253, 245, 0.15);
   --radius:      14px;
   --radius-sm:   10px;
-  --font:        'Inter', -apple-system, 'SF Pro Display', system-ui, 'Segoe UI', sans-serif;
+  --font:        'Outfit', -apple-system, 'SF Pro Display', system-ui, 'Segoe UI', sans-serif;
   --mono:        'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
   --max:         1180px;
   --tr:          200ms cubic-bezier(.2,.8,.2,1);
@@ -195,6 +200,14 @@ code {
   margin-top: 60px;
   width: 100%;
   max-width: 1080px;
+  text-align: center;
+}
+/* Реальный скриншот приложения. PNG уже содержит нативную macOS-тень
+   с прозрачностью — дополнительные рамки/тени не нужны. */
+.hero-app-shot {
+  width: 100%;
+  max-width: 860px;
+  height: auto;
 }
 .screenshot-caption {
   text-align: center;
@@ -426,6 +439,13 @@ code {
   padding: 2px 6px;
 }
 
+/* Реальные скриншоты в шагах «Как работает». PNG со встроенной macOS-тенью. */
+.how-shot {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 .placeholder-media {
   aspect-ratio: 16/10;
   background: var(--bg-card);
@@ -564,4 +584,218 @@ code {
   .hero { padding-top: 100px; }
   .section { padding: 70px 20px; }
   .feature, .dl-card { padding: 22px 18px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   POLISH LAYER v2 — taste-skill pass.
+   Аддитивный слой: типографика Outfit, асимметричный hero,
+   bento-фичи, spotlight-карты, staggered reveal, tactile-кнопки.
+   Ничего из контента не удаляется — только переопределения стиля.
+═══════════════════════════════════════════════════════════════ */
+
+/* ── Типографика: плотный дисплей-трекинг ── */
+h1 { letter-spacing: -0.045em; line-height: 1.04; }
+h2 { letter-spacing: -0.035em; }
+
+/* ── HERO: анти-центр. Текст влево, экранный кадр дышит справа ── */
+.hero-inner {
+  max-width: 880px;
+  text-align: left;
+  align-self: flex-start;
+  margin-left: 0;
+}
+.hero-actions { justify-content: flex-start; }
+.lead { margin-left: 0; }
+
+/* Живая точка в eyebrow — perpetual micro-interaction */
+.eyebrow { display: inline-flex; align-items: center; gap: 8px; }
+.eyebrow::before {
+  content: '';
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #34d399;
+  animation: eyebrow-pulse 2.4s ease-in-out infinite;
+}
+@keyframes eyebrow-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.45); }
+  50%      { opacity: 0.6; box-shadow: 0 0 0 5px rgba(52, 211, 153, 0); }
+}
+
+/* ── КНОПКИ: tactile feedback ── */
+.btn {
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+              background var(--tr), border-color var(--tr), color var(--tr),
+              box-shadow 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn:hover  { transform: translateY(-1px); }
+.btn:active { transform: translateY(1px) scale(0.98); }
+.btn-primary:hover { box-shadow: 0 8px 24px -8px rgba(255, 255, 255, 0.25); }
+
+/* ── FEATURES: асимметричный bento вместо 3 равных колонок ── */
+.features-grid {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.feature { position: relative; overflow: hidden; }
+/* 1-я и 6-я карточки шире — ломаем монотонную сетку */
+.feature:nth-child(1) { grid-column: span 2; }
+.feature:nth-child(6) { grid-column: span 2; }
+@media (max-width: 860px) {
+  .features-grid { grid-template-columns: 1fr; }
+  .feature:nth-child(1), .feature:nth-child(6) { grid-column: span 1; }
+}
+
+/* Spotlight: подсветка границы под курсором (через --mx/--my из JS) */
+.feature::before {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%),
+              rgba(255, 255, 255, 0.08), transparent 45%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+.feature:hover::before { opacity: 1; }
+
+/* SVG-иконки фич: чистые stroke-примитивы в рамке вместо эмодзи */
+.feature-icon {
+  width: 42px; height: 42px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  color: var(--text-1);
+}
+.feature-icon svg { width: 21px; height: 21px; }
+
+/* ── DOWNLOAD-карты: SVG-логотипы платформ ── */
+.dl-icon {
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-1);
+}
+.dl-icon svg { width: 34px; height: 34px; }
+
+/* ── SCROLL REVEAL: каскадное появление (IntersectionObserver) ── */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: calc(var(--ri, 0) * 70ms);
+  }
+  .reveal.in-view { opacity: 1; transform: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   COLOR PASS v2 — изумрудная гамма. Заметный визуальный сдвиг.
+═══════════════════════════════════════════════════════════════ */
+
+/* Ambient: два emerald/teal-блоба + лёгкое тёплое дыхание */
+body::before {
+  background:
+    radial-gradient(900px 520px at 12% -8%,  rgba(16, 185, 129, 0.16), transparent 55%),
+    radial-gradient(800px 600px at 105% 18%, rgba(45, 212, 191, 0.10), transparent 60%),
+    radial-gradient(700px 500px at 50% 115%, rgba(16, 185, 129, 0.07), transparent 60%);
+}
+
+/* Тонкая инженерная сетка в hero — текстура, исчезающая к низу */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  pointer-events: none; z-index: -1;
+  background-image:
+    linear-gradient(rgba(236, 253, 245, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(236, 253, 245, 0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 30% 0%, #000 35%, transparent 75%);
+          mask-image: radial-gradient(ellipse 90% 70% at 30% 0%, #000 35%, transparent 75%);
+}
+
+/* H1: последняя строка — изумрудный градиент вместо серого */
+.hero h1 .accent {
+  background: linear-gradient(120deg, #34d399 0%, #a7f3d0 60%, #5eead4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Primary-кнопки: изумруд с тёмным текстом */
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #06241a;
+}
+.btn-primary:hover {
+  background: #4ade9f;
+  color: #06241a;
+  box-shadow: 0 10px 30px -10px rgba(52, 211, 153, 0.45);
+}
+
+/* Eyebrow: изумрудная капсула */
+.eyebrow {
+  border-color: var(--accent-dim);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* Spotlight на карточках — изумрудный отлив */
+.feature::before {
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%),
+              rgba(52, 211, 153, 0.10), transparent 45%);
+}
+.feature:hover { border-color: rgba(52, 211, 153, 0.22); }
+
+/* Иконки фич: изумрудный штрих */
+.feature-icon { color: var(--accent); border-color: var(--accent-dim); background: var(--accent-soft); }
+
+/* Ссылки и навигация: hover в акцент */
+.nav-links a:not(.btn):hover { color: var(--accent); }
+.dl-card:hover { border-color: rgba(52, 211, 153, 0.25); }
+.dl-icon { color: var(--accent); }
+
+/* kbd: лёгкий изумрудный кант */
+kbd { border-color: var(--accent-dim); color: var(--accent); background: var(--accent-soft); }
+
+/* Числа шагов how-step */
+.how-num { color: var(--accent); }
+
+/* ── KINETIC MARQUEE: бегущая строка триггеров между hero и features ── */
+.trigger-marquee {
+  position: relative;
+  padding: 18px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.trigger-marquee-track {
+  display: flex; gap: 44px;
+  width: max-content;
+  animation: marquee-scroll 36s linear infinite;
+}
+.trigger-marquee:hover .trigger-marquee-track { animation-play-state: paused; }
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.tm-item {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--mono); font-size: 13px;
+  color: var(--text-3);
+  white-space: nowrap;
+}
+.tm-item b {
+  font-weight: 500;
+  color: var(--accent);
+  padding: 3px 9px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-dim);
+  border-radius: 6px;
+}
+.tm-item span { color: var(--text-2); }
+@media (prefers-reduced-motion: reduce) {
+  .trigger-marquee-track { animation: none; }
 }

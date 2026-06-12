@@ -1,0 +1,15 @@
+name = "snippi-license"
+main = "src/worker.js"
+compatibility_date = "2026-01-01"
+
+# KV-хранилище ключей. ID появится после `wrangler kv namespace create LICENSES`
+# — впишите его сюда.
+[[kv_namespaces]]
+binding = "LICENSES"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+
+# Секреты НЕ хранятся здесь — задаются через `wrangler secret put`:
+#   LICENSE_PRIVATE_KEY   — Ed25519 приватный ключ (PKCS8 DER в base64)
+#   LS_WEBHOOK_SECRET     — signing secret вебхука Lemon Squeezy
+#   RESEND_API_KEY        — (опц.) для отправки писем с ключом
+#   RESEND_FROM           — (опц.) адрес отправителя

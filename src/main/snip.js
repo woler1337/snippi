@@ -230,7 +230,7 @@ async function handleSnipPick(bounds) {
       const target = cfg.targetLang;
       try {
         console.log('[translate] OCR дал', text.length, 'симв., целевой язык:', target);
-        const { text: translated, sourceLang } = await translator.translate(text, { targetLang: target });
+        const { text: translated, sourceLang } = await translator.translate(text, { targetLang: target, email: cfg.email });
         clipboard.writeText(translated);
         console.log(`[translate] готово: ${translated.length} симв.`);
         sendTranslateResult({

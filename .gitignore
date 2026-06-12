@@ -29,3 +29,11 @@ te-snip-*.png
 
 # ── Внутренние dev-заметки (не для публикации) ─────────────────────
 FIX_*.md
+
+# ── Приватный ключ генератора лицензий (НИКОГДА не коммитить) ──
+scripts/license-private.pem
+
+# ── Backend (Cloudflare Worker) ──────────────────────────────────────
+server/node_modules/
+server/.wrangler/
+.dev.vars
