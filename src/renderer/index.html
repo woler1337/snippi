@@ -424,6 +424,18 @@
                 <input type="text" id="translate-hotkey-input" class="form-input settings-hotkey-input" spellcheck="false" autocomplete="off" />
               </div>
 
+              <div class="settings-row settings-row--input settings-row--stacked">
+                <div class="settings-row-head">
+                  <div data-i18n="translate.email">Email для увеличенного лимита</div>
+                  <div class="settings-row-hint" data-i18n="translate.emailHint">Необязательно. Бесплатный движок (MyMemory) даёт 5000 символов/день анонимно. Укажите любой email — лимит вырастет до 50 000 символов/день (≈10×). Email уходит только в MyMemory вместе с запросом перевода.</div>
+                </div>
+                <div class="email-field">
+                  <input type="email" id="translate-email-input" class="form-input" spellcheck="false" autocomplete="off" placeholder="you@example.com" />
+                  <button type="button" class="btn btn-primary btn-sm" id="translate-email-save" data-i18n="translate.emailSave">Сохранить</button>
+                  <span class="email-status" id="translate-email-status" aria-live="polite"></span>
+                </div>
+              </div>
+
               <div class="settings-row settings-row--input">
                 <div>
                   <div data-i18n="translate.test">Проверить переводчик</div>
@@ -475,8 +487,8 @@
                 <label class="theme-option" data-theme-value="auto">
                   <input type="radio" name="theme" value="auto" />
                   <div class="theme-preview theme-preview--auto">
-                    <div class="theme-preview-half theme-preview-half--light"></div>
-                    <div class="theme-preview-half theme-preview-half--dark"></div>
+                    <div class="theme-preview-line"></div>
+                    <div class="theme-preview-line theme-preview-line--short"></div>
                   </div>
                   <span data-i18n="settings.theme.auto">Автоматически</span>
                 </label>
@@ -507,6 +519,37 @@
                   <option value="en">English</option>
                   <option value="de">Deutsch</option>
                 </select>
+              </div>
+            </section>
+
+            <section class="settings-section" id="license-section">
+              <h3 class="settings-section-title" data-i18n="license.title">Лицензия</h3>
+              <div class="license-card" id="license-card">
+                <div class="license-badge" id="license-badge">
+                  <span class="license-plan" id="license-plan" data-i18n="license.free">Free</span>
+                  <span class="license-email" id="license-email"></span>
+                </div>
+                <!-- Free: ввод ключа -->
+                <div class="license-activate" id="license-activate-block">
+                  <p class="settings-row-hint" data-i18n="license.hint">
+                    Введите лицензионный ключ Snippi Pro, чтобы разблокировать премиум-функции.
+                  </p>
+                  <div class="email-field">
+                    <input type="text" id="license-input" class="form-input mono" spellcheck="false" autocomplete="off" placeholder="xxxxx.xxxxx" />
+                    <button type="button" class="btn btn-primary btn-sm" id="license-activate-btn" data-i18n="license.activate">Активировать</button>
+                    <span class="email-status" id="license-status" aria-live="polite"></span>
+                  </div>
+                  <p class="settings-row-hint" style="margin-top:8px">
+                    <a href="https://snippiapp.com/" target="_blank" rel="noopener" data-i18n="license.buy">Купить Snippi Pro →</a>
+                  </p>
+                </div>
+                <!-- Pro: кнопка деактивации -->
+                <div class="license-active hidden" id="license-active-block">
+                  <p class="settings-row-hint" data-i18n="license.thanks">
+                    Спасибо за поддержку! Все Pro-функции разблокированы.
+                  </p>
+                  <button type="button" class="btn btn-ghost btn-sm" id="license-deactivate-btn" data-i18n="license.deactivate">Удалить лицензию</button>
+                </div>
               </div>
             </section>
 
@@ -920,11 +963,11 @@
       </div>
 
       <div class="about-links">
-        <a href="https://woler1337.github.io/snippi/" target="_blank" rel="noopener" data-i18n="about.website">Сайт</a>
+        <a href="https://snippiapp.com/" target="_blank" rel="noopener" data-i18n="about.website">Сайт</a>
         <span class="about-sep">·</span>
-        <a href="https://woler1337.github.io/snippi/privacy.html" target="_blank" rel="noopener" data-i18n="about.privacy">Privacy Policy</a>
+        <a href="https://snippiapp.com/privacy.html" target="_blank" rel="noopener" data-i18n="about.privacy">Privacy Policy</a>
         <span class="about-sep">·</span>
-        <a href="https://woler1337.github.io/snippi/terms.html" target="_blank" rel="noopener" data-i18n="about.terms">Terms of Service</a>
+        <a href="https://snippiapp.com/terms.html" target="_blank" rel="noopener" data-i18n="about.terms">Terms of Service</a>
         <span class="about-sep">·</span>
         <a href="https://github.com/woler1337/snippi/issues" target="_blank" rel="noopener" data-i18n="about.issues">Сообщить о баге</a>
       </div>

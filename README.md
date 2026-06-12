@@ -14,9 +14,9 @@
 [![Platforms](https://img.shields.io/badge/platforms-macOS%20%7C%20Windows%20%7C%20Linux-blue?style=flat-square)](#-download--скачать)
 [![Stars](https://img.shields.io/github/stars/woler1337/snippi?style=flat-square&color=fbbf24)](https://github.com/woler1337/snippi/stargazers)
 
-[Website](https://woler1337.github.io/snippi/) ·
+[Website](https://snippiapp.com/) ·
 [Download](https://github.com/woler1337/snippi/releases/latest) ·
-[Privacy](https://woler1337.github.io/snippi/privacy.html) ·
+[Privacy](https://snippiapp.com/privacy.html) ·
 [Issues](https://github.com/woler1337/snippi/issues)
 
 ![Status: Pre-release](https://img.shields.io/badge/status-pre--release-orange?style=flat-square)
@@ -27,6 +27,8 @@
 >
 > *Snippi находится в активной разработке. Приложение работает, но возможны
 > шероховатости и баги. Используйте на свой страх и риск.*
+
+<img src="docs/assets/screenshots/01-snippets.png" alt="Snippi — main window (snippets)" width="760" />
 
 </div>
 
@@ -108,10 +110,10 @@ All hotkeys are customizable in app settings. / Все хоткеи меняют
 - **All data stays on your device** — `~/Library/Application Support/snippi/` (macOS), `%APPDATA%/snippi/` (Windows), `~/.config/snippi/` (Linux)
 - **OCR works fully offline** — screenshots are never uploaded
 - **Translation** uses [MyMemory API](https://mymemory.translated.net/) — free public service, no API key, ~1000 chars/day per IP. Only recognized text is sent; screenshots are NOT uploaded.
-- **No telemetry by default.** Optional opt-in crash reporting via Sentry (off by default, full details in [Privacy Policy](https://woler1337.github.io/snippi/privacy.html))
+- **No telemetry by default.** Optional opt-in crash reporting via Sentry (off by default, full details in [Privacy Policy](https://snippiapp.com/privacy.html))
 - **MIT-licensed open source** — verify everything yourself
 
-Full details: [Privacy Policy](https://woler1337.github.io/snippi/privacy.html) · [Terms](https://woler1337.github.io/snippi/terms.html)
+Full details: [Privacy Policy](https://snippiapp.com/privacy.html) · [Terms](https://snippiapp.com/terms.html)
 
 ---
 
