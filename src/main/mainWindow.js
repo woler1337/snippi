@@ -30,7 +30,10 @@ function createMainWindow() {
     titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'default',
     trafficLightPosition: process.platform === 'darwin' ? { x: 18, y: 18 } : undefined,
     show: false,
-    skipTaskbar: true,
+    // На Windows/Linux окно должно быть в таскбаре и доступно по Alt+Tab.
+    // skipTaskbar:true убирало его из обоих. На macOS значение игнорируется
+    // (таскбара нет; видимость в Dock управляется отдельно).
+    skipTaskbar: false,
     webPreferences: {
       preload:          path.join(__dirname, 'preload.js'),
       contextIsolation: true,

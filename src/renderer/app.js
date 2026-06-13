@@ -772,12 +772,14 @@ function makeSnippetCard(s) {
       </button>
       <button class="btn btn-icon" data-id="${s.id}" data-action="edit-snippet" title="${t('action.edit')}">
         <svg viewBox="0 0 16 16" width="13" height="13" fill="none">
-          <path d="M11.5 2.5l2 2L5 13H3v-2L11.5 2.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+          <path d="M11.6 2.6a1.4 1.4 0 0 1 2 2l-8 8-2.7.7.7-2.7 8-8z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+          <path d="M10.4 3.8l1.8 1.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
         </svg>
       </button>
       <button class="btn btn-icon del" data-id="${s.id}" data-action="del-snippet" title="${t('common.delete')}">
         <svg viewBox="0 0 16 16" width="13" height="13" fill="none">
-          <path d="M3 4h10M6 4V3h4v1M5 4l.5 9h5l.5-9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2.8 4.3h10.4M6 4.3V3.1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1.2M12 4.3l-.5 8.1a1.2 1.2 0 0 1-1.2 1.1H5.7a1.2 1.2 0 0 1-1.2-1.1L4 4.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M6.6 6.8v4M9.4 6.8v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
         </svg>
       </button>
     </div>`;
@@ -840,12 +842,14 @@ function makeKbCard(b) {
     <div class="kb-actions">
       <button class="btn btn-icon" data-id="${b.id}" data-action="edit-kb" title="${t('action.edit')}">
         <svg viewBox="0 0 16 16" width="13" height="13" fill="none">
-          <path d="M11.5 2.5l2 2L5 13H3v-2L11.5 2.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+          <path d="M11.6 2.6a1.4 1.4 0 0 1 2 2l-8 8-2.7.7.7-2.7 8-8z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+          <path d="M10.4 3.8l1.8 1.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
         </svg>
       </button>
       <button class="btn btn-icon del" data-id="${b.id}" data-action="del-kb" title="${t('common.delete')}">
         <svg viewBox="0 0 16 16" width="13" height="13" fill="none">
-          <path d="M3 4h10M6 4V3h4v1M5 4l.5 9h5l.5-9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2.8 4.3h10.4M6 4.3V3.1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1.2M12 4.3l-.5 8.1a1.2 1.2 0 0 1-1.2 1.1H5.7a1.2 1.2 0 0 1-1.2-1.1L4 4.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M6.6 6.8v4M9.4 6.8v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
         </svg>
       </button>
     </div>`;

@@ -5,6 +5,7 @@ const { clipboard }           = require('electron');
 const { execFile }            = require('child_process');
 const path                    = require('path');
 const storage                 = require('./storage');
+const clipboardWatcher        = require('./clipboardWatcher');
 const { processPlaceholders } = require('./placeholders');
 const { markdownToHtml, htmlToPlain } = require('./markdown');
 
@@ -180,18 +181,28 @@ async function sendBackspacesAndPaste(backspaceCount, text, opts = {}) {
   const { text: finalText, leftMoves } = parseCursorMarker(expanded);
   const saved = clipboard.readText();
 
-  // 3) Rich vs plain. Для rich пишем буфер обмена с двумя представлениями
-  //    (text/html + text/plain) — Notion/Gmail/Word возьмут HTML, Terminal /
-  //    редактор кода — plain. Для plain — как раньше через writeText.
-  if (opts.format === 'rich') {
-    const html  = markdownToHtml(finalText);
-    const plain = htmlToPlain(html);
-    clipboard.write({ text: plain, html });
-  } else {
-    clipboard.writeText(finalText);
-  }
+  // Ставим вотчер буфера на паузу на всё время «дёрганья»: мы временно
+  // пишем туда replacement, а в finally восстанавливаем исходный текст.
+  // Без паузы вотчер (опрос раз в 600 мс) ловит и replacement, и
+  // восстановленный текст как «новые» записи — отсюда дублирование
+  // (особенно заметно после Скриншот→перевод, который оставляет свой
+  // текст в буфере; каждый сниппет потом его пере-записывал в историю).
+  clipboardWatcher.setClipboardPaused(true);
 
   try {
+    // 3) Rich vs plain. Для rich пишем буфер обмена с двумя представлениями
+    //    (text/html + text/plain) — Notion/Gmail/Word возьмут HTML, Terminal /
+    //    редактор кода — plain. Для plain — как раньше через writeText.
+    //    Внутри try — чтобы исключение из clipboard.write не оставило вотчер
+    //    на паузе навсегда (finally гарантированно снимет паузу).
+    if (opts.format === 'rich') {
+      const html  = markdownToHtml(finalText);
+      const plain = htmlToPlain(html);
+      clipboard.write({ text: plain, html });
+    } else {
+      clipboard.writeText(finalText);
+    }
+
     if (process.platform === 'darwin') {
       // Постоянный Swift-хелпер: команда идёт по pipe ~0.5 мс, нет запуска процесса
       await sendKeysMac(backspaceCount, leftMoves);
@@ -214,6 +225,12 @@ async function sendBackspacesAndPaste(backspaceCount, text, opts = {}) {
     // цикл WM_KEYDOWN → чтение буфера занимает 80–150 мс.
     await delay(process.platform === 'darwin' ? 60 : 200);
     clipboard.writeText(saved);
+    // Сбрасываем baseline вотчера на восстановленный текст и снимаем паузу
+    // синхронно (в рамках finally, до того как expanding=false). Так
+    // следующий опрос увидит, что содержимое не менялось, и не создаст
+    // дубликат; параллельных разворачиваний нет (их гейтит флаг expanding).
+    clipboardWatcher.resyncBaseline();
+    clipboardWatcher.setClipboardPaused(false);
   }
 }
 
@@ -222,6 +239,19 @@ async function sendBackspacesAndPaste(backspaceCount, text, opts = {}) {
 let buffer          = '';
 let expanding       = false;
 let modifierPending = false;
+
+// Текущее состояние физических модификаторов (обновляется на КАЖДОМ событии
+// uiohook, до проверок expanding). Нужно на Windows: SendKeys '^v' нельзя
+// слать, пока ещё зажаты Ctrl/Alt/Shift от хоткея — иначе целевое приложение
+// видит «Ctrl+Alt+Ctrl+V» и не вставляет (баг: «буква есть, текста нет»).
+let modCtrl = false, modAlt = false, modShift = false, modMeta = false;
+function anyModifierDown() { return modCtrl || modAlt || modShift || modMeta; }
+
+// Ждём, пока пользователь отпустит модификаторы (до maxMs), затем вставляем.
+async function waitModifiersUp(maxMs = 400) {
+  let waited = 0;
+  while (anyModifierDown() && waited < maxMs) { await delay(15); waited += 15; }
+}
 
 // Callback вызывается после успешного срабатывания (для звука/мигания трея/статистики).
 // Аргумент: { type: 'snippet'|'hotkey', chars: number }
@@ -327,6 +357,10 @@ async function tryExpandSnippet() {
     buffer    = '';
     try {
       await delay(3);
+      // Windows: если триггер сниппета — модификатор (Shift/Right Shift),
+      // он к этому моменту обычно уже отпущен (срабатывание на keyup), но на
+      // всякий случай ждём отпускания модификаторов перед Ctrl+V.
+      if (process.platform === 'win32') await waitModifiersUp(400);
       // Для статистики предварительно раскрываем плейсхолдеры — длина после
       // подстановки может сильно отличаться от длины исходного шаблона.
       // sendBackspacesAndPaste раскроет их ещё раз, но с тем же seed-моментом
@@ -364,12 +398,11 @@ async function fireKeybinding(binding) {
   modifierPending = false;
   buffer          = '';
   try {
-    // Пауза перед вставкой нужна только на Windows: SendWait может отправить
-    // Ctrl+V пока физический Ctrl от хоткея ещё зажат — часть приложений
-    // трактует это как двойной Ctrl и отклоняет вставку со звуком ошибки.
-    // На macOS постоянный Swift-хелпер посылает Cmd+V сразу — задержка не нужна
-    // и заметна как лаг.
-    if (process.platform === 'win32') await delay(30);
+    // Windows: дожидаемся, пока пользователь отпустит модификаторы хоткея,
+    // иначе SendKeys '^v' уходит при зажатых Ctrl/Alt/Shift и вставка не
+    // срабатывает (символ напечатан, текст не вставлен). На macOS постоянный
+    // Swift-хелпер шлёт Cmd+V сразу — ожидание не нужно и заметно как лаг.
+    if (process.platform === 'win32') { await waitModifiersUp(400); await delay(10); }
     const extraBs = hotkeyTypesChar(binding.hotkeyData) ? 1 : 0;
     const expandedForLen = processPlaceholders(binding.text, {
       clipboardHistory: storage.getClipboardHistory(),
@@ -389,6 +422,8 @@ function initExpander() {
   return new Promise((resolve, reject) => {
     try {
       uIOhook.on('keydown', (event) => {
+        modCtrl = event.ctrlKey; modAlt = event.altKey;
+        modShift = event.shiftKey; modMeta = event.metaKey;
         if (expanding) return;
 
         const conf    = getTriggerConf();
@@ -444,6 +479,8 @@ function initExpander() {
       });
 
       uIOhook.on('keyup', (event) => {
+        modCtrl = event.ctrlKey; modAlt = event.altKey;
+        modShift = event.shiftKey; modMeta = event.metaKey;
         if (expanding || !modifierPending) return;
         const conf = getTriggerConf();
         if (conf.type === 'modifier' && conf.codes.has(event.keycode)) {

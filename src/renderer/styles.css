@@ -15,8 +15,13 @@
 
 :root,
 :root[data-theme="dark"] {
+  /* Тёмная схема для нативных контролов (попап <select>, скроллбары и т.п.).
+     Без этого на Windows нативный список <select> рисуется в светлой схеме —
+     белый фон + кремовый текст опций = «белое на белом». */
+  color-scheme: dark;
   /* surfaces — тёплый уголь (бренд «кофе», как snippiapp.com) */
   --bg:           #161412;
+  --popup-bg:     #211d17;   /* сплошной фон для <option> в нативном попапе */
   --bg-card:      rgba(236, 232, 225, 0.04);
   --bg-input:     rgba(236, 232, 225, 0.05);
   --bg-hover:     rgba(236, 232, 225, 0.07);
@@ -71,7 +76,9 @@
 
 /* ── Светлая тема (когда пользователь явно выбрал) ─────────── */
 :root[data-theme="light"] {
+  color-scheme: light;
   --bg:           #F7F6F3;
+  --popup-bg:     #FFFFFF;
   --bg-card:      rgba(24, 22, 18, 0.03);
   --bg-input:     rgba(24, 22, 18, 0.045);
   --bg-hover:     rgba(24, 22, 18, 0.06);
@@ -97,8 +104,10 @@
 }
 
 /* Авто (по prefers-color-scheme) — переопределяет только если light */
+:root[data-theme="auto"] { color-scheme: light dark; --popup-bg: #211d17; }
 @media (prefers-color-scheme: light) {
   :root[data-theme="auto"] {
+    --popup-bg:     #FFFFFF;
     --bg:           #F7F6F3;
     --bg-card:      rgba(24, 22, 18, 0.03);
     --bg-input:     rgba(24, 22, 18, 0.045);
@@ -163,6 +172,13 @@ body::before {
 }
 
 .hidden { display: none !important; }
+
+/* Нативный попап <select>: задаём сплошной фон и читаемый цвет опциям.
+   Вместе с color-scheme на :root чинит «белое на белом» на Windows. */
+select option {
+  background-color: var(--popup-bg);
+  color: var(--text-1);
+}
 
 /* ── #app ───────────────────────────────────────────────────── */
 
