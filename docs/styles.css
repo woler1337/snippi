@@ -1,31 +1,32 @@
 /* ══════════════════════════════════════════════════════════════════
-   Snippi — Landing page styles
-   Charcoal-dark тема, монохромный акцент. Совпадает с темой приложения.
+   Snippi — Landing page styles v4 «Editorial Ink»
+   Тёмная editorial-версия: тёплый уголь (не сине-чёрный), Geist,
+   структура на 1px-линиях, документная нумерация, терракотовый акцент.
+   Без неона, градиентов и glassmorphism — спецификация, не AI-лендинг.
 ══════════════════════════════════════════════════════════════════ */
 
 :root {
-  /* Палитра v2: тёплый глубокий zinc + единственный изумрудный акцент.
-     По taste-skill: нейтральная база, 1 акцент, насыщенность < 80%,
-     никакого «AI purple». */
-  --bg:          #0b0d0c;
-  --bg-card:     rgba(236, 253, 245, 0.035);
-  --bg-card-2:   rgba(236, 253, 245, 0.055);
-  --bg-hover:    rgba(236, 253, 245, 0.08);
-  --accent:      #34d399;          /* emerald-400 */
-  --accent-strong: #10b981;        /* emerald-500 */
-  --accent-soft: rgba(52, 211, 153, 0.14);
-  --accent-dim:  rgba(52, 211, 153, 0.28);
-  --text-1:      rgba(244, 248, 246, 0.96);
-  --text-2:      rgba(216, 226, 221, 0.66);
-  --text-3:      rgba(196, 208, 202, 0.42);
-  --border:      rgba(236, 253, 245, 0.08);
-  --border-2:    rgba(236, 253, 245, 0.15);
-  --radius:      14px;
-  --radius-sm:   10px;
-  --font:        'Outfit', -apple-system, 'SF Pro Display', system-ui, 'Segoe UI', sans-serif;
-  --mono:        'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-  --max:         1180px;
-  --tr:          200ms cubic-bezier(.2,.8,.2,1);
+  /* Тёплый уголь + светлые «чернила наоборот» */
+  --bg:          #161412;
+  --bg-card:     #1D1A17;
+  --bg-card-2:   #191714;
+  --bg-hover:    #211E1A;
+  --ink:         #ECE8E1;   /* светлый тёплый текст */
+  --text-1:      #ECE8E1;
+  --text-2:      #A8A299;
+  --text-3:      #6E695F;
+  --border:      #2A2620;
+  --border-2:    #3B362E;
+  /* Единственный акцент — терракота («сурик»), не неон */
+  --accent:      #E05D3D;
+  --accent-soft: rgba(224, 93, 61, 0.12);
+  --accent-dim:  rgba(224, 93, 61, 0.4);
+  --radius:      10px;
+  --radius-sm:   6px;
+  --font:        'Geist', 'Helvetica Neue', system-ui, sans-serif;
+  --mono:        'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --max:         1120px;
+  --tr:          180ms cubic-bezier(.2,.8,.2,1);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -36,23 +37,10 @@ body {
   font-family: var(--font);
   font-size: 16px;
   line-height: 1.65;
-  letter-spacing: -0.005em;
   color: var(--text-1);
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  position: relative;
-  overflow-x: hidden;
-}
-
-/* Мягкое ambient-свечение по углам */
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  pointer-events: none; z-index: 0;
-  background:
-    radial-gradient(at 0% 0%,   oklch(0.30 0.08 270 / .35), transparent 50%),
-    radial-gradient(at 100% 100%, oklch(0.28 0.06 200 / .30), transparent 55%);
+  counter-reset: sec;
 }
 
 a { color: inherit; text-decoration: none; }
@@ -60,30 +48,38 @@ a:hover { color: var(--accent); }
 
 img { max-width: 100%; display: block; }
 
-h1, h2, h3, h4 { letter-spacing: -0.025em; line-height: 1.15; }
-h1 { font-size: clamp(40px, 5.5vw, 72px); font-weight: 800; }
-h2 { font-size: clamp(28px, 3.5vw, 42px); font-weight: 700; }
-h3 { font-size: 20px; font-weight: 600; }
+/* Заголовки: спокойный Geist, не кричит */
+h1, h2 {
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--ink);
+}
+h1 { font-size: clamp(36px, 4.6vw, 56px); }
+h2 { font-size: clamp(26px, 3vw, 36px); }
+h3 { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
+
+::selection { background: var(--accent-soft); color: var(--ink); }
 
 kbd {
   display: inline-block;
   font-family: var(--mono);
-  font-size: 0.85em;
+  font-size: 0.82em;
   padding: 2px 7px;
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-2);
+  border-bottom-width: 2px;          /* «физическая клавиша» */
   border-radius: 5px;
-  color: var(--text-1);
-  letter-spacing: 0.02em;
+  color: var(--ink);
 }
 
 code {
   font-family: var(--mono);
   font-size: 0.85em;
   padding: 1px 6px;
-  background: var(--bg-card);
+  background: rgba(236, 232, 225, 0.07);
   border-radius: 4px;
-  color: var(--text-2);
+  color: #D9B96A;
 }
 
 /* ── NAV ─────────────────────────────────────────────────────── */
@@ -91,690 +87,168 @@ code {
 .nav {
   position: fixed; top: 0; left: 0; right: 0;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 14px max(20px, calc((100vw - var(--max)) / 2));
-  background: rgba(10, 11, 13, 0.72);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  padding: 13px max(20px, calc((100vw - var(--max)) / 2));
+  background: rgba(22, 20, 18, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border);
   z-index: 100;
 }
 .nav-brand {
   display: flex; align-items: center; gap: 10px;
   font-weight: 700; font-size: 15px;
+  letter-spacing: -0.01em;
 }
-.nav-icon { width: 28px; height: 28px; border-radius: 6px; }
+.nav-icon { width: 26px; height: 26px; border-radius: 6px; }
 .nav-links {
-  display: flex; align-items: center; gap: 24px;
+  display: flex; align-items: center; gap: 22px;
   font-size: 14px; color: var(--text-2); font-weight: 500;
 }
 .nav-links a { transition: color var(--tr); }
-.nav-links a:hover { color: var(--text-1); }
+.nav-links a:not(.btn):hover { color: var(--ink); }
 
 @media (max-width: 760px) {
-  .nav-links { gap: 14px; }
+  .nav-links { gap: 12px; }
   .nav-links a:not(.btn) { display: none; }
 }
 
-/* ── BUTTONS ─────────────────────────────────────────────────── */
+/* ── BUTTONS: инверсия — светлая «бумажная» CTA на угле ───────── */
 
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 9px 16px;
-  font: inherit; font-size: 14px; font-weight: 600; letter-spacing: -0.01em;
+  padding: 10px 18px;
+  font: inherit; font-size: 14px; font-weight: 600; letter-spacing: -0.005em;
   border: 1px solid transparent;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   cursor: pointer; white-space: nowrap;
-  transition: background var(--tr), border-color var(--tr), color var(--tr), transform 100ms;
+  transition: background var(--tr), border-color var(--tr),
+              color var(--tr), transform 120ms ease;
 }
-.btn:active { transform: scale(.98); }
+.btn:active { transform: scale(0.98); }
 .btn-primary {
-  background: var(--accent);
-  color: var(--bg);
-  border-color: var(--accent);
+  background: var(--ink);
+  color: #161412;
+  border-color: var(--ink);
 }
-.btn-primary:hover {
-  color: var(--bg);
-  background: color-mix(in srgb, var(--accent) 88%, transparent);
-}
+.btn-primary:hover { background: #FFFFFF; color: #161412; }
 .btn-ghost {
   background: transparent;
-  color: var(--text-1);
+  color: var(--ink);
   border-color: var(--border-2);
 }
-.btn-ghost:hover {
-  background: var(--bg-hover);
-  color: var(--text-1);
-}
-.btn-sm { padding: 7px 13px; font-size: 13px; border-radius: 8px; }
-.btn-lg { padding: 14px 22px; font-size: 15px; border-radius: 12px; }
+.btn-ghost:hover { background: var(--bg-card); border-color: var(--text-3); color: var(--ink); }
+.btn-sm { padding: 7px 13px; font-size: 13px; }
+.btn-lg { padding: 13px 24px; font-size: 15px; }
 
 /* ── HERO ────────────────────────────────────────────────────── */
 
+/* Split-hero: текст слева, окно приложения справа */
 .hero {
-  position: relative; z-index: 1;
-  padding: 130px max(20px, calc((100vw - var(--max)) / 2)) 80px;
-  display: flex; flex-direction: column; align-items: center;
-}
-.hero-inner {
-  max-width: 820px;
-  text-align: center;
-}
-.eyebrow {
-  display: inline-block;
-  font-size: 12px;
-  font-family: var(--mono);
-  letter-spacing: 0.06em;
-  color: var(--text-3);
-  padding: 6px 12px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  margin-bottom: 24px;
-}
-.hero h1 { margin-bottom: 22px; }
-.hero h1 .accent {
-  background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.55) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.lead {
-  font-size: clamp(16px, 1.5vw, 19px);
-  color: var(--text-2);
-  max-width: 700px;
-  margin: 0 auto 32px;
-  line-height: 1.65;
-}
-.hero-actions {
-  display: flex; gap: 12px; flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: 18px;
-}
-.hero-foot {
-  font-size: 13px; color: var(--text-3);
-  font-weight: 500;
-}
-
-/* ── HERO SCREENSHOT ─────────────────────────────────────────── */
-
-.hero-screenshot {
-  margin-top: 60px;
-  width: 100%;
-  max-width: 1080px;
-  text-align: center;
-}
-/* Реальный скриншот приложения. PNG уже содержит нативную macOS-тень
-   с прозрачностью — дополнительные рамки/тени не нужны. */
-.hero-app-shot {
-  width: 100%;
-  max-width: 860px;
-  height: auto;
-}
-.screenshot-caption {
-  text-align: center;
-  margin-top: 18px;
-  font-size: 13px;
-  color: var(--text-3);
-}
-.screenshot-frame {
-  border-radius: 14px;
-  padding: 0;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  box-shadow:
-    0 30px 80px rgba(0, 0, 0, 0.55),
-    0 10px 30px rgba(0, 0, 0, 0.35),
-    0 0 0 1px rgba(255, 255, 255, 0.04) inset;
-  overflow: hidden;
-}
-.screenshot-window { background: var(--bg); }
-.window-bar {
-  display: flex; align-items: center; gap: 6px;
-  padding: 11px 14px;
-  background: rgba(30, 32, 36, 0.85);
-  border-bottom: 1px solid var(--border);
-}
-.dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
-.dot-red    { background: #ff5f57; }
-.dot-yellow { background: #febc2e; }
-.dot-green  { background: #28c840; }
-
-.window-body { display: flex; min-height: 380px; }
-
-/* Сайдбар внутри скриншота */
-.ws-sidebar {
-  width: 250px; flex-shrink: 0;
-  padding: 16px 12px; gap: 4px;
-  border-right: 1px solid var(--border);
-  display: flex; flex-direction: column;
-}
-.ws-brand {
-  padding: 6px 8px;
-  margin-bottom: 8px;
-}
-.ws-brand img { width: 30px; height: 30px; border-radius: 7px; }
-.ws-status {
-  display: flex; align-items: center; gap: 8px;
-  padding: 10px 12px; margin: 4px 0 12px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  font-size: 12.5px;
-}
-.ws-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: #34d399;
-  box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.18);
-}
-.ws-section {
-  font-size: 10.5px; font-weight: 600;
-  letter-spacing: 0.10em;
-  color: var(--text-3);
-  padding: 10px 10px 4px;
-  text-transform: uppercase;
-}
-.ws-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 8px 10px;
-  font-size: 13px; color: var(--text-2);
-  border-radius: 8px;
-  cursor: default;
-}
-.ws-item.active { background: var(--accent-dim); color: var(--text-1); }
-.ws-count {
-  margin-left: auto;
-  font-size: 11px; font-weight: 600;
-  color: var(--text-3);
-  padding: 1px 7px;
-  background: var(--bg-card);
-  border-radius: 999px;
-}
-.ws-item kbd {
-  margin-left: auto;
-  font-size: 10px; padding: 1px 5px;
-}
-
-/* Контент скриншота */
-.ws-content { flex: 1; padding: 22px 24px; }
-.ws-content h2 { font-size: 22px; margin-bottom: 4px; letter-spacing: -0.02em; }
-.ws-sub { font-size: 13px; color: var(--text-3); margin-bottom: 16px; }
-.ws-snippet {
-  display: flex; align-items: center; gap: 12px;
-  padding: 12px 14px; margin-bottom: 8px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 9px;
-}
-.ws-trigger {
-  font-family: var(--mono);
-  font-size: 12px; font-weight: 600;
-  padding: 4px 10px;
-  background: var(--bg-card-2);
-  border-radius: 5px;
-  color: var(--text-1);
-  min-width: 50px; text-align: center;
-}
-.ws-arrow { color: var(--text-3); font-size: 14px; }
-.ws-text { font-size: 13.5px; color: var(--text-2); }
-
-@media (max-width: 720px) {
-  .ws-sidebar { width: 180px; padding: 12px 8px; }
-  .ws-item { font-size: 12px; padding: 7px 8px; }
-  .ws-content { padding: 18px 16px; }
-}
-
-/* ── SECTIONS ────────────────────────────────────────────────── */
-
-.section {
-  position: relative; z-index: 1;
-  padding: 100px max(20px, calc((100vw - var(--max)) / 2));
-}
-.section-alt { background: rgba(255, 255, 255, 0.015); }
-.section-head { text-align: center; margin-bottom: 56px; }
-.section-head h2 { margin-bottom: 14px; }
-.lead-sm {
-  font-size: 16px;
-  color: var(--text-2);
-  max-width: 620px;
-  margin: 0 auto;
-}
-
-/* ── FEATURES GRID ───────────────────────────────────────────── */
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 16px;
-}
-.feature {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 28px 24px;
-  transition: background var(--tr), border-color var(--tr), transform var(--tr);
-}
-.feature:hover {
-  background: var(--bg-card-2);
-  border-color: var(--border-2);
-  transform: translateY(-2px);
-}
-.feature-icon {
-  font-size: 28px;
-  margin-bottom: 16px;
-  line-height: 1;
-}
-.feature h3 {
-  font-size: 18px;
-  margin-bottom: 8px;
-  color: var(--text-1);
-}
-.feature p {
-  font-size: 14px;
-  color: var(--text-2);
-  line-height: 1.55;
-}
-.feature kbd { font-size: 12px; padding: 1px 5px; }
-
-/* ── HOW STEPS ───────────────────────────────────────────────── */
-
-.how-step {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 64px;
-  align-items: center;
-  margin-bottom: 100px;
-}
-.how-step:last-child { margin-bottom: 0; }
-.how-step.reverse > .how-text { order: 2; }
-
-.how-num {
-  font-family: var(--mono);
-  font-size: 14px;
-  color: var(--text-3);
-  letter-spacing: 0.06em;
-}
-.how-text h3 {
-  font-size: 28px;
-  font-weight: 700;
-  margin: 12px 0 16px;
-  letter-spacing: -0.02em;
-}
-.how-text p {
-  font-size: 16px;
-  color: var(--text-2);
-  line-height: 1.65;
-  margin-bottom: 20px;
-}
-.how-list {
-  list-style: none;
-  display: flex; flex-direction: column; gap: 10px;
-}
-.how-list li {
   position: relative;
-  padding-left: 22px;
-  font-size: 14.5px;
-  color: var(--text-2);
-}
-.how-list li::before {
-  content: '✓';
-  position: absolute; left: 0; top: 0;
-  color: var(--accent);
-  font-weight: 700;
-}
-
-.code-example {
-  display: flex; flex-direction: column; gap: 10px;
-  padding: 18px 20px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-}
-.code-row {
-  font-size: 13.5px;
-  color: var(--text-2);
-  display: flex; align-items: center; gap: 6px;
-  font-family: var(--mono);
-}
-.code-row kbd {
-  font-size: 11px;
-  padding: 2px 6px;
-}
-
-/* Реальные скриншоты в шагах «Как работает». PNG со встроенной macOS-тенью. */
-.how-shot {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.placeholder-media {
-  aspect-ratio: 16/10;
-  background: var(--bg-card);
-  border: 2px dashed var(--border-2);
-  border-radius: var(--radius);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 8px;
-  color: var(--text-3);
-}
-.placeholder-media span { font-size: 44px; opacity: 0.5; }
-.placeholder-media small { font-size: 12px; color: var(--text-3); }
-
-@media (max-width: 760px) {
-  .how-step { grid-template-columns: 1fr; gap: 24px; }
-  .how-step.reverse > .how-text { order: 0; }
-}
-
-/* ── DOWNLOAD ────────────────────────────────────────────────── */
-
-.section-download { text-align: center; }
-.section-download h2 { margin-bottom: 10px; }
-
-.downloads {
+  padding: 140px max(20px, calc((100vw - var(--max)) / 2)) 80px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-  max-width: 760px;
-  margin: 40px auto 30px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+  gap: 56px;
+  align-items: center;
 }
-.dl-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 28px 22px;
-  text-align: center;
-  transition: background var(--tr), border-color var(--tr), transform var(--tr);
-}
-.dl-card:hover {
-  background: var(--bg-card-2);
-  border-color: var(--border-2);
-  transform: translateY(-2px);
-}
-.dl-icon { font-size: 38px; margin-bottom: 10px; }
-.dl-card h3 { font-size: 18px; margin-bottom: 6px; }
-.dl-card p { font-size: 13px; color: var(--text-2); }
-.dl-card code {
-  background: var(--bg-card-2);
-  padding: 1px 6px;
-  font-size: 12px;
-}
+.hero-inner { max-width: 560px; text-align: left; }
 
-.dl-note {
-  font-size: 13px;
-  color: var(--text-3);
-  margin-top: 30px;
-  line-height: 1.65;
-}
-.dl-note a { color: var(--text-2); text-decoration: underline; text-decoration-color: var(--border-2); }
-
-/* ── FAQ ─────────────────────────────────────────────────────── */
-
-.faq-item {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  margin-bottom: 10px;
-  overflow: hidden;
-  transition: background var(--tr), border-color var(--tr);
-}
-.faq-item:hover { border-color: var(--border-2); }
-.faq-item[open] { background: var(--bg-card-2); }
-
-.faq-item summary {
-  padding: 18px 22px;
-  font-size: 15.5px;
-  font-weight: 600;
-  cursor: pointer;
-  list-style: none;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.faq-item summary::after {
-  content: '+';
-  font-size: 22px; font-weight: 400;
-  color: var(--text-3);
-  transition: transform var(--tr);
-}
-.faq-item[open] summary::after { content: '−'; transform: rotate(180deg); }
-.faq-item summary::-webkit-details-marker { display: none; }
-
-.faq-item p {
-  padding: 0 22px 20px;
-  font-size: 14.5px;
+/* Eyebrow — «штамп» документа: mono, uppercase, рамка */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   color: var(--text-2);
-  line-height: 1.65;
+  padding: 6px 12px;
+  border: 1px solid var(--border-2);
+  border-radius: 4px;
+  background: var(--bg-card);
+  margin-bottom: 28px;
 }
-.faq-item p a {
-  color: var(--text-1);
-  text-decoration: underline;
-  text-decoration-color: var(--border-2);
-}
-
-/* ── CTA ─────────────────────────────────────────────────────── */
-
-.section-cta {
-  text-align: center;
-  padding-top: 80px; padding-bottom: 80px;
-}
-.section-cta h2 { margin-bottom: 12px; }
-.section-cta .lead-sm { margin-bottom: 30px; }
-
-/* ── FOOTER ──────────────────────────────────────────────────── */
-
-.footer {
-  background: rgba(0, 0, 0, 0.35);
-  border-top: 1px solid var(--border);
-  padding: 36px max(20px, calc((100vw - var(--max)) / 2));
-}
-.footer-inner {
-  display: flex; align-items: center; justify-content: space-between;
-  flex-wrap: wrap; gap: 24px;
-}
-.footer-brand {
-  display: flex; align-items: center; gap: 12px;
-}
-.footer-icon { width: 36px; height: 36px; border-radius: 8px; }
-.footer-name { font-weight: 700; font-size: 15px; }
-.footer-tag { font-size: 12px; color: var(--text-3); margin-top: 2px; }
-.footer-links {
-  display: flex; gap: 22px; flex-wrap: wrap;
-  font-size: 13.5px;
-  color: var(--text-2);
-}
-.footer-links a:hover { color: var(--text-1); }
-
-@media (max-width: 560px) {
-  .hero { padding-top: 100px; }
-  .section { padding: 70px 20px; }
-  .feature, .dl-card { padding: 22px 18px; }
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   POLISH LAYER v2 — taste-skill pass.
-   Аддитивный слой: типографика Outfit, асимметричный hero,
-   bento-фичи, spotlight-карты, staggered reveal, tactile-кнопки.
-   Ничего из контента не удаляется — только переопределения стиля.
-═══════════════════════════════════════════════════════════════ */
-
-/* ── Типографика: плотный дисплей-трекинг ── */
-h1 { letter-spacing: -0.045em; line-height: 1.04; }
-h2 { letter-spacing: -0.035em; }
-
-/* ── HERO: анти-центр. Текст влево, экранный кадр дышит справа ── */
-.hero-inner {
-  max-width: 880px;
-  text-align: left;
-  align-self: flex-start;
-  margin-left: 0;
-}
-.hero-actions { justify-content: flex-start; }
-.lead { margin-left: 0; }
-
-/* Живая точка в eyebrow — perpetual micro-interaction */
-.eyebrow { display: inline-flex; align-items: center; gap: 8px; }
 .eyebrow::before {
   content: '';
   width: 6px; height: 6px; border-radius: 50%;
-  background: #34d399;
-  animation: eyebrow-pulse 2.4s ease-in-out infinite;
-}
-@keyframes eyebrow-pulse {
-  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.45); }
-  50%      { opacity: 0.6; box-shadow: 0 0 0 5px rgba(52, 211, 153, 0); }
-}
-
-/* ── КНОПКИ: tactile feedback ── */
-.btn {
-  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
-              background var(--tr), border-color var(--tr), color var(--tr),
-              box-shadow 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.btn:hover  { transform: translateY(-1px); }
-.btn:active { transform: translateY(1px) scale(0.98); }
-.btn-primary:hover { box-shadow: 0 8px 24px -8px rgba(255, 255, 255, 0.25); }
-
-/* ── FEATURES: асимметричный bento вместо 3 равных колонок ── */
-.features-grid {
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-}
-.feature { position: relative; overflow: hidden; }
-/* 1-я и 6-я карточки шире — ломаем монотонную сетку */
-.feature:nth-child(1) { grid-column: span 2; }
-.feature:nth-child(6) { grid-column: span 2; }
-@media (max-width: 860px) {
-  .features-grid { grid-template-columns: 1fr; }
-  .feature:nth-child(1), .feature:nth-child(6) { grid-column: span 1; }
-}
-
-/* Spotlight: подсветка границы под курсором (через --mx/--my из JS) */
-.feature::before {
-  content: '';
-  position: absolute; inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%),
-              rgba(255, 255, 255, 0.08), transparent 45%);
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  pointer-events: none;
-}
-.feature:hover::before { opacity: 1; }
-
-/* SVG-иконки фич: чистые stroke-примитивы в рамке вместо эмодзи */
-.feature-icon {
-  width: 42px; height: 42px;
-  display: flex; align-items: center; justify-content: center;
-  border: 1px solid var(--border);
-  border-radius: 11px;
-  background: rgba(255, 255, 255, 0.03);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  color: var(--text-1);
-}
-.feature-icon svg { width: 21px; height: 21px; }
-
-/* ── DOWNLOAD-карты: SVG-логотипы платформ ── */
-.dl-icon {
-  display: flex; align-items: center; justify-content: center;
-  color: var(--text-1);
-}
-.dl-icon svg { width: 34px; height: 34px; }
-
-/* ── SCROLL REVEAL: каскадное появление (IntersectionObserver) ── */
-@media (prefers-reduced-motion: no-preference) {
-  .reveal {
-    opacity: 0;
-    transform: translateY(22px);
-    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
-    transition-delay: calc(var(--ri, 0) * 70ms);
-  }
-  .reveal.in-view { opacity: 1; transform: none; }
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   COLOR PASS v2 — изумрудная гамма. Заметный визуальный сдвиг.
-═══════════════════════════════════════════════════════════════ */
-
-/* Ambient: два emerald/teal-блоба + лёгкое тёплое дыхание */
-body::before {
-  background:
-    radial-gradient(900px 520px at 12% -8%,  rgba(16, 185, 129, 0.16), transparent 55%),
-    radial-gradient(800px 600px at 105% 18%, rgba(45, 212, 191, 0.10), transparent 60%),
-    radial-gradient(700px 500px at 50% 115%, rgba(16, 185, 129, 0.07), transparent 60%);
-}
-
-/* Тонкая инженерная сетка в hero — текстура, исчезающая к низу */
-.hero::before {
-  content: '';
-  position: absolute; inset: 0;
-  pointer-events: none; z-index: -1;
-  background-image:
-    linear-gradient(rgba(236, 253, 245, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(236, 253, 245, 0.045) 1px, transparent 1px);
-  background-size: 56px 56px;
-  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 30% 0%, #000 35%, transparent 75%);
-          mask-image: radial-gradient(ellipse 90% 70% at 30% 0%, #000 35%, transparent 75%);
-}
-
-/* H1: последняя строка — изумрудный градиент вместо серого */
-.hero h1 .accent {
-  background: linear-gradient(120deg, #34d399 0%, #a7f3d0 60%, #5eead4 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* Primary-кнопки: изумруд с тёмным текстом */
-.btn-primary {
   background: var(--accent);
-  border-color: var(--accent);
-  color: #06241a;
+  animation: stamp-pulse 2.6s ease-in-out infinite;
 }
-.btn-primary:hover {
-  background: #4ade9f;
-  color: #06241a;
-  box-shadow: 0 10px 30px -10px rgba(52, 211, 153, 0.45);
+@keyframes stamp-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.35; }
 }
 
-/* Eyebrow: изумрудная капсула */
-.eyebrow {
-  border-color: var(--accent-dim);
-  background: var(--accent-soft);
+.hero h1 { margin-bottom: 24px; }
+/* Акцент в H1: сплошная терракота + тонкое подчёркивание. Без градиентов. */
+.hero h1 .accent {
   color: var(--accent);
+  -webkit-text-fill-color: currentColor;
+  background: none;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--accent-dim);
+  text-underline-offset: 7px;
+}
+.lead {
+  font-size: clamp(16px, 1.45vw, 19px);
+  color: var(--text-2);
+  max-width: 640px;
+  margin: 0 0 34px;
+  line-height: 1.7;
+}
+.hero-actions {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.hero-foot {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-3);
+  letter-spacing: 0.02em;
 }
 
-/* Spotlight на карточках — изумрудный отлив */
-.feature::before {
-  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%),
-              rgba(52, 211, 153, 0.10), transparent 45%);
+/* Скриншот: тёмное окно на тёмном — отделяем тонким светлым контуром
+   по альфа-форме PNG (drop-shadow повторяет силуэт окна вместе с тенью). */
+.hero-screenshot {
+  margin: 0;
+  width: 100%;
+  min-width: 0;
+  text-align: left;
 }
-.feature:hover { border-color: rgba(52, 211, 153, 0.22); }
+.hero-app-shot {
+  width: 100%; height: auto;
+  filter: drop-shadow(0 0 1px rgba(236, 232, 225, 0.35))
+          drop-shadow(0 0 28px rgba(236, 232, 225, 0.05));
+}
+.screenshot-caption {
+  margin-top: 10px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--text-3);
+}
 
-/* Иконки фич: изумрудный штрих */
-.feature-icon { color: var(--accent); border-color: var(--accent-dim); background: var(--accent-soft); }
+/* Мобайл: стек — текст, под ним скриншот */
+@media (max-width: 980px) {
+  .hero { grid-template-columns: 1fr; gap: 40px; padding-top: 120px; }
+  .hero-inner { max-width: 640px; }
+}
 
-/* Ссылки и навигация: hover в акцент */
-.nav-links a:not(.btn):hover { color: var(--accent); }
-.dl-card:hover { border-color: rgba(52, 211, 153, 0.25); }
-.dl-icon { color: var(--accent); }
+/* ── MARQUEE: тикер триггеров между двумя линейками ──────────── */
 
-/* kbd: лёгкий изумрудный кант */
-kbd { border-color: var(--accent-dim); color: var(--accent); background: var(--accent-soft); }
-
-/* Числа шагов how-step */
-.how-num { color: var(--accent); }
-
-/* ── KINETIC MARQUEE: бегущая строка триггеров между hero и features ── */
 .trigger-marquee {
-  position: relative;
-  padding: 18px 0;
+  padding: 14px 0;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
+  background: var(--bg-card-2);
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-          mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
 }
 .trigger-marquee-track {
-  display: flex; gap: 44px;
+  display: flex; gap: 42px;
   width: max-content;
-  animation: marquee-scroll 36s linear infinite;
+  animation: marquee-scroll 38s linear infinite;
 }
 .trigger-marquee:hover .trigger-marquee-track { animation-play-state: paused; }
 @keyframes marquee-scroll {
@@ -782,20 +256,287 @@ kbd { border-color: var(--accent-dim); color: var(--accent); background: var(--a
   to   { transform: translateX(-50%); }
 }
 .tm-item {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-family: var(--mono); font-size: 13px;
+  display: inline-flex; align-items: center; gap: 9px;
+  font-family: var(--mono); font-size: 12.5px;
   color: var(--text-3);
   white-space: nowrap;
 }
 .tm-item b {
   font-weight: 500;
-  color: var(--accent);
-  padding: 3px 9px;
-  background: var(--accent-soft);
-  border: 1px solid var(--accent-dim);
-  border-radius: 6px;
+  color: var(--ink);
+  padding: 2px 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-2);
+  border-bottom-width: 2px;
+  border-radius: 5px;
 }
 .tm-item span { color: var(--text-2); }
 @media (prefers-reduced-motion: reduce) {
   .trigger-marquee-track { animation: none; }
 }
+
+/* ── SECTIONS: документная нумерация ─────────────────────────── */
+
+.section {
+  padding: 88px max(20px, calc((100vw - var(--max)) / 2));
+  counter-increment: sec;
+}
+.section-alt {
+  background: var(--bg-card-2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.section-head { max-width: 720px; margin-bottom: 48px; }
+/* Номер секции: «01 /» моноширинным над заголовком */
+.section-head h2::before,
+.section-download > h2::before {
+  content: counter(sec, decimal-leading-zero) " /";
+  display: block;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+.lead-sm {
+  margin-top: 14px;
+  font-size: 16px;
+  color: var(--text-2);
+  max-width: 60ch;
+}
+
+/* ── FEATURES: «миллиметровка» — сетка на линиях, не карточки ── */
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.feature {
+  position: relative;
+  background: var(--bg);
+  padding: 30px 26px 32px;
+  transition: background var(--tr);
+}
+.feature:hover { background: var(--bg-card-2); }
+/* Акцентная засечка слева при ховере */
+.feature::after {
+  content: '';
+  position: absolute; left: 0; top: 22px; bottom: 22px;
+  width: 2px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.25s ease;
+}
+.feature:hover::after { transform: scaleY(1); }
+.feature::before { content: none; }
+
+.feature-icon {
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border-2);
+  border-radius: 9px;
+  background: var(--bg-card);
+  color: var(--ink);
+  margin-bottom: 18px;
+}
+.feature-icon svg { width: 20px; height: 20px; }
+.feature h3 { margin-bottom: 8px; color: var(--ink); }
+.feature p { font-size: 14px; color: var(--text-2); line-height: 1.6; }
+.feature kbd { font-size: 11.5px; padding: 1px 5px; }
+
+@media (max-width: 860px) {
+  .features-grid { grid-template-columns: 1fr; }
+}
+
+/* ── HOW IT WORKS ────────────────────────────────────────────── */
+
+.how-step {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+  padding: 52px 0;
+}
+.how-step + .how-step { border-top: 1px solid var(--border); }
+.how-step.reverse .how-text   { order: 2; }
+.how-step.reverse .how-visual { order: 1; }
+
+/* Крупный моноширинный номер шага */
+.how-num {
+  display: block;
+  font-family: var(--mono);
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+.how-text h3 { font-size: 23px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 12px; }
+.how-text p { color: var(--text-2); margin-bottom: 16px; }
+.how-list { list-style: none; }
+.how-list li {
+  position: relative;
+  padding-left: 22px;
+  margin-bottom: 8px;
+  font-size: 14.5px;
+  color: var(--text-2);
+}
+.how-list li::before {
+  content: '—';
+  position: absolute; left: 0;
+  color: var(--accent);
+}
+.how-visual { min-width: 0; }
+.how-shot {
+  width: 100%; height: auto; display: block;
+  filter: drop-shadow(0 0 1px rgba(236, 232, 225, 0.3));
+}
+
+.code-example {
+  margin-top: 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card-2);
+  padding: 14px 16px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.code-row {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text-2);
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+}
+
+@media (max-width: 860px) {
+  .how-step { grid-template-columns: 1fr; gap: 28px; padding: 40px 0; }
+  .how-step.reverse .how-text, .how-step.reverse .how-visual { order: initial; }
+}
+
+/* ── DOWNLOAD ────────────────────────────────────────────────── */
+
+.section-download > h2 { margin-bottom: 6px; }
+.section-download > .lead-sm { margin-bottom: 40px; }
+
+.downloads {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 30px;
+}
+.dl-card {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  padding: 34px 20px 28px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-align: center;
+  transition: border-color var(--tr), transform 150ms ease;
+}
+.dl-card:hover { border-color: var(--text-3); transform: translateY(-2px); color: inherit; }
+.dl-card h3 { font-size: 17px; }
+.dl-card p { font-size: 13px; color: var(--text-3); }
+.dl-icon { display: flex; color: var(--ink); }
+.dl-icon svg { width: 34px; height: 34px; }
+.dl-card:hover .dl-icon { color: var(--accent); }
+.dl-note {
+  font-size: 13.5px;
+  color: var(--text-3);
+  line-height: 1.7;
+}
+.dl-note a { color: var(--text-2); text-decoration: underline; text-underline-offset: 3px; }
+.dl-note a:hover { color: var(--accent); }
+
+@media (max-width: 760px) {
+  .downloads { grid-template-columns: 1fr; }
+}
+
+/* ── FAQ: без коробок — только разделители и «+» ─────────────── */
+
+.faq-item { border-bottom: 1px solid var(--border); }
+.faq-item:first-of-type { border-top: 1px solid var(--border); }
+.faq-item summary {
+  position: relative;
+  list-style: none;
+  cursor: pointer;
+  padding: 20px 44px 20px 0;
+  font-weight: 600;
+  font-size: 15.5px;
+  color: var(--ink);
+  transition: color var(--tr);
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary:hover { color: var(--accent); }
+.faq-item summary::after {
+  content: '+';
+  position: absolute; right: 4px; top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--mono);
+  font-size: 19px;
+  font-weight: 400;
+  color: var(--text-3);
+  transition: transform 0.25s ease, color var(--tr);
+}
+.faq-item[open] summary::after {
+  transform: translateY(-50%) rotate(45deg);
+  color: var(--accent);
+}
+.faq-item p {
+  padding: 0 0 22px;
+  max-width: 68ch;
+  font-size: 14.5px;
+  color: var(--text-2);
+  line-height: 1.7;
+}
+.faq-item a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ── CTA ─────────────────────────────────────────────────────── */
+
+.section-cta {
+  text-align: center;
+  border-top: 1px solid var(--border);
+  background: var(--bg-card-2);
+}
+.section-cta h2 { margin-bottom: 12px; }
+.section-cta .lead-sm { margin: 0 auto 28px; }
+
+/* ── FOOTER ──────────────────────────────────────────────────── */
+
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 36px max(20px, calc((100vw - var(--max)) / 2));
+  background: var(--bg);
+}
+.footer-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 20px; flex-wrap: wrap;
+}
+.footer-brand { display: flex; align-items: center; gap: 12px; }
+.footer-icon { width: 30px; height: 30px; border-radius: 7px; }
+.footer-name { font-weight: 700; font-size: 14px; }
+.footer-tag { font-family: var(--mono); font-size: 11.5px; color: var(--text-3); }
+.footer-links {
+  display: flex; gap: 20px; flex-wrap: wrap;
+  font-size: 13px; color: var(--text-2);
+}
+.footer-links a:hover { color: var(--accent); }
+
+/* ── SCROLL REVEAL (классы вешает JS) ────────────────────────── */
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: calc(var(--ri, 0) * 65ms);
+  }
+  .reveal.in-view { opacity: 1; transform: none; }
+}
+
+/* ── Совместимость legal-страниц (privacy/terms) ─────────────── */
+.legal-page a { color: var(--accent); }

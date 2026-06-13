@@ -9,33 +9,35 @@
    Шрифты: подключаются автоматически через @import (Inter + JetBrains Mono).
 ══════════════════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 /* ── Токены: тёмная база ─────────────────────────────────────── */
 
 :root,
 :root[data-theme="dark"] {
-  /* surfaces */
-  --bg:           #0a0b0d;
-  --bg-card:      rgba(255, 255, 255, 0.04);
-  --bg-input:     rgba(255, 255, 255, 0.05);
-  --bg-hover:     rgba(255, 255, 255, 0.07);
-  --bg-sidebar:   rgba(255, 255, 255, 0.02);
+  /* surfaces — тёплый уголь (бренд «кофе», как snippiapp.com) */
+  --bg:           #161412;
+  --bg-card:      rgba(236, 232, 225, 0.04);
+  --bg-input:     rgba(236, 232, 225, 0.05);
+  --bg-hover:     rgba(236, 232, 225, 0.07);
+  --bg-sidebar:   rgba(236, 232, 225, 0.02);
 
-  /* monochrome accent — white on dark */
-  --accent:       #ffffff;
-  --accent-hover: rgba(255, 255, 255, 0.92);
-  --accent-dim:   rgba(255, 255, 255, 0.10);
+  /* кремовый акцент (CTA) + терракота для бренд-деталей */
+  --accent:       #ECE8E1;
+  --accent-hover: rgba(236, 232, 225, 0.92);
+  --accent-dim:   rgba(236, 232, 225, 0.10);
+  --terra:        #E05D3D;
+  --terra-dim:    rgba(224, 93, 61, 0.14);
 
-  /* text */
-  --text:         rgba(245, 246, 250, 0.96);
-  --text-1:       rgba(245, 246, 250, 0.96);
-  --text-2:       rgba(220, 222, 230, 0.66);
-  --text-3:       rgba(200, 204, 215, 0.42);
+  /* text — тёплые */
+  --text:         rgba(236, 232, 225, 0.96);
+  --text-1:       rgba(236, 232, 225, 0.96);
+  --text-2:       rgba(216, 210, 200, 0.66);
+  --text-3:       rgba(200, 193, 180, 0.42);
 
   /* lines */
-  --border:       rgba(255, 255, 255, 0.08);
-  --border-focus: rgba(255, 255, 255, 0.40);
+  --border:       rgba(236, 232, 225, 0.08);
+  --border-focus: rgba(236, 232, 225, 0.40);
 
   /* semantic */
   --red:          oklch(0.72 0.18 25);
@@ -58,7 +60,7 @@
   --tr:           160ms cubic-bezier(.2,.8,.2,1);
 
   /* fonts */
-  --font:         'Inter', -apple-system, 'SF Pro Display', system-ui, 'Segoe UI', sans-serif;
+  --font:         'Geist', -apple-system, 'SF Pro Display', system-ui, 'Segoe UI', sans-serif;
   --mono:         'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 
   /* layout */
@@ -69,23 +71,25 @@
 
 /* ── Светлая тема (когда пользователь явно выбрал) ─────────── */
 :root[data-theme="light"] {
-  --bg:           #fafafa;
-  --bg-card:      rgba(0, 0, 0, 0.025);
-  --bg-input:     rgba(0, 0, 0, 0.04);
-  --bg-hover:     rgba(0, 0, 0, 0.05);
-  --bg-sidebar:   rgba(0, 0, 0, 0.018);
+  --bg:           #F7F6F3;
+  --bg-card:      rgba(24, 22, 18, 0.03);
+  --bg-input:     rgba(24, 22, 18, 0.045);
+  --bg-hover:     rgba(24, 22, 18, 0.06);
+  --bg-sidebar:   rgba(24, 22, 18, 0.02);
 
-  --accent:       #0a0b0d;
-  --accent-hover: rgba(10, 11, 13, 0.85);
-  --accent-dim:   rgba(0, 0, 0, 0.08);
+  --accent:       #181614;
+  --accent-hover: rgba(24, 22, 20, 0.85);
+  --accent-dim:   rgba(24, 22, 18, 0.08);
+  --terra:        #C2452D;
+  --terra-dim:    rgba(194, 69, 45, 0.12);
 
-  --text:         rgba(15, 17, 22, 0.96);
-  --text-1:       rgba(15, 17, 22, 0.96);
-  --text-2:       rgba(40, 42, 50, 0.66);
-  --text-3:       rgba(70, 75, 88, 0.50);
+  --text:         rgba(24, 22, 18, 0.96);
+  --text-1:       rgba(24, 22, 18, 0.96);
+  --text-2:       rgba(60, 56, 48, 0.70);
+  --text-3:       rgba(90, 85, 74, 0.52);
 
-  --border:       rgba(0, 0, 0, 0.08);
-  --border-focus: rgba(0, 0, 0, 0.30);
+  --border:       rgba(24, 22, 18, 0.09);
+  --border-focus: rgba(24, 22, 18, 0.32);
 
   --shadow-sm:    0 1px 0 rgba(255,255,255,0.6) inset, 0 1px 2px rgba(0,0,0,0.06);
   --shadow-md:    0 4px 16px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.05);
@@ -95,20 +99,22 @@
 /* Авто (по prefers-color-scheme) — переопределяет только если light */
 @media (prefers-color-scheme: light) {
   :root[data-theme="auto"] {
-    --bg:           #fafafa;
-    --bg-card:      rgba(0, 0, 0, 0.025);
-    --bg-input:     rgba(0, 0, 0, 0.04);
-    --bg-hover:     rgba(0, 0, 0, 0.05);
-    --bg-sidebar:   rgba(0, 0, 0, 0.018);
-    --accent:       #0a0b0d;
-    --accent-hover: rgba(10, 11, 13, 0.85);
-    --accent-dim:   rgba(0, 0, 0, 0.08);
-    --text:         rgba(15, 17, 22, 0.96);
-    --text-1:       rgba(15, 17, 22, 0.96);
-    --text-2:       rgba(40, 42, 50, 0.66);
-    --text-3:       rgba(70, 75, 88, 0.50);
-    --border:       rgba(0, 0, 0, 0.08);
-    --border-focus: rgba(0, 0, 0, 0.30);
+    --bg:           #F7F6F3;
+    --bg-card:      rgba(24, 22, 18, 0.03);
+    --bg-input:     rgba(24, 22, 18, 0.045);
+    --bg-hover:     rgba(24, 22, 18, 0.06);
+    --bg-sidebar:   rgba(24, 22, 18, 0.02);
+    --accent:       #181614;
+    --accent-hover: rgba(24, 22, 20, 0.85);
+    --accent-dim:   rgba(24, 22, 18, 0.08);
+    --terra:        #C2452D;
+    --terra-dim:    rgba(194, 69, 45, 0.12);
+    --text:         rgba(24, 22, 18, 0.96);
+    --text-1:       rgba(24, 22, 18, 0.96);
+    --text-2:       rgba(60, 56, 48, 0.70);
+    --text-3:       rgba(90, 85, 74, 0.52);
+    --border:       rgba(24, 22, 18, 0.09);
+    --border-focus: rgba(24, 22, 18, 0.32);
   }
 }
 
@@ -138,15 +144,21 @@ body::before {
   position: fixed; inset: 0;
   pointer-events: none; z-index: 0;
   background:
-    radial-gradient(at 0% 0%,   oklch(0.30 0.08 270 / .35), transparent 50%),
-    radial-gradient(at 100% 100%, oklch(0.28 0.06 200 / .30), transparent 55%);
+    radial-gradient(at 0% 0%,   oklch(0.32 0.05 50 / .30), transparent 50%),
+    radial-gradient(at 100% 100%, oklch(0.30 0.04 80 / .25), transparent 55%);
 }
-:root[data-theme="light"] body::before,
+/* Светлая бумага: тёплое свечение. (Ранее селектор с запятой перед @media
+   был невалиден и light-вариант не применялся — починено.) */
+:root[data-theme="light"] body::before {
+  background:
+    radial-gradient(at 0% 0%,   oklch(0.92 0.03 70 / .5), transparent 55%),
+    radial-gradient(at 100% 100%, oklch(0.90 0.04 50 / .35), transparent 55%);
+}
 @media (prefers-color-scheme: light) {
   :root[data-theme="auto"] body::before {
     background:
-      radial-gradient(at 0% 0%,   oklch(0.85 0.06 80 / .35), transparent 55%),
-      radial-gradient(at 100% 100%, oklch(0.88 0.05 230 / .30), transparent 55%);
+      radial-gradient(at 0% 0%,   oklch(0.92 0.03 70 / .5), transparent 55%),
+      radial-gradient(at 100% 100%, oklch(0.90 0.04 50 / .35), transparent 55%);
   }
 }
 
@@ -768,8 +780,8 @@ form { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px
   line-height: 1.45;
   text-align: center;
   color: var(--text-3);
-  background: rgba(106, 169, 255, 0.07);
-  border: 1px solid rgba(106, 169, 255, 0.18);
+  background: rgba(224, 93, 61, 0.08);
+  border: 1px solid rgba(224, 93, 61, 0.18);
   border-radius: 8px;
 }
 
@@ -1062,15 +1074,15 @@ form { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px
   display: flex; align-items: flex-start;
   padding: 6px 7px; gap: 4px; flex-direction: column;
 }
-.theme-preview--light { background: #fafafa; --pl: #d0d0d6; }
-.theme-preview--dark  { background: #0f1014; --pl: #36363e; }
+.theme-preview--light { background: #F7F6F3; --pl: #D8D2C6; }
+.theme-preview--dark  { background: #161412; --pl: #3B362E; }
 /* То же мини-окно что Light/Dark (общий padding + линии-плейсхолдеры),
    но фон разделён ровно пополам. Тёмный фон — сплошной (как у Dark, без
    артефактов на правом крае, которые давал split-градиент), а светлая левая
    половина рисуется через ::before. Линии — нейтрально-серые, читаются на
    обеих половинах. */
 .theme-preview--auto {
-  background: #0f1014;
+  background: #161412;
   --pl: rgba(140, 140, 150, 0.7);
 }
 .theme-preview--auto::before {
@@ -1078,7 +1090,7 @@ form { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px
   position: absolute;
   top: 0; left: 0; bottom: 0;
   width: 50%;
-  background: #fafafa;
+  background: #F7F6F3;
 }
 
 .theme-preview-line {
@@ -1339,7 +1351,7 @@ form { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px
 .about-hero {
   padding: 36px 24px 20px;
   text-align: center;
-  background: radial-gradient(circle at top, rgba(106,169,255,0.08), transparent 70%);
+  background: radial-gradient(circle at top, rgba(224, 93, 61, 0.08), transparent 70%);
 }
 .about-icon {
   width: 72px; height: 72px;
@@ -1349,7 +1361,7 @@ form { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px
   border: 1px solid var(--border);
   display: flex; align-items: center; justify-content: center;
   color: var(--text-1);
-  box-shadow: 0 8px 32px -8px rgba(106,169,255,0.25);
+  box-shadow: 0 8px 32px -8px rgba(224, 93, 61, 0.25);
 }
 .about-icon svg { width: 38px; height: 38px; }
 .about-name {
@@ -1384,7 +1396,7 @@ form { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px
   font-size: 12px;
 }
 .about-links a {
-  color: #6aa9ff;
+  color: var(--terra);
   text-decoration: none;
 }
 .about-links a:hover { text-decoration: underline; }
@@ -1414,7 +1426,7 @@ form { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px
   text-decoration: none;
   transition: border-color 0.12s, color 0.12s;
 }
-.about-credits-list a:hover { border-color: #6aa9ff; color: var(--text-1); }
+.about-credits-list a:hover { border-color: var(--terra); color: var(--text-1); }
 .about-footer {
   padding: 12px 24px 18px;
   text-align: center;
@@ -1677,11 +1689,11 @@ form { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px
   font-size: 13px;
   transition: border-color 0.12s, background 0.12s;
 }
-.import-source:hover { border-color: rgba(106,169,255,0.4); }
+.import-source:hover { border-color: rgba(224, 93, 61, 0.45); }
 .import-source input[type="radio"] { cursor: pointer; flex-shrink: 0; }
 .import-source:has(input:checked) {
-  border-color: #6aa9ff;
-  background: rgba(106,169,255,0.06);
+  border-color: var(--terra);
+  background: var(--terra-dim);
 }
 .import-source > span { display: flex; flex-direction: column; gap: 1px; }
 .import-source small {
@@ -1700,7 +1712,7 @@ form { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px
   cursor: pointer;
   transition: border-color 0.12s;
 }
-.form-toggle-row:hover { border-color: rgba(106,169,255,0.4); }
+.form-toggle-row:hover { border-color: rgba(224, 93, 61, 0.45); }
 .form-toggle-row input[type="checkbox"] { margin-top: 2px; cursor: pointer; }
 .form-toggle-label { font-size: 13px; font-weight: 500; color: var(--text-1); }
 .form-toggle-hint {
@@ -1786,7 +1798,7 @@ form { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px
   color: var(--text-2);
 }
 .license-plan.is-pro {
-  background: linear-gradient(135deg, #6aa9ff, #a855f7);
+  background: linear-gradient(135deg, #E05D3D, #D9914D);
   color: #fff;
 }
 .license-email { font-size: 12px; color: var(--text-3); }
@@ -1804,7 +1816,7 @@ form { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px
   color: var(--text-3);
   line-height: 1.5;
 }
-.settings-row-hint a { color: #6aa9ff; text-decoration: none; }
+.settings-row-hint a { color: var(--terra); text-decoration: none; }
 .settings-row-hint a:hover { text-decoration: underline; }
 .settings-row-note {
   margin: 8px 0 0;
@@ -1845,7 +1857,7 @@ form { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px
   display: block;
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #6aa9ff, #5fcbff);
+  background: linear-gradient(90deg, #E05D3D, #D9914D);
   transition: width 0.2s ease;
 }
 .updater-progress-text { font-size: 11.5px; color: var(--text-3); min-width: 36px; text-align: right; }
@@ -1897,7 +1909,7 @@ form { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px
   color: var(--text-2);
   transition: border-color 0.12s, background 0.12s, transform 0.06s;
 }
-.ph-chip:hover { border-color: var(--accent, #6aa9ff); background: var(--bg-hover, rgba(106,169,255,0.06)); }
+.ph-chip:hover { border-color: var(--terra); background: var(--bg-hover, var(--terra-dim)); }
 .ph-chip:active { transform: scale(0.98); }
 .ph-chip code {
   font-family: var(--mono);
@@ -1914,3 +1926,28 @@ form { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px
   color: var(--text-3);
   line-height: 1.4;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   Seamless titlebar (macOS): полоска-хедер убрана, светофоры
+   (trafficLightPosition 18/18 в mainWindow.js) висят поверх
+   сайдбара. Хедер остаётся в DOM как НЕВИДИМАЯ drag-зона.
+   Windows/Linux не трогаем — там системная рамка.
+══════════════════════════════════════════════════════════════ */
+[data-platform="darwin"] .app-header {
+  position: absolute;
+  top: 0; left: 0;
+  /* Drag-зона только над сайдбаром — иначе невидимый хедер перехватывал бы
+     клики по кнопкам в шапке правой панели (Import / New snippet). */
+  width: var(--sidebar-w);
+  height: 48px;
+  background: transparent;
+  border-bottom: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  z-index: 50;
+  pointer-events: auto;          /* drag работает */
+}
+[data-platform="darwin"] .app-header .app-title { display: none; }
+
+/* Контент начинается от самого верха окна; сайдбару — отступ под светофоры */
+[data-platform="darwin"] .sidebar { padding-top: 52px; }

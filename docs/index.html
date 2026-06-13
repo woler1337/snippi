@@ -8,7 +8,7 @@
     Snippi — расширитель текста с OCR и переводом для Mac, Windows и Linux
   </title>
   <meta name="description" content="Trigger of two letters expands into a full email. Screenshot of any screen area → text in clipboard. Translate anything on screen with one shortcut. Free. Local. No account." />
-  <meta name="theme-color" content="#0a0b0d" />
+  <meta name="theme-color" content="#161412" />
 
   <!-- Open Graph -->
   <meta property="og:title" content="Snippi — text expander with OCR and translation" />
@@ -18,11 +18,44 @@
   <meta property="og:type" content="website" />
 
   <link rel="canonical" href="https://snippiapp.com/" />
-  <link rel="icon" type="image/png" href="assets/icon.png" />
+
+  <!-- Structured data: связывает бренд «Snippi» с этим доменом для поисковиков -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "Snippi",
+        "url": "https://snippiapp.com/",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "macOS, Windows, Linux",
+        "description": "Text expander with OCR and screen translation. Short triggers expand into full text; screenshot any area to grab or translate text instantly.",
+        "image": "https://snippiapp.com/assets/icon.png",
+        "screenshot": "https://snippiapp.com/assets/screenshots/01-snippets.png",
+        "downloadUrl": "https://github.com/woler1337/snippi/releases/latest",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "author": { "@type": "Person", "name": "Daniil Limarenkov" }
+      },
+      {
+        "@type": "WebSite",
+        "name": "Snippi",
+        "alternateName": "Snippi App",
+        "url": "https://snippiapp.com/"
+      }
+    ]
+  }
+  </script>
+
+  <link rel="icon" href="/favicon.ico" sizes="48x48" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
 
   <style>
     /* Переключатель языков в навигации (минимум CSS поверх существующего) */
@@ -31,8 +64,8 @@
       gap: 1px;
       padding: 2px;
       margin-left: 6px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(236,232,225,0.05);
+      border: 1px solid #3B362E;
       border-radius: 6px;
       font-size: 11px;
     }
@@ -49,10 +82,7 @@
       text-transform: uppercase;
       transition: all 0.12s;
     }
-    .lang-toggle button.active {
-      background: rgba(255,255,255,0.1);
-      color: var(--text-1, #fff);
-    }
+    .lang-toggle button.active { background: #ECE8E1; color: #161412; }
   </style>
 </head>
 <body>
@@ -166,9 +196,9 @@
     <div class="feature">
       <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6M9 16h4"/></svg></div>
       <h3 data-ru="История буфера" data-en="Clipboard history">История буфера</h3>
-      <p data-ru-html="Последние 50 копий всегда под рукой. Палитра по <kbd>⌘⇧E</kbd> — fuzzy-поиск."
-         data-en-html="Last 50 copies always at hand. Palette by <kbd>⌘⇧E</kbd> — fuzzy search.">
-        Последние 50 копий всегда под рукой. Палитра по <kbd>⌘⇧E</kbd> — fuzzy-поиск.
+      <p data-ru-html="Последние 50 копий всегда под рукой. Палитра по <kbd>⌘⇧E</kbd> / <kbd>Ctrl+Shift+E</kbd> — fuzzy-поиск."
+         data-en-html="Last 50 copies always at hand. Palette by <kbd>⌘⇧E</kbd> / <kbd>Ctrl+Shift+E</kbd> — fuzzy search.">
+        Последние 50 копий всегда под рукой. Палитра по <kbd>⌘⇧E</kbd> / <kbd>Ctrl+Shift+E</kbd> — fuzzy-поиск.
       </p>
     </div>
     <div class="feature">
@@ -190,9 +220,9 @@
     <div class="feature">
       <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></div>
       <h3 data-ru="Палитра поиска" data-en="Search palette">Палитра поиска</h3>
-      <p data-ru-html="Не помнишь триггер? <kbd>⌘⇧E</kbd> открывает fuzzy-поиск по всем сниппетам. Как Spotlight."
-         data-en-html="Don't remember the trigger? <kbd>⌘⇧E</kbd> opens fuzzy search across all snippets. Like Spotlight.">
-        Не помнишь триггер? <kbd>⌘⇧E</kbd> открывает fuzzy-поиск по всем сниппетам. Как Spotlight.
+      <p data-ru-html="Не помнишь триггер? <kbd>⌘⇧E</kbd> / <kbd>Ctrl+Shift+E</kbd> открывает fuzzy-поиск по всем сниппетам. Как Spotlight."
+         data-en-html="Don't remember the trigger? <kbd>⌘⇧E</kbd> / <kbd>Ctrl+Shift+E</kbd> opens fuzzy search across all snippets. Like Spotlight.">
+        Не помнишь триггер? <kbd>⌘⇧E</kbd> / <kbd>Ctrl+Shift+E</kbd> открывает fuzzy-поиск по всем сниппетам. Как Spotlight.
       </p>
     </div>
   </div>
@@ -229,9 +259,9 @@
     <div class="how-text">
       <span class="how-num">02</span>
       <h3 data-ru="Достань текст откуда угодно — OCR" data-en="Grab text from anywhere — OCR">Достань текст откуда угодно — OCR</h3>
-      <p data-ru-html="Открываешь PDF, видишь нужный фрагмент. Жмёшь <kbd>⌘⇧1</kbd>, выделяешь область — текст уже в буфере. Работает офлайн через Apple Vision."
-         data-en-html="Open a PDF, see the fragment you need. Press <kbd>⌘⇧1</kbd>, select the area — text is in your clipboard. Works offline via Apple Vision.">
-        Открываешь PDF, видишь нужный фрагмент. Жмёшь <kbd>⌘⇧1</kbd>, выделяешь область — текст уже в буфере. Работает офлайн через Apple Vision.
+      <p data-ru-html="Открываешь PDF, видишь нужный фрагмент. Жмёшь <kbd>⌘⇧1</kbd> / <kbd>Ctrl+Shift+1</kbd>, выделяешь область — текст уже в буфере. Работает офлайн через Apple Vision."
+         data-en-html="Open a PDF, see the fragment you need. Press <kbd>⌘⇧1</kbd> / <kbd>Ctrl+Shift+1</kbd>, select the area — text is in your clipboard. Works offline via Apple Vision.">
+        Открываешь PDF, видишь нужный фрагмент. Жмёшь <kbd>⌘⇧1</kbd> / <kbd>Ctrl+Shift+1</kbd>, выделяешь область — текст уже в буфере. Работает офлайн через Apple Vision.
       </p>
       <ul class="how-list">
         <li data-ru="~80 языков, включая русский, украинский, китайский, японский"
@@ -252,9 +282,9 @@
     <div class="how-text">
       <span class="how-num">03</span>
       <h3 data-ru="Переведи любой текст с экрана" data-en="Translate anything on screen">Переведи любой текст с экрана</h3>
-      <p data-ru-html="<kbd>⌘⇧2</kbd> → область → распознавание → перевод → буфер. Один shortcut, один select, готово."
-         data-en-html="<kbd>⌘⇧2</kbd> → area → recognition → translation → clipboard. One shortcut, one select, done.">
-        <kbd>⌘⇧2</kbd> → область → распознавание → перевод → буфер. Один shortcut, один select, готово.
+      <p data-ru-html="<kbd>⌘⇧2</kbd> / <kbd>Ctrl+Shift+2</kbd> → область → распознавание → перевод → буфер. Один shortcut, один select, готово."
+         data-en-html="<kbd>⌘⇧2</kbd> / <kbd>Ctrl+Shift+2</kbd> → area → recognition → translation → clipboard. One shortcut, one select, done.">
+        <kbd>⌘⇧2</kbd> / <kbd>Ctrl+Shift+2</kbd> → область → распознавание → перевод → буфер. Один shortcut, один select, готово.
       </p>
       <ul class="how-list">
         <li data-ru="Целевой язык выбираешь в настройках (English, Русский, Deutsch, и ещё 80)"

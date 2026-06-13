@@ -28,7 +28,7 @@ function createMainWindow() {
   const win = new BrowserWindow({
     width: 800, height: 600, minWidth: 600, minHeight: 440,
     titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'default',
-    trafficLightPosition: process.platform === 'darwin' ? { x: 14, y: 10 } : undefined,
+    trafficLightPosition: process.platform === 'darwin' ? { x: 18, y: 18 } : undefined,
     show: false,
     skipTaskbar: true,
     webPreferences: {
