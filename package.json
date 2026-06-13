@@ -11,7 +11,6 @@
     "create-icon": "node scripts/create-icon.js",
     "build:mac": "bash scripts/build-helper.sh && electron-builder --mac",
     "build:win": "electron-builder --win",
-    "build:linux": "electron-builder --linux",
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {

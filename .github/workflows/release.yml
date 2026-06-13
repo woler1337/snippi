@@ -3,7 +3,7 @@ name: Release
 # Триггеры:
 #   • push тега v* (например v1.0.2) — основной флоу релиза
 #   • workflow_dispatch — запуск руками через UI «Actions» (полезно когда
-#     релиз залип и нужно перезапустить только Windows/Linux)
+#     релиз залип и нужно перезапустить только Windows)
 on:
   push:
     tags:
@@ -25,7 +25,7 @@ jobs:
       # платформ тоже не выйдет.
       fail-fast: false
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
+        os: [macos-latest, windows-latest]
 
     steps:
       - name: Checkout
@@ -36,15 +36,6 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-
-      # ── Системные библиотеки для Linux ─────────────────────────────
-      # uiohook-napi требует X11/XTest dev-headers для нативной сборки.
-      # На macOS и Windows runner'ах эти deps уже есть.
-      - name: Install Linux system libraries
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libx11-dev libxtst-dev libxkbcommon-dev libxkbfile-dev libpng-dev
 
       # ── Зависимости ────────────────────────────────────────────────
       # npm ci быстрее и строже npm install. postinstall в package.json
@@ -71,12 +62,6 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run build:win -- --publish always
 
-      - name: Build & publish (Linux)
-        if: matrix.os == 'ubuntu-latest'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run build:linux -- --publish always
-
       # ── Артефакты (на случай если publish упадёт — DMG/EXE доступны
       # для скачивания со страницы Actions Run в течение 7 дней) ──────
       - name: Upload artifacts
@@ -87,7 +72,6 @@ jobs:
           path: |
             dist/*.dmg
             dist/*.exe
-            dist/*.AppImage
             dist/*.yml
             dist/*.blockmap
           if-no-files-found: ignore

@@ -11,7 +11,7 @@
 [![Release](https://img.shields.io/github/v/release/woler1337/snippi?style=flat-square&color=4f46e5)](https://github.com/woler1337/snippi/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/woler1337/snippi/total?style=flat-square&color=10b981)](https://github.com/woler1337/snippi/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
-[![Platforms](https://img.shields.io/badge/platforms-macOS%20%7C%20Windows%20%7C%20Linux-blue?style=flat-square)](#-download--скачать)
+[![Platforms](https://img.shields.io/badge/platforms-macOS%20%7C%20Windows-blue?style=flat-square)](#-download--скачать)
 [![Stars](https://img.shields.io/github/stars/woler1337/snippi?style=flat-square&color=fbbf24)](https://github.com/woler1337/snippi/stargazers)
 
 [Website](https://snippiapp.com/) ·
@@ -43,7 +43,6 @@ Pick the file for your system on the **[Releases page](https://github.com/woler1
 | 🍎 **macOS** (Apple Silicon — M1/M2/M3/M4) | `Snippi-X.Y.Z-arm64.dmg` | arm64 |
 | 🍎 **macOS** (Intel) | `Snippi-X.Y.Z.dmg` | x64 |
 | 🪟 **Windows** (10 / 11) | `Snippi-X.Y.Z-portable.exe` | x64 |
-| 🐧 **Linux** | `Snippi-X.Y.Z.AppImage` | x64 |
 
 > Not sure which one? On macOS: Apple menu → "About This Mac" → look for the chip (Apple M-series → arm64; Intel → x64).
 > **Не уверены какой нужен?** На macOS — меню Apple → «Об этом Mac» → смотрите чип.
@@ -63,7 +62,7 @@ Pick the file for your system on the **[Releases page](https://github.com/woler1
 - **Dynamic placeholders** — `{date}`, `{date:+7d}`, `{clipboard}`, `{uuid}`, `{random:1-100}`, `{upper:…}`, `{|}` cursor
 - **Global hotkeys** — bind any key combo to insert any text
 - **Snippet groups** — organize by context (work, personal, templates)
-- **Screenshot → text (OCR)** — select an area, recognized text goes to clipboard. Apple Vision on macOS, Tesseract on Win/Linux. Fully offline.
+- **Screenshot → text (OCR)** — select an area, recognized text goes to clipboard. Apple Vision on macOS, Tesseract on Windows. Fully offline.
 - **Screenshot → translate** — same as above + auto-translate to your target language (~80 languages, no API key)
 - **Quick-search palette** — `⌘⇧E` / `Ctrl+Shift+E` opens fuzzy search across your snippets, like Raycast/Alfred
 - **Clipboard history** — last 50 copied texts
@@ -79,7 +78,7 @@ Pick the file for your system on the **[Releases page](https://github.com/woler1
 - **Динамические плейсхолдеры** — `{date}`, `{date:+7d}`, `{clipboard}`, `{uuid}`, `{random:1-100}`, `{upper:…}`, `{|}` курсор
 - **Глобальные хоткеи** — назначайте произвольной комбинации вставку любого текста
 - **Группы сниппетов** — сортируйте по контексту (работа, личное, шаблоны)
-- **Скриншот → текст (OCR)** — выделите область, текст из неё распознаётся и копируется в буфер. Apple Vision (mac), Tesseract (Win/Linux). Полностью офлайн.
+- **Скриншот → текст (OCR)** — выделите область, текст из неё распознаётся и копируется в буфер. Apple Vision (mac), Tesseract (Windows). Полностью офлайн.
 - **Скриншот → перевод** — то же + автоперевод на выбранный язык (~80 языков, без API-ключа)
 - **Палитра быстрого поиска** — `⌘⇧E` / `Ctrl+Shift+E` открывает fuzzy-поиск как в Raycast/Alfred
 - **История буфера обмена** — последние 50 скопированных текстов
@@ -107,7 +106,7 @@ All hotkeys are customizable in app settings. / Все хоткеи меняют
 
 ## 🔒 Privacy / Конфиденциальность
 
-- **All data stays on your device** — `~/Library/Application Support/snippi/` (macOS), `%APPDATA%/snippi/` (Windows), `~/.config/snippi/` (Linux)
+- **All data stays on your device** — `~/Library/Application Support/snippi/` (macOS), `%APPDATA%/snippi/` (Windows)
 - **OCR works fully offline** — screenshots are never uploaded
 - **Translation** uses [MyMemory API](https://mymemory.translated.net/) — free public service, no API key, ~1000 chars/day per IP. Only recognized text is sent; screenshots are NOT uploaded.
 - **No telemetry by default.** Optional opt-in crash reporting via Sentry (off by default, full details in [Privacy Policy](https://snippiapp.com/privacy.html))
@@ -126,7 +125,6 @@ npm install
 npm start              # dev mode
 npm run build:mac      # DMG (macOS, x64 + arm64)
 npm run build:win      # portable .exe (Windows)
-npm run build:linux    # .AppImage (Linux)
 ```
 
 Releases are built automatically by [GitHub Actions](.github/workflows/release.yml) on every `v*` tag. See [.github/RELEASE.md](.github/RELEASE.md).
@@ -135,7 +133,7 @@ Releases are built automatically by [GitHub Actions](.github/workflows/release.y
 
 - **Electron 42**, `electron-store`, `electron-log`, `electron-updater`
 - **uiohook-napi** — global keyboard interception
-- **tesseract.js** — OCR on Windows/Linux
+- **tesseract.js** — OCR on Windows
 - **franc-min** — language detection for the translator
 - **MyMemory Translation API** — free translator
 - **Swift helpers** on macOS (`key-helper`, `ocr-helper`) — native key emulation + Vision-based OCR

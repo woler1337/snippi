@@ -6,7 +6,7 @@ directories:
   output: dist
 
 # ── Авто-обновления через GitHub Releases ────────────────────────────────
-# Фид latest-mac.yml / latest.yml / latest-linux.yml кладётся в Release-assets
+# Фид latest-mac.yml / latest.yml кладётся в Release-assets
 # и читается electron-updater'ом при запуске. Электрон-билдер
 # заливает их сам при `--publish always` (нужен GH_TOKEN с repo:public_repo).
 publish:
@@ -27,7 +27,7 @@ files:
   - "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}"
   - "!**/node_modules/.bin"
 
-# tesseract.js на Windows/Linux запускает worker_threads из своего worker-script.
+# tesseract.js на Windows запускает worker_threads из своего worker-script.
 # Внутри asar путь к воркеру нестабилен между версиями Electron → распаковываем
 # tesseract.js в app.asar.unpacked, чтобы Worker получил реальный файловый путь.
 asarUnpack:
@@ -83,10 +83,3 @@ nsis:
   perMachine: false              # установка для текущего пользователя (без UAC)
   createDesktopShortcut: true
   createStartMenuShortcut: true
-
-# ── Linux ─────────────────────────────────────────────────────────────────
-linux:
-  target:
-    - AppImage
-  icon: assets/icon.png          # тот же, что и для macOS — на большинстве DE выглядит хорошо
-  category: Utility

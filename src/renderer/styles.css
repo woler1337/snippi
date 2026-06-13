@@ -1947,7 +1947,7 @@ form { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px
    Seamless titlebar (macOS): полоска-хедер убрана, светофоры
    (trafficLightPosition 18/18 в mainWindow.js) висят поверх
    сайдбара. Хедер остаётся в DOM как НЕВИДИМАЯ drag-зона.
-   Windows/Linux не трогаем — там системная рамка.
+   Windows не трогаем — там системная рамка.
 ══════════════════════════════════════════════════════════════ */
 [data-platform="darwin"] .app-header {
   position: absolute;

@@ -332,7 +332,7 @@ const TRANSLATIONS = {
     'error.title':            'Перехватчик клавиатуры не запустился',
     'error.macos':            'macOS:',
     'error.macosInstr':       'Системные настройки → Конфиденциальность → Универсальный доступ → добавьте приложение и перезапустите.',
-    'error.winLinux':         'Windows / Linux:',
+    'error.winLinux':         'Windows:',
     'error.winLinuxInstr':    'Попробуйте запустить от имени администратора.',
   },
 
@@ -637,7 +637,7 @@ const TRANSLATIONS = {
     'error.title':            'Keyboard hook failed to start',
     'error.macos':            'macOS:',
     'error.macosInstr':       'System Settings → Privacy & Security → Accessibility → add the app and restart.',
-    'error.winLinux':         'Windows / Linux:',
+    'error.winLinux':         'Windows:',
     'error.winLinuxInstr':    'Try running as administrator.',
   },
 
@@ -942,7 +942,7 @@ const TRANSLATIONS = {
     'error.title':            'Tastatur-Hook konnte nicht gestartet werden',
     'error.macos':            'macOS:',
     'error.macosInstr':       'Systemeinstellungen → Datenschutz & Sicherheit → Bedienungshilfen → App hinzufügen und neu starten.',
-    'error.winLinux':         'Windows / Linux:',
+    'error.winLinux':         'Windows:',
     'error.winLinuxInstr':    'Versuche, als Administrator auszuführen.',
   },
 };

@@ -703,7 +703,7 @@ code {
 
 /* ── DOWNLOAD ────────────────────────────────────────────────── */
 
-.downloads { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 900px; margin: 0 auto 28px; }
+.downloads { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; max-width: 640px; margin: 0 auto 28px; }
 .dl-card {
   position: relative; display: flex; flex-direction: column; align-items: center; gap: 11px;
   padding: 36px 22px 30px; background: var(--surface); border: 1px solid var(--border);
@@ -727,6 +727,8 @@ code {
 .dl-note { max-width: 900px; margin: 0 auto; text-align: center; font-size: 13.5px; color: var(--text-3); line-height: 1.7; }
 .dl-note a { color: var(--text-2); text-decoration: underline; text-underline-offset: 3px; }
 .dl-note a:hover { color: var(--accent); }
+.dl-intel-line { margin-top: 10px; }
+.dl-intel-line a { color: var(--accent); cursor: pointer; }
 @media (max-width: 760px) { .downloads { grid-template-columns: 1fr; } }
 
 /* ── FAQ ─────────────────────────────────────────────────────── */

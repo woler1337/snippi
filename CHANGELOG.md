@@ -6,7 +6,7 @@
 - **Fixed app crash** when PowerShell (used for snippet pasting) failed to spawn — now handled gracefully
 - **Fixed OCR not working** on portable builds — language cache now writes to a writable per-user folder
 - **Fixed tesseract worker** failing inside the packaged app (asar unpack)
-- **Fixed invisible tray icon** on Windows dark taskbar — icon is now recolored to white on Windows/Linux
+- **Fixed invisible tray icon** on Windows dark taskbar — icon is now recolored to white on Windows
 - **Added NSIS installer** alongside the portable build — enables auto-updates on Windows
 
 ### ✨ Features

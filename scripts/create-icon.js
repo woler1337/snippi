@@ -301,4 +301,3 @@ save('assets/tray-icon@2x.png', buildTray(44));
 console.log('\nГотово! Дальше:');
 console.log('  npm run build:mac    — macOS (.dmg)');
 console.log('  npm run build:win    — Windows (.exe)');
-console.log('  npm run build:linux  — Linux (.AppImage)');

@@ -14,17 +14,15 @@ git push origin main --tags
 ```
 
 Всё. Через ~15-20 минут на https://github.com/woler1337/snippi/releases появится новый
-релиз с DMG (arm64+x64), portable EXE, AppImage и фидом `latest-mac.yml` /
-`latest.yml` / `latest-linux.yml`.
+релиз с DMG (arm64+x64), portable EXE и фидом `latest-mac.yml` / `latest.yml`.
 
 ## Что происходит под капотом
 
 1. `git push --tags` пушит тег `v1.0.2` в GitHub
 2. Workflow `Release` срабатывает на любой `v*` тег
-3. Три параллельных джобы:
+3. Две параллельных джобы:
    - **macos-latest** — компилирует Swift-хелперы → собирает DMG arm64+x64 → публикует
    - **windows-latest** — собирает portable .exe → публикует
-   - **ubuntu-latest** — собирает .AppImage → публикует
 4. electron-builder автоматически создаёт Release на GitHub с этим тегом и заливает
    туда все артефакты + `latest-*.yml` фиды для electron-updater'а
 5. У пользователей при следующем запуске приложение само скачает обновление
@@ -32,10 +30,10 @@ git push origin main --tags
 ## Если что-то упало
 
 - Зайди в **Actions** → найди запавший Run → посмотри логи конкретной OS
-- В каждом Run есть **Artifacts** — DMG/EXE/AppImage можно скачать руками
+- В каждом Run есть **Artifacts** — DMG/EXE можно скачать руками
   (хранятся 7 дней)
 - Если упал только Windows (например) — можно перезапустить только эту джобу
-  через **«Re-run failed jobs»**, не пересобирая mac/linux
+  через **«Re-run failed jobs»**, не пересобирая mac
 
 ## Когда нужен ручной запуск
 
