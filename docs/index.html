@@ -55,35 +55,7 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
-
-  <style>
-    /* Переключатель языков в навигации (минимум CSS поверх существующего) */
-    .lang-toggle {
-      display: inline-flex;
-      gap: 1px;
-      padding: 2px;
-      margin-left: 6px;
-      background: rgba(236,232,225,0.05);
-      border: 1px solid #3B362E;
-      border-radius: 6px;
-      font-size: 11px;
-    }
-    .lang-toggle button {
-      background: transparent;
-      color: var(--text-3, #8a8d93);
-      border: none;
-      padding: 3px 8px;
-      border-radius: 4px;
-      cursor: pointer;
-      font: inherit;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      transition: all 0.12s;
-    }
-    .lang-toggle button.active { background: #ECE8E1; color: #161412; }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 </head>
 <body>
 
@@ -96,15 +68,27 @@
   <div class="nav-links">
     <a href="#features"  data-ru="Возможности"     data-en="Features">Возможности</a>
     <a href="#how"       data-ru="Как работает"    data-en="How it works">Как работает</a>
+    <a href="#privacy"   data-ru="Приватность"     data-en="Privacy">Приватность</a>
     <a href="#faq"       data-ru="FAQ"             data-en="FAQ">FAQ</a>
     <a href="https://github.com/woler1337/snippi" target="_blank" rel="noopener">GitHub</a>
     <a href="#download"  class="btn btn-primary btn-sm" data-ru="Скачать" data-en="Download">Скачать</a>
-    <div class="lang-toggle" role="tablist" aria-label="Language">
+    <div class="lang-toggle" role="group" aria-label="Language">
       <button data-set-lang="ru" class="active">RU</button>
       <button data-set-lang="en">EN</button>
     </div>
+    <button class="nav-burger" id="navBurger" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
   </div>
 </nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#features"  data-ru="Возможности"  data-en="Features">Возможности</a>
+  <a href="#how"       data-ru="Как работает" data-en="How it works">Как работает</a>
+  <a href="#privacy"   data-ru="Приватность"  data-en="Privacy">Приватность</a>
+  <a href="#download"  data-ru="Скачать"      data-en="Download">Скачать</a>
+  <a href="#faq">FAQ</a>
+  <a href="https://github.com/woler1337/snippi" target="_blank" rel="noopener">GitHub</a>
+</div>
 
 <!-- ─────────────────────────────────────────────  HERO  ──────────────────── -->
 <header class="hero">
@@ -133,11 +117,77 @@
     </p>
   </div>
 
-  <div class="hero-screenshot">
-    <img class="hero-app-shot" src="assets/screenshots/01-snippets.png"
-         alt="Snippi — snippet manager window (macOS, dark theme)"
-         width="800" loading="eager" />
-    <p class="screenshot-caption" data-ru="Реальный скриншот приложения (macOS)" data-en="Actual app screenshot (macOS)">Реальный скриншот приложения (macOS)</p>
+  <!-- CSS-мокап окна приложения + живое демо разворачивания -->
+  <div class="hero-visual" aria-hidden="true">
+    <div class="app-window">
+      <div class="aw-body">
+        <aside class="aw-sidebar">
+          <div class="aw-lights"><i></i><i></i><i></i></div>
+          <div class="aw-group active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+            <span data-ru="Все сниппеты" data-en="All snippets">Все сниппеты</span>
+            <span class="aw-count">24</span>
+          </div>
+          <div class="aw-group">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span data-ru="Работа" data-en="Work">Работа</span>
+            <span class="aw-count">11</span>
+          </div>
+          <div class="aw-group">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span data-ru="Личное" data-en="Personal">Личное</span>
+            <span class="aw-count">8</span>
+          </div>
+          <div class="aw-group">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span>Emoji</span>
+            <span class="aw-count">5</span>
+          </div>
+        </aside>
+        <main class="aw-main">
+          <div class="aw-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            <span data-ru="Поиск сниппетов…" data-en="Search snippets…">Поиск сниппетов…</span>
+            <span class="aw-kbd">⌘⇧E</span>
+          </div>
+          <div class="aw-row">
+            <span class="aw-trigger">gm</span>
+            <span class="aw-text">Good morning, hope you're having a great day!</span>
+            <span class="aw-tag" data-ru="Работа" data-en="Work">Работа</span>
+          </div>
+          <div class="aw-row">
+            <span class="aw-trigger">sig</span>
+            <span class="aw-text">Best regards, Alex Carter — Product Lead, Acme</span>
+            <span class="aw-tag" data-ru="Работа" data-en="Work">Работа</span>
+          </div>
+          <div class="aw-row">
+            <span class="aw-trigger">eml</span>
+            <span class="aw-text">alex.carter@acme.com</span>
+            <span class="aw-tag" data-ru="Личное" data-en="Personal">Личное</span>
+          </div>
+          <div class="aw-row">
+            <span class="aw-trigger">mtg</span>
+            <span class="aw-text">Meeting scheduled for tomorrow at 14:00</span>
+            <span class="aw-tag" data-ru="Работа" data-en="Work">Работа</span>
+          </div>
+          <div class="aw-row">
+            <span class="aw-trigger">addr</span>
+            <span class="aw-text">350 Fifth Avenue, New York, NY 10118</span>
+            <span class="aw-tag" data-ru="Личное" data-en="Personal">Личное</span>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <div class="expand-demo">
+      <div class="ed-bar" data-ru="Любое поле ввода" data-en="Any text field">Любое поле ввода</div>
+      <div class="ed-line"><span id="edText"></span><span class="ed-caret"></span></div>
+      <div class="ed-hint">
+        <span id="edHintKeys"><kbd>g</kbd><kbd>m</kbd></span>
+        <span>+</span>
+        <kbd id="edShift">Right&nbsp;Shift</kbd>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -148,7 +198,7 @@
     <span class="tm-item"><b>gm</b> → <span>Good morning, hope you're having a great day!</span></span>
     <span class="tm-item"><b>eml</b> → <span>alex.carter@acme.com</span></span>
     <span class="tm-item"><b>sig</b> → <span>Best regards, Alex Carter</span></span>
-    <span class="tm-item"><b>dt</b> → <span>2026-06-11</span></span>
+    <span class="tm-item"><b>dt</b> → <span>2026-06-13</span></span>
     <span class="tm-item"><b>mtg</b> → <span>Meeting scheduled for tomorrow at 14:00</span></span>
     <span class="tm-item"><b>:fire:</b> → <span>🔥</span></span>
     <span class="tm-item"><b>addr</b> → <span>350 Fifth Avenue, New York</span></span>
@@ -156,11 +206,31 @@
     <span class="tm-item"><b>gm</b> → <span>Good morning, hope you're having a great day!</span></span>
     <span class="tm-item"><b>eml</b> → <span>alex.carter@acme.com</span></span>
     <span class="tm-item"><b>sig</b> → <span>Best regards, Alex Carter</span></span>
-    <span class="tm-item"><b>dt</b> → <span>2026-06-11</span></span>
+    <span class="tm-item"><b>dt</b> → <span>2026-06-13</span></span>
     <span class="tm-item"><b>mtg</b> → <span>Meeting scheduled for tomorrow at 14:00</span></span>
     <span class="tm-item"><b>:fire:</b> → <span>🔥</span></span>
     <span class="tm-item"><b>addr</b> → <span>350 Fifth Avenue, New York</span></span>
     <span class="tm-item"><b>ty</b> → <span>Thank you for reaching out!</span></span>
+  </div>
+</div>
+
+<!-- ───────────────────────────────────  STATS STRIP  ─────────────────────── -->
+<div class="stats">
+  <div class="stat">
+    <div class="stat-num">~80</div>
+    <div class="stat-label" data-ru="языков OCR и перевода" data-en="languages for OCR &amp; translation">языков OCR и перевода</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num"><em>1</em></div>
+    <div class="stat-label" data-ru="клавиша от скриншота до текста в буфере" data-en="shortcut from screenshot to text in clipboard">клавиша от скриншота до текста в буфере</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">50</div>
+    <div class="stat-label" data-ru="последних копий в истории буфера" data-en="recent copies in clipboard history">последних копий в истории буфера</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">$<em>0</em></div>
+    <div class="stat-label" data-ru="навсегда — открытый код, MIT" data-en="forever — open source, MIT">навсегда — открытый код, MIT</div>
   </div>
 </div>
 
@@ -181,7 +251,7 @@
       <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div>
       <h3 data-ru="Сниппеты" data-en="Snippets">Сниппеты</h3>
       <p data-ru="Триггер «gm» разворачивается в «Good morning, hope you're having a great day!». Группы по контексту."
-         data-en='Trigger "gm" expands to "Good morning, hope you\'re having a great day!". Group by context.'>
+         data-en="Trigger “gm” expands to “Good morning, hope you’re having a great day!”. Group by context.">
         Триггер «gm» разворачивается в «Good morning, hope you're having a great day!». Группы по контексту.
       </p>
     </div>
@@ -249,9 +319,32 @@
         <div class="code-row"><kbd>s</kbd><kbd>i</kbd><kbd>g</kbd> + <kbd>Right Shift</kbd> → <span data-ru="Полная подпись из 4 строк" data-en="Full 4-line signature">Полная подпись из 4 строк</span></div>
       </div>
     </div>
-    <div class="how-visual">
-      <img class="how-shot" src="assets/screenshots/01-snippets.png" loading="lazy"
-           alt="Snippets panel with triggers and groups" />
+    <div class="how-visual" aria-hidden="true">
+      <div class="mock">
+        <div class="mock-bar"><i></i><i></i><i></i><span data-ru="Сниппеты · Работа" data-en="Snippets · Work">Сниппеты · Работа</span></div>
+        <div class="mock-body">
+          <div class="aw-row">
+            <span class="aw-trigger">nm</span>
+            <span class="aw-text" data-ru="Николай Михайлов" data-en="Nikolay Mikhaylov">Николай Михайлов</span>
+            <span class="aw-tag" data-ru="Личное" data-en="Personal">Личное</span>
+          </div>
+          <div class="aw-row">
+            <span class="aw-trigger">eml</span>
+            <span class="aw-text">nikolay@example.com</span>
+            <span class="aw-tag" data-ru="Личное" data-en="Personal">Личное</span>
+          </div>
+          <div class="aw-row">
+            <span class="aw-trigger">sig</span>
+            <span class="aw-text" data-ru="С уважением, Николай Михайлов · +49 160 000 00 00" data-en="Best regards, Nikolay Mikhaylov · +49 160 000 00 00">С уважением, Николай Михайлов · +49 160 000 00 00</span>
+            <span class="aw-tag" data-ru="Работа" data-en="Work">Работа</span>
+          </div>
+          <div class="aw-row">
+            <span class="aw-trigger">inv</span>
+            <span class="aw-text" data-ru="Счёт во вложении. Срок оплаты — 14 дней." data-en="Invoice attached. Payment due within 14 days.">Счёт во вложении. Срок оплаты — 14 дней.</span>
+            <span class="aw-tag" data-ru="Работа" data-en="Work">Работа</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -272,9 +365,26 @@
             data-en="1–2 seconds to recognize an average paragraph">1–2 секунды распознавания на средний абзац</li>
       </ul>
     </div>
-    <div class="how-visual">
-      <img class="how-shot" src="assets/screenshots/03-ocr.png" loading="lazy"
-           alt="Screenshot to text (OCR) panel" />
+    <div class="how-visual" aria-hidden="true">
+      <div class="mock">
+        <div class="mock-bar"><i></i><i></i><i></i><span>annual-report.pdf</span></div>
+        <div class="mock-body">
+          <div class="ocr-doc">
+            <div class="ocr-line"></div>
+            <div class="ocr-line w85"></div>
+            <div class="ocr-line w60"></div>
+            <div class="ocr-line"></div>
+            <div class="ocr-line w72"></div>
+            <div class="ocr-line w85"></div>
+            <div class="ocr-line w60"></div>
+            <div class="ocr-select" data-label="⌘⇧1"></div>
+          </div>
+          <div class="mock-toast">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            <span data-ru="Текст скопирован в буфер обмена" data-en="Text copied to clipboard">Текст скопирован в буфер обмена</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -294,11 +404,160 @@
             data-en="Translation via MyMemory API — no API keys, no registration">Перевод через MyMemory API — никаких API-ключей, никакой регистрации</li>
       </ul>
     </div>
-    <div class="how-visual">
-      <img class="how-shot" src="assets/screenshots/04-translate.png" loading="lazy"
-           alt="Screen translation panel" />
+    <div class="how-visual" aria-hidden="true">
+      <div class="mock">
+        <div class="mock-bar"><i></i><i></i><i></i><span data-ru="Скриншот → перевод" data-en="Screenshot → translate">Скриншот → перевод</span></div>
+        <div class="mock-body">
+          <div class="tr-pair">
+            <div>
+              <div class="tr-meta"><span>DE</span><span>·</span><span data-ru="распознано с экрана" data-en="recognized from screen">распознано с экрана</span></div>
+              <div class="tr-box">Die Rechnung wird innerhalb von 14 Tagen fällig. Bitte überweisen Sie den Betrag auf das angegebene Konto.</div>
+            </div>
+            <div class="tr-arrow">↓</div>
+            <div>
+              <div class="tr-meta"><span data-ru="RU" data-en="EN">RU</span><span>·</span><span data-ru="в буфере обмена" data-en="in your clipboard">в буфере обмена</span></div>
+              <div class="tr-box result"
+                   data-ru="Счёт подлежит оплате в течение 14 дней. Пожалуйста, переведите сумму на указанный счёт."
+                   data-en="The invoice is due within 14 days. Please transfer the amount to the specified account.">
+                Счёт подлежит оплате в течение 14 дней. Пожалуйста, переведите сумму на указанный счёт.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+</section>
+
+<!-- ─────────────────────────────────────────────  PRIVACY  ───────────────── -->
+<section id="privacy" class="section">
+  <div class="section-head">
+    <h2 data-ru="Локальный по умолчанию" data-en="Local by default">Локальный по умолчанию</h2>
+    <p class="lead-sm"
+       data-ru="Snippi спроектирован так, чтобы твои данные не покидали компьютер. Не «мы не смотрим» — а «нам физически нечего смотреть»."
+       data-en="Snippi is designed so your data never leaves your computer. Not “we don't look” — there's physically nothing for us to look at.">
+      Snippi спроектирован так, чтобы твои данные не покидали компьютер. Не «мы не смотрим» — а «нам физически нечего смотреть».
+    </p>
+  </div>
+
+  <div class="privacy-grid">
+    <div class="privacy-cell">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span data-ru="Всё хранится на диске" data-en="Everything stays on disk">Всё хранится на диске</span>
+      </h3>
+      <p data-ru="Сниппеты, история буфера и настройки — обычные локальные файлы. Нет аккаунта, нет облака, нет телеметрии."
+         data-en="Snippets, clipboard history and settings are plain local files. No account, no cloud, no telemetry.">
+        Сниппеты, история буфера и настройки — обычные локальные файлы. Нет аккаунта, нет облака, нет телеметрии.
+      </p>
+    </div>
+    <div class="privacy-cell">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+        <span data-ru="OCR работает офлайн" data-en="OCR runs offline">OCR работает офлайн</span>
+      </h3>
+      <p data-ru="Распознавание текста — Apple Vision на Mac, Tesseract на Windows и Linux. Скриншоты никогда не покидают компьютер."
+         data-en="Text recognition runs via Apple Vision on Mac, Tesseract on Windows and Linux. Screenshots never leave your machine.">
+        Распознавание текста — Apple Vision на Mac, Tesseract на Windows и Linux. Скриншоты никогда не покидают компьютер.
+      </p>
+    </div>
+    <div class="privacy-cell">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4M6 8l-4 4 4 4M14.5 4l-5 16"/></svg>
+        <span data-ru="Код открыт — проверь сам" data-en="Open source — verify it">Код открыт — проверь сам</span>
+      </h3>
+      <p data-ru-html='Весь исходный код на <a href="https://github.com/woler1337/snippi" target="_blank" rel="noopener">GitHub</a> под лицензией MIT. Служба безопасности компании может прочитать каждую строку.'
+         data-en-html='All source code is on <a href="https://github.com/woler1337/snippi" target="_blank" rel="noopener">GitHub</a> under the MIT license. Your company security team can read every line.'>
+        Весь исходный код на <a href="https://github.com/woler1337/snippi" target="_blank" rel="noopener">GitHub</a> под лицензией MIT. Служба безопасности компании может прочитать каждую строку.
+      </p>
+    </div>
+  </div>
+
+  <p class="privacy-note"
+     data-ru-html="Единственное исключение — функция «Скриншот → перевод»: распознанный текст (только текст, не изображение) отправляется в MyMemory API для перевода. Эта функция включается явно — отдельным шорткатом. Подробности — в <a href='privacy.html'>политике конфиденциальности</a>."
+     data-en-html="The single exception is “Screenshot → Translate”: the recognized text (text only, never the image) is sent to the MyMemory API for translation. It only happens when you explicitly press that shortcut. Details in the <a href='privacy.html'>privacy policy</a>.">
+    Единственное исключение — функция «Скриншот → перевод»: распознанный текст (только текст, не изображение) отправляется в MyMemory API для перевода. Эта функция включается явно — отдельным шорткатом. Подробности — в <a href="privacy.html">политике конфиденциальности</a>.
+  </p>
+</section>
+
+<!-- ─────────────────────────────────────────────  COMPARISON  ────────────── -->
+<section id="compare" class="section section-alt">
+  <div class="section-head">
+    <h2 data-ru="Честное сравнение" data-en="An honest comparison">Честное сравнение</h2>
+    <p class="lead-sm"
+       data-ru="Snippi не делает всё. Но то, что делает — бесплатно и локально."
+       data-en="Snippi doesn't do everything. But what it does is free and local.">
+      Snippi не делает всё. Но то, что делает — бесплатно и локально.
+    </p>
+  </div>
+
+  <div class="compare-wrap">
+    <table class="compare">
+      <thead>
+        <tr>
+          <th></th>
+          <th class="col-snippi">Snippi</th>
+          <th>TextExpander</th>
+          <th>Espanso</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th data-ru="Цена" data-en="Price">Цена</th>
+          <td class="col-snippi yes" data-ru="Бесплатно" data-en="Free">Бесплатно</td>
+          <td data-ru="от $40/год" data-en="from $40/yr">от $40/год</td>
+          <td data-ru="Бесплатно" data-en="Free">Бесплатно</td>
+        </tr>
+        <tr>
+          <th data-ru="Сниппеты и триггеры" data-en="Snippets &amp; triggers">Сниппеты и триггеры</th>
+          <td class="col-snippi yes"></td>
+          <td class="yes"></td>
+          <td class="yes"></td>
+        </tr>
+        <tr>
+          <th data-ru="Скриншот → текст (OCR)" data-en="Screenshot → text (OCR)">Скриншот → текст (OCR)</th>
+          <td class="col-snippi yes"></td>
+          <td class="no"></td>
+          <td class="no"></td>
+        </tr>
+        <tr>
+          <th data-ru="Скриншот → перевод" data-en="Screenshot → translate">Скриншот → перевод</th>
+          <td class="col-snippi yes"></td>
+          <td class="no"></td>
+          <td class="no"></td>
+        </tr>
+        <tr>
+          <th data-ru="История буфера обмена" data-en="Clipboard history">История буфера обмена</th>
+          <td class="col-snippi yes"></td>
+          <td class="no"></td>
+          <td class="no"></td>
+        </tr>
+        <tr>
+          <th data-ru="Графический интерфейс" data-en="Graphical interface">Графический интерфейс</th>
+          <td class="col-snippi yes"></td>
+          <td class="yes"></td>
+          <td class="no" data-ru="Конфиг-файлы" data-en="Config files">Конфиг-файлы</td>
+        </tr>
+        <tr>
+          <th data-ru="Данные хранятся локально" data-en="Data stored locally">Данные хранятся локально</th>
+          <td class="col-snippi yes"></td>
+          <td class="no" data-ru="Облако" data-en="Cloud">Облако</td>
+          <td class="yes"></td>
+        </tr>
+        <tr>
+          <th data-ru="Облачная синхронизация и команды" data-en="Cloud sync &amp; teams">Облачная синхронизация и команды</th>
+          <td class="col-snippi no" data-ru="Пока нет" data-en="Not yet">Пока нет</td>
+          <td class="yes"></td>
+          <td class="no"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="compare-foot"
+     data-ru="Данные по публичным сайтам TextExpander и Espanso, июнь 2026. Нашли неточность — напишите в issues."
+     data-en="Based on public TextExpander and Espanso websites, June 2026. Spotted an error — open an issue.">
+    Данные по публичным сайтам TextExpander и Espanso, июнь 2026. Нашли неточность — напишите в issues.
+  </p>
 </section>
 
 <!-- ─────────────────────────────────────────────  DOWNLOAD  ──────────────── -->
@@ -310,21 +569,21 @@
   </p>
 
   <div class="downloads">
-    <a href="https://github.com/woler1337/snippi/releases/latest" class="dl-card">
+    <a href="https://github.com/woler1337/snippi/releases/latest" class="dl-card" data-os="mac">
       <div class="dl-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 12.54c-.03-2.62 2.14-3.88 2.24-3.94-1.22-1.79-3.12-2.03-3.8-2.06-1.61-.16-3.15.95-3.97.95-.82 0-2.09-.93-3.43-.9-1.77.03-3.4 1.03-4.31 2.6-1.84 3.19-.47 7.91 1.32 10.5.88 1.27 1.92 2.69 3.29 2.64 1.32-.05 1.82-.85 3.42-.85s2.05.85 3.44.82c1.43-.02 2.33-1.29 3.2-2.57 1.01-1.47 1.42-2.9 1.44-2.97-.03-.01-2.77-1.06-2.8-4.22zM14.44 4.7c.73-.88 1.22-2.1 1.08-3.32-1.05.04-2.32.7-3.07 1.58-.67.78-1.27 2.02-1.11 3.21 1.17.09 2.37-.59 3.1-1.47z"/></svg></div>
       <h3>macOS</h3>
       <p data-ru-html="Apple Silicon &amp; Intel · <code>.dmg</code>" data-en-html="Apple Silicon &amp; Intel · <code>.dmg</code>">
         Apple Silicon &amp; Intel · <code>.dmg</code>
       </p>
     </a>
-    <a href="https://github.com/woler1337/snippi/releases/latest" class="dl-card">
+    <a href="https://github.com/woler1337/snippi/releases/latest" class="dl-card" data-os="win">
       <div class="dl-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5 10.5 4.4v7.1H3V5.5zM3 18.5l7.5 1.1v-7.1H3v6zM11.5 4.25 21 3v8.5h-9.5v-7.25zM11.5 19.75 21 21v-8.5h-9.5v7.25z"/></svg></div>
       <h3>Windows</h3>
-      <p data-ru-html="10 / 11 · <code>.exe</code> (portable)" data-en-html="10 / 11 · <code>.exe</code> (portable)">
-        10 / 11 · <code>.exe</code> (portable)
+      <p data-ru-html="10 / 11 · <code>.exe</code> (installer / portable)" data-en-html="10 / 11 · <code>.exe</code> (installer / portable)">
+        10 / 11 · <code>.exe</code> (installer / portable)
       </p>
     </a>
-    <a href="https://github.com/woler1337/snippi/releases/latest" class="dl-card">
+    <a href="https://github.com/woler1337/snippi/releases/latest" class="dl-card" data-os="linux">
       <div class="dl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c-3 0-5 2.2-5 5.5 0 2-1.5 4.3-2.5 6C3.5 15.3 3 16.7 3 18c0 .8.6 1.5 1.4 1.7 1 .3 2.3.3 3.1-.2.7.9 2 1.5 4.5 1.5s3.8-.6 4.5-1.5c.8.5 2.1.5 3.1.2.8-.2 1.4-.9 1.4-1.7 0-1.3-.5-2.7-1.5-4.5-1-1.7-2.5-4-2.5-6C17 4.2 15 2 12 2z"/><path d="M9.5 8.5h.01M14.5 8.5h.01M11 11l1 .8 1-.8"/></svg></div>
       <h3>Linux</h3>
       <p data-ru-html="x64 · <code>.AppImage</code>" data-en-html="x64 · <code>.AppImage</code>">
@@ -406,6 +665,7 @@
 
 <!-- ─────────────────────────────────────────────  CTA  ───────────────────── -->
 <section class="section section-cta">
+  <div class="cta-glyph" aria-hidden="true">‹|›</div>
   <h2 data-ru="Начни печатать в 5 раз меньше" data-en="Start typing 5× less">Начни печатать в 5 раз меньше</h2>
   <p class="lead-sm" data-ru="Скачивание занимает 30 секунд. Первый сниппет — ещё минуту."
                      data-en="Download takes 30 seconds. Your first snippet — a minute more.">
@@ -449,23 +709,21 @@
     function detectInitialLang() {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved === 'ru' || saved === 'en') return saved;
-      // Авто-детект по navigator.language
       const nav = (navigator.language || navigator.userLanguage || '').toLowerCase();
       return nav.startsWith('ru') ? 'ru' : 'en';
     }
 
     function applyLang(lang) {
       document.documentElement.lang = lang;
-      // Атрибутные переводы
       document.querySelectorAll('[data-' + lang + ']').forEach(el => {
         el.textContent = el.getAttribute('data-' + lang);
       });
       document.querySelectorAll('[data-' + lang + '-html]').forEach(el => {
         el.innerHTML = el.getAttribute('data-' + lang + '-html');
       });
-      // Кнопки переключателя
       buttons.forEach(b => b.classList.toggle('active', b.dataset.setLang === lang));
       localStorage.setItem(STORAGE_KEY, lang);
+      document.dispatchEvent(new CustomEvent('snippi:lang', { detail: lang }));
     }
 
     buttons.forEach(b => b.addEventListener('click', () => applyLang(b.dataset.setLang)));
@@ -474,10 +732,97 @@
 </script>
 
 <script>
-  // ── Полировочный слой: spotlight-карты + staggered scroll-reveal ──
-  // Классы вешает JS: без JS страница остаётся полностью видимой.
+  // ── Мобильное меню ────────────────────────────────────────────────
   (function () {
-    // Spotlight: позиция курсора → CSS-переменные для radial-градиента.
+    const burger = document.getElementById('navBurger');
+    const menu = document.getElementById('mobileMenu');
+    if (!burger || !menu) return;
+    burger.addEventListener('click', () => {
+      const open = menu.classList.toggle('open');
+      burger.setAttribute('aria-expanded', String(open));
+    });
+    menu.querySelectorAll('a').forEach(a =>
+      a.addEventListener('click', () => {
+        menu.classList.remove('open');
+        burger.setAttribute('aria-expanded', 'false');
+      }));
+  })();
+</script>
+
+<script>
+  // ── Hero-демо: триггер печатается → Right Shift → текст разворачивается ──
+  (function () {
+    const textEl = document.getElementById('edText');
+    const hintEl = document.getElementById('edHintKeys');
+    const shiftEl = document.getElementById('edShift');
+    if (!textEl) return;
+
+    const DEMOS = [
+      { t: 'gm',  full: "Good morning, hope you're having a great day!" },
+      { t: 'sig', full: 'Best regards, Alex Carter — Product Lead, Acme' },
+      { t: 'mtg', full: 'Meeting scheduled for tomorrow at 14:00' },
+      { t: 'ty',  full: 'Thank you for reaching out!' },
+    ];
+
+    // reduced-motion: статичный развёрнутый пример без анимации
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      textEl.innerHTML = '<span class="ed-expanded">' + DEMOS[0].full + '</span>';
+      return;
+    }
+
+    let i = 0;
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+    async function run() {
+      for (;;) {
+        const d = DEMOS[i % DEMOS.length];
+        i++;
+        // подсказка с клавишами текущего триггера
+        hintEl.innerHTML = d.t.split('').map(c => '<kbd>' + c + '</kbd>').join('');
+        textEl.textContent = '';
+        await sleep(700);
+        // печатаем триггер посимвольно
+        for (const ch of d.t) {
+          textEl.innerHTML += '<span class="ed-typed">' + ch + '</span>';
+          await sleep(170);
+        }
+        await sleep(380);
+        // «нажимаем» Right Shift
+        shiftEl.classList.add('pressed');
+        await sleep(220);
+        shiftEl.classList.remove('pressed');
+        // мгновенное разворачивание — в этом весь смысл
+        textEl.innerHTML = '<span class="ed-expanded">' + d.full + '</span>';
+        await sleep(3000);
+      }
+    }
+    run();
+  })();
+</script>
+
+<script>
+  // ── Бейдж «твоя система» на карточке загрузки ─────────────────────
+  (function () {
+    const ua = navigator.userAgent;
+    let os = null;
+    if (/Mac/i.test(ua)) os = 'mac';
+    else if (/Win/i.test(ua)) os = 'win';
+    else if (/Linux|X11/i.test(ua) && !/Android/i.test(ua)) os = 'linux';
+    if (!os) return;
+    const card = document.querySelector('.dl-card[data-os="' + os + '"]');
+    if (!card) return;
+    function setBadge(lang) {
+      card.setAttribute('data-badge', lang === 'ru' ? 'Твоя система' : 'Your system');
+    }
+    card.classList.add('detected');
+    setBadge(document.documentElement.lang);
+    document.addEventListener('snippi:lang', e => setBadge(e.detail));
+  })();
+</script>
+
+<script>
+  // ── Полировочный слой: spotlight-карты + staggered scroll-reveal ──
+  (function () {
     document.querySelectorAll('.feature').forEach(card => {
       card.addEventListener('pointermove', e => {
         const r = card.getBoundingClientRect();
@@ -486,13 +831,14 @@
       });
     });
 
-    // Reveal: каскадное появление блоков при входе в viewport.
     if (!('IntersectionObserver' in window)) return;
     const groups = [
       '.features-grid > .feature',
       '.how-step',
+      '.privacy-grid > .privacy-cell',
       '.downloads > .dl-card',
       '.faq-item',
+      '.stat',
     ];
     const io = new IntersectionObserver(entries => {
       for (const en of entries) {
