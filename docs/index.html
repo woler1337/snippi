@@ -46,11 +46,11 @@
   }
   </script>
 
-  <link rel="icon" href="/favicon.ico" sizes="48x48" />
-  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
-  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
-  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" href="/favicon.ico?v=2" sizes="48x48" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png?v=2" />
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png?v=2" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png?v=2" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=2" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -206,82 +206,145 @@
     </p>
   </div>
 
-  <div class="features-bento">
-    <!-- Сниппеты — широкая карточка с мини-визуалом -->
-    <article class="fcard wide">
-      <div class="fcard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div>
-      <h3 data-ru="Сниппеты" data-en="Snippets">Сниппеты</h3>
-      <p data-ru="Короткий триггер разворачивается в целый блок текста. Email, подписи, шаблоны писем, типовые ответы — сгруппированы по контексту."
-         data-en="A short trigger expands into a whole block of text. Emails, signatures, message templates, standard replies — grouped by context.">
-        Короткий триггер разворачивается в целый блок текста. Email, подписи, шаблоны писем, типовые ответы — сгруппированы по контексту.
-      </p>
-      <div class="fcard-visual">
-        <div class="aw-row"><span class="aw-trigger">gm</span><span class="aw-text">Good morning, hope you're having a great day!</span></div>
-        <div class="aw-row"><span class="aw-trigger">sig</span><span class="aw-text">Best regards, Alex Carter — Product Lead</span></div>
-      </div>
-    </article>
+  <div class="explorer-os">
+    <span class="explorer-os-label" data-ru="Шорткаты для:" data-en="Shortcuts for:">Шорткаты для:</span>
+    <div class="os-toggle" role="group" aria-label="OS shortcuts">
+      <button type="button" data-os-set="mac" class="active">macOS</button>
+      <button type="button" data-os-set="win">Windows</button>
+    </div>
+  </div>
 
-    <!-- Глобальные хоткеи -->
-    <article class="fcard">
-      <div class="fcard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg></div>
-      <h3 data-ru="Глобальные хоткеи" data-en="Global hotkeys">Глобальные хоткеи</h3>
-      <p data-ru="Любая комбинация клавиш — твой текст. Удобно для повторяющихся ответов в чатах и поддержке."
-         data-en="Any key combination — your text. Great for repeating replies in chats and customer support.">
-        Любая комбинация клавиш — твой текст. Удобно для повторяющихся ответов в чатах и поддержке.
-      </p>
-    </article>
+  <div class="explorer">
+    <!-- Левая колонка: список возможностей -->
+    <div class="explorer-list" role="tablist" aria-label="Features">
+      <button class="exp-item active" data-feat="0" role="tab" aria-selected="true">
+        <span class="exp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span>
+        <span class="exp-tx">
+          <h3 data-ru="Сниппеты" data-en="Snippets">Сниппеты</h3>
+          <p data-ru="Короткий триггер → целый блок текста" data-en="A short trigger → a whole block of text">Короткий триггер → целый блок текста</p>
+        </span>
+      </button>
+      <button class="exp-item" data-feat="1" role="tab" aria-selected="false">
+        <span class="exp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg></span>
+        <span class="exp-tx">
+          <h3 data-ru="Глобальные хоткеи" data-en="Global hotkeys">Глобальные хоткеи</h3>
+          <p data-ru="Любая комбинация клавиш — твой текст" data-en="Any key combo — your text">Любая комбинация клавиш — твой текст</p>
+        </span>
+      </button>
+      <button class="exp-item" data-feat="2" role="tab" aria-selected="false">
+        <span class="exp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6M9 16h4"/></svg></span>
+        <span class="exp-tx">
+          <h3 data-ru="История буфера" data-en="Clipboard history">История буфера</h3>
+          <p data-ru="Последние 50 копий с fuzzy-поиском" data-en="Last 50 copies with fuzzy search">Последние 50 копий с fuzzy-поиском</p>
+        </span>
+      </button>
+      <button class="exp-item" data-feat="3" role="tab" aria-selected="false">
+        <span class="exp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M8 13h8M8 9h5M8 17h6"/></svg></span>
+        <span class="exp-tx">
+          <h3 data-ru="Скриншот → текст" data-en="Screenshot → text">Скриншот → текст</h3>
+          <p data-ru="OCR офлайн, текст сразу в буфере" data-en="Offline OCR, text straight to clipboard">OCR офлайн, текст сразу в буфере</p>
+        </span>
+      </button>
+      <button class="exp-item" data-feat="4" role="tab" aria-selected="false">
+        <span class="exp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg></span>
+        <span class="exp-tx">
+          <h3 data-ru="Скриншот → перевод" data-en="Screenshot → translate">Скриншот → перевод</h3>
+          <p data-ru="~80 языков, без API-ключа" data-en="~80 languages, no API key">~80 языков, без API-ключа</p>
+        </span>
+      </button>
+      <button class="exp-item" data-feat="5" role="tab" aria-selected="false">
+        <span class="exp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
+        <span class="exp-tx">
+          <h3 data-ru="Палитра поиска" data-en="Search palette">Палитра поиска</h3>
+          <p data-ru="Fuzzy-поиск по всем сниппетам — как Spotlight" data-en="Fuzzy search across all snippets — like Spotlight">Fuzzy-поиск по всем сниппетам — как Spotlight</p>
+        </span>
+      </button>
+    </div>
 
-    <!-- История буфера -->
-    <article class="fcard">
-      <div class="fcard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6M9 16h4"/></svg></div>
-      <h3 data-ru="История буфера" data-en="Clipboard history">История буфера</h3>
-      <p data-ru-html="Последние 50 копий всегда под рукой — с fuzzy-поиском по содержимому."
-         data-en-html="Last 50 copies always at hand — with fuzzy search across the contents.">
-        Последние 50 копий всегда под рукой — с fuzzy-поиском по содержимому.
-      </p>
-    </article>
-
-    <!-- OCR -->
-    <article class="fcard">
-      <div class="fcard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M8 13h8M8 9h5M8 17h6"/></svg></div>
-      <h3 data-ru="Скриншот → текст" data-en="Screenshot → text">Скриншот → текст</h3>
-      <p data-ru="Выделил область — текст в буфере. Apple Vision на Mac, Tesseract на Windows/Linux. Полностью офлайн."
-         data-en="Select an area — text is in your clipboard. Apple Vision on Mac, Tesseract on Win/Linux. Fully offline.">
-        Выделил область — текст в буфере. Apple Vision на Mac, Tesseract на Windows/Linux. Полностью офлайн.
-      </p>
-    </article>
-
-    <!-- Перевод -->
-    <article class="fcard">
-      <div class="fcard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg></div>
-      <h3 data-ru="Скриншот → перевод" data-en="Screenshot → translate">Скриншот → перевод</h3>
-      <p data-ru="Та же область, но текст автоматически переводится на нужный язык. ~80 языков, без API-ключа."
-         data-en="Same area, but text is auto-translated to your target language. ~80 languages, no API key.">
-        Та же область, но текст автоматически переводится на нужный язык. ~80 языков, без API-ключа.
-      </p>
-    </article>
-
-    <!-- Палитра поиска — full-width карточка с визуалом -->
-    <article class="fcard full">
-      <div class="fcard-body">
-        <div class="fcard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></div>
-        <h3 data-ru="Палитра поиска — как Spotlight" data-en="Search palette — like Spotlight">Палитра поиска — как Spotlight</h3>
-        <p data-ru-html="Не помнишь триггер? <kbd>⌘⇧E</kbd> / <kbd>Ctrl+Shift+E</kbd> открывает fuzzy-поиск по всем сниппетам — начни печатать, и нужный окажется первым."
-           data-en-html="Don't remember the trigger? <kbd>⌘⇧E</kbd> / <kbd>Ctrl+Shift+E</kbd> opens fuzzy search across all snippets — start typing and the right one jumps to the top.">
-          Не помнишь триггер? <kbd>⌘⇧E</kbd> / <kbd>Ctrl+Shift+E</kbd> открывает fuzzy-поиск по всем сниппетам — начни печатать, и нужный окажется первым.
-        </p>
-      </div>
-      <div class="fcard-palette">
-        <div class="fp-input">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-          <span data-ru="morn" data-en="morn">morn</span>
-          <span class="fp-kbd">⌘⇧E</span>
+    <!-- Правая колонка: сцена с превью -->
+    <div class="explorer-stage" aria-hidden="true">
+      <!-- 0 · Сниппеты -->
+      <div class="exp-panel active" data-panel="0">
+        <div class="exp-tag" data-ru="триггер → текст" data-en="trigger → text">триггер → текст</div>
+        <div class="exp-snip">
+          <div class="aw-row"><span class="aw-trigger">gm</span><span class="aw-text">Good morning, hope you're having a great day!</span></div>
+          <div class="aw-row"><span class="aw-trigger">sig</span><span class="aw-text">Best regards, Alex Carter — Product Lead</span></div>
+          <div class="aw-row"><span class="aw-trigger">eml</span><span class="aw-text">alex.carter@acme.com</span></div>
+          <div class="aw-row"><span class="aw-trigger">inv</span><span class="aw-text" data-ru="Счёт во вложении, срок оплаты — 14 дней." data-en="Invoice attached, due within 14 days.">Счёт во вложении, срок оплаты — 14 дней.</span></div>
         </div>
-        <div class="fp-item sel"><span class="aw-trigger">gm</span><span>Good morning, hope you're having a great day!</span></div>
-        <div class="fp-item"><span class="aw-trigger">mtg</span><span>Meeting scheduled for tomorrow at 14:00</span></div>
-        <div class="fp-item"><span class="aw-trigger">ty</span><span>Thank you for reaching out!</span></div>
       </div>
-    </article>
+
+      <!-- 1 · Хоткеи -->
+      <div class="exp-panel" data-panel="1">
+        <div class="exp-tag" data-ru="хоткей → текст" data-en="hotkey → text">хоткей → текст</div>
+        <div class="exp-keys">
+          <div class="exp-combo kbd-mac"><kbd>⌥</kbd><span>+</span><kbd>⌘</kbd><span>+</span><kbd>J</kbd></div>
+          <div class="exp-combo kbd-win"><kbd>Ctrl</kbd><span>+</span><kbd>Alt</kbd><span>+</span><kbd>J</kbd></div>
+          <div class="exp-keys-arrow">↓</div>
+          <div class="exp-keys-out" data-ru="«Спасибо за обращение! Мы уже разбираемся с вашим вопросом.»" data-en="“Thanks for reaching out! We're already looking into your request.”">«Спасибо за обращение! Мы уже разбираемся с вашим вопросом.»</div>
+        </div>
+      </div>
+
+      <!-- 2 · История буфера -->
+      <div class="exp-panel" data-panel="2">
+        <div class="exp-tag" data-ru="история буфера" data-en="clipboard history">история буфера</div>
+        <div class="exp-clip">
+          <div class="clip-row"><span class="clip-i">1</span><span class="clip-tx">https://github.com/woler1337/snippi</span><span class="clip-ago" data-ru="2 мин" data-en="2m">2 мин</span></div>
+          <div class="clip-row"><span class="clip-i">2</span><span class="clip-tx">npm run build && npm run dist</span><span class="clip-ago" data-ru="8 мин" data-en="8m">8 мин</span></div>
+          <div class="clip-row"><span class="clip-i">3</span><span class="clip-tx">alex.carter@acme.com</span><span class="clip-ago" data-ru="14 мин" data-en="14m">14 мин</span></div>
+          <div class="clip-row"><span class="clip-i">4</span><span class="clip-tx" data-ru="Счёт № 2026-114 на оплату" data-en="Invoice #2026-114 due">Счёт № 2026-114 на оплату</span><span class="clip-ago" data-ru="31 мин" data-en="31m">31 мин</span></div>
+        </div>
+      </div>
+
+      <!-- 3 · OCR -->
+      <div class="exp-panel" data-panel="3">
+        <div class="exp-tag kbd-mac">⌘⇧1</div>
+        <div class="exp-tag kbd-win">Ctrl+Shift+1</div>
+        <div class="ocr-doc">
+          <div class="ocr-line"></div><div class="ocr-line w85"></div><div class="ocr-line w60"></div>
+          <div class="ocr-line"></div><div class="ocr-line w72"></div><div class="ocr-line w85"></div>
+          <div class="ocr-select" data-label="OCR"></div>
+        </div>
+        <div class="mock-toast">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          <span data-ru="Текст скопирован в буфер обмена" data-en="Text copied to clipboard">Текст скопирован в буфер обмена</span>
+        </div>
+      </div>
+
+      <!-- 4 · Перевод -->
+      <div class="exp-panel" data-panel="4">
+        <div class="exp-tag kbd-mac">⌘⇧2</div>
+        <div class="exp-tag kbd-win">Ctrl+Shift+2</div>
+        <div class="tr-pair">
+          <div>
+            <div class="tr-meta"><span>DE</span><span>·</span><span data-ru="распознано с экрана" data-en="recognized from screen">распознано с экрана</span></div>
+            <div class="tr-box">Die Rechnung wird innerhalb von 14 Tagen fällig.</div>
+          </div>
+          <div class="tr-arrow">↓</div>
+          <div>
+            <div class="tr-meta"><span data-ru="RU" data-en="EN">RU</span><span>·</span><span data-ru="в буфере обмена" data-en="in your clipboard">в буфере обмена</span></div>
+            <div class="tr-box result" data-ru="Счёт подлежит оплате в течение 14 дней." data-en="The invoice is due within 14 days.">Счёт подлежит оплате в течение 14 дней.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 · Палитра -->
+      <div class="exp-panel" data-panel="5">
+        <div class="exp-tag kbd-mac">⌘⇧E</div>
+        <div class="exp-tag kbd-win">Ctrl+Shift+E</div>
+        <div class="exp-palette">
+          <div class="fp-input">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            <span>morn</span>
+            <span class="fp-kbd kbd-mac">⌘⇧E</span>
+            <span class="fp-kbd kbd-win">Ctrl+Shift+E</span>
+          </div>
+          <div class="fp-item sel"><span class="aw-trigger">gm</span><span>Good morning, hope you're having a great day!</span></div>
+          <div class="fp-item"><span class="aw-trigger">mtg</span><span>Meeting scheduled for tomorrow at 14:00</span></div>
+          <div class="fp-item"><span class="aw-trigger">ty</span><span>Thank you for reaching out!</span></div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -438,48 +501,8 @@
   </p>
 </section>
 
-<!-- ─────────────────────────────────────────────  COMPARISON  ────────────── -->
-<section id="compare" class="section section-alt">
-  <div class="section-head">
-    <div class="eyebrow" data-ru="Сравнение" data-en="Comparison">Сравнение</div>
-    <h2 data-ru="Честное сравнение" data-en="An honest comparison">Честное сравнение</h2>
-    <p data-ru="Snippi не делает всё. Но то, что делает — бесплатно и локально."
-       data-en="Snippi doesn't do everything. But what it does is free and local.">
-      Snippi не делает всё. Но то, что делает — бесплатно и локально.
-    </p>
-  </div>
-
-  <div class="compare-wrap">
-    <table class="compare">
-      <thead>
-        <tr>
-          <th></th>
-          <th class="col-snippi">Snippi</th>
-          <th>TextExpander</th>
-          <th>Espanso</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><th data-ru="Цена" data-en="Price">Цена</th><td class="col-snippi yes" data-ru="Бесплатно" data-en="Free">Бесплатно</td><td data-ru="от $40/год" data-en="from $40/yr">от $40/год</td><td data-ru="Бесплатно" data-en="Free">Бесплатно</td></tr>
-        <tr><th data-ru="Сниппеты и триггеры" data-en="Snippets &amp; triggers">Сниппеты и триггеры</th><td class="col-snippi yes"></td><td class="yes"></td><td class="yes"></td></tr>
-        <tr><th data-ru="Скриншот → текст (OCR)" data-en="Screenshot → text (OCR)">Скриншот → текст (OCR)</th><td class="col-snippi yes"></td><td class="no"></td><td class="no"></td></tr>
-        <tr><th data-ru="Скриншот → перевод" data-en="Screenshot → translate">Скриншот → перевод</th><td class="col-snippi yes"></td><td class="no"></td><td class="no"></td></tr>
-        <tr><th data-ru="История буфера обмена" data-en="Clipboard history">История буфера обмена</th><td class="col-snippi yes"></td><td class="no"></td><td class="no"></td></tr>
-        <tr><th data-ru="Графический интерфейс" data-en="Graphical interface">Графический интерфейс</th><td class="col-snippi yes"></td><td class="yes"></td><td class="no" data-ru="Конфиг-файлы" data-en="Config files">Конфиг-файлы</td></tr>
-        <tr><th data-ru="Данные хранятся локально" data-en="Data stored locally">Данные хранятся локально</th><td class="col-snippi yes"></td><td class="no" data-ru="Облако" data-en="Cloud">Облако</td><td class="yes"></td></tr>
-        <tr><th data-ru="Облачная синхронизация и команды" data-en="Cloud sync &amp; teams">Облачная синхронизация и команды</th><td class="col-snippi no" data-ru="Пока нет" data-en="Not yet">Пока нет</td><td class="yes"></td><td class="no"></td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p class="compare-foot"
-     data-ru="Данные по публичным сайтам TextExpander и Espanso, июнь 2026. Нашли неточность — напишите в issues."
-     data-en="Based on public TextExpander and Espanso websites, June 2026. Spotted an error — open an issue.">
-    Данные по публичным сайтам TextExpander и Espanso, июнь 2026. Нашли неточность — напишите в issues.
-  </p>
-</section>
-
 <!-- ─────────────────────────────────────────────  DOWNLOAD  ──────────────── -->
-<section id="download" class="section">
+<section id="download" class="section section-alt">
   <div class="section-head">
     <div class="eyebrow" data-ru="Загрузка" data-en="Download">Загрузка</div>
     <h2 data-ru="Скачать Snippi" data-en="Download Snippi">Скачать Snippi</h2>
@@ -514,7 +537,7 @@
 </section>
 
 <!-- ─────────────────────────────────────────────  FAQ  ───────────────────── -->
-<section id="faq" class="section section-alt">
+<section id="faq" class="section">
   <div class="section-head">
     <div class="eyebrow">FAQ</div>
     <h2 data-ru="Частые вопросы" data-en="Frequently asked">Частые вопросы</h2>
@@ -718,17 +741,52 @@
 </script>
 
 <script>
-  // ── Курсор-spotlight на bento-карточках + scroll-reveal ───────────
+  // ── Переключатель шорткатов macOS / Windows (+ авто-детект) ───────
   (function () {
-    document.querySelectorAll('.fcard').forEach(card => {
-      card.addEventListener('pointermove', e => {
-        const r = card.getBoundingClientRect();
-        card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-        card.style.setProperty('--my', (e.clientY - r.top) + 'px');
-      });
+    const exp = document.querySelector('.explorer');
+    const btns = document.querySelectorAll('.os-toggle [data-os-set]');
+    if (!exp || !btns.length) return;
+    function setOS(os) {
+      exp.classList.toggle('os-win', os === 'win');
+      btns.forEach(b => b.classList.toggle('active', b.dataset.osSet === os));
+    }
+    setOS(/Win/i.test(navigator.userAgent) ? 'win' : 'mac');
+    btns.forEach(b => b.addEventListener('click', () => setOS(b.dataset.osSet)));
+  })();
+</script>
+
+<script>
+  // ── Интерактивный feature-explorer ────────────────────────────────
+  (function () {
+    const items = Array.prototype.slice.call(document.querySelectorAll('.exp-item'));
+    const panels = Array.prototype.slice.call(document.querySelectorAll('.exp-panel'));
+    if (!items.length) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let idx = 0, timer = null;
+    function show(i) {
+      idx = i;
+      items.forEach((it, k) => { it.classList.toggle('active', k === i); it.setAttribute('aria-selected', k === i ? 'true' : 'false'); });
+      panels.forEach((p, k) => p.classList.toggle('active', k === i));
+    }
+    function next() { show((idx + 1) % items.length); }
+    function start() { if (reduce) return; stop(); timer = setInterval(next, 4200); }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+    items.forEach((it, i) => {
+      it.addEventListener('click', () => { show(i); start(); });
+      it.addEventListener('mouseenter', () => { show(i); stop(); });
+      it.addEventListener('focus', () => { show(i); stop(); });
     });
+    const root = document.querySelector('.explorer');
+    if (root) root.addEventListener('mouseleave', start);
+    show(0); start();
+  })();
+</script>
+
+<script>
+  // ── Scroll-reveal ─────────────────────────────────────────────────
+  (function () {
     if (!('IntersectionObserver' in window)) return;
-    const groups = ['.features-bento > .fcard', '.how-step', '.privacy-grid > .privacy-cell', '.downloads > .dl-card', '.faq-item', '.stat'];
+    const groups = ['.exp-item', '.how-step', '.privacy-grid > .privacy-cell', '.downloads > .dl-card', '.faq-item', '.stat'];
     const io = new IntersectionObserver(entries => {
       for (const en of entries) { if (en.isIntersecting) { en.target.classList.add('in-view'); io.unobserve(en.target); } }
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
