@@ -3,30 +3,33 @@
    Frameless + прозрачный фон + blur-эффект macOS-стиля
 ════════════════════════════════════════════════════════════════ */
 
+/* Бренд-гамма «кофе»: тёплый уголь + терракота + Geist (как в приложении). */
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap');
+
 :root {
-  --bg:           rgba(28, 28, 30, 0.92);
-  --bg-input:    rgba(255, 255, 255, 0.07);
-  --bg-hover:    rgba(255, 255, 255, 0.06);
-  --bg-active:   rgba(77, 159, 255, 0.18);
-  --text:         #f4f4f6;
-  --text-2:       #a8a8b3;
-  --text-3:       #6b6b78;
-  --accent:       #4d9fff;
-  --border:      rgba(255, 255, 255, 0.08);
-  --radius:       14px;
+  --bg:          rgba(22, 20, 18, 0.92);
+  --bg-input:    rgba(236, 232, 225, 0.06);
+  --bg-hover:    rgba(236, 232, 225, 0.06);
+  --bg-active:   rgba(224, 93, 61, 0.18);
+  --text:        rgba(236, 232, 225, 0.96);
+  --text-2:      rgba(216, 210, 200, 0.66);
+  --text-3:      rgba(200, 193, 180, 0.44);
+  --accent:      #E05D3D;
+  --border:      rgba(236, 232, 225, 0.10);
+  --radius:      14px;
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    --bg:        rgba(252, 252, 253, 0.92);
-    --bg-input: rgba(0, 0, 0, 0.05);
-    --bg-hover: rgba(0, 0, 0, 0.04);
-    --bg-active:rgba(0, 102, 255, 0.12);
-    --text:      #1a1a1a;
-    --text-2:    #5a5a6a;
-    --text-3:    #9a9aaa;
-    --accent:    #0066ff;
-    --border:   rgba(0, 0, 0, 0.08);
+    --bg:        rgba(247, 246, 243, 0.94);
+    --bg-input:  rgba(24, 22, 18, 0.05);
+    --bg-hover:  rgba(24, 22, 18, 0.05);
+    --bg-active: rgba(194, 69, 45, 0.13);
+    --text:      rgba(24, 22, 18, 0.96);
+    --text-2:    rgba(60, 56, 48, 0.70);
+    --text-3:    rgba(90, 85, 74, 0.52);
+    --accent:    #C2452D;
+    --border:    rgba(24, 22, 18, 0.10);
   }
 }
 
@@ -35,7 +38,7 @@
 html, body {
   height: 100%;
   background: transparent;
-  font-family: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Geist', -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   font-size: 14px;
   color: var(--text);
   -webkit-font-smoothing: antialiased;
@@ -190,3 +193,96 @@ html, body {
   font: 11px/1 ui-monospace, Menlo, monospace;
   color: var(--text-2);
 }
+
+/* ── Команды в палитре ───────────────────────────────────────── */
+.item.cmd { gap: 12px; }
+.cmd-icon {
+  flex-shrink: 0;
+  width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-input);
+  color: var(--text-2);
+}
+.item.cmd.active .cmd-icon { color: var(--accent); border-color: var(--accent); }
+.cmd-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.cmd-label { font-size: 14px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cmd-sub   { font-size: 11.5px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cmd-label mark { background: transparent; color: var(--accent); font-weight: 600; }
+.cmd-chevron { flex-shrink: 0; color: var(--text-3); font-size: 18px; line-height: 1; }
+.item.cmd.active .cmd-chevron { color: var(--accent); }
+
+/* Точка-маркер у элементов истории буфера */
+.clip-dot {
+  flex-shrink: 0; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--text-3);
+}
+.item.active .clip-dot { background: var(--accent); }
+
+/* Бейдж «поля» у сниппета с {?…} */
+.field-badge {
+  flex-shrink: 0;
+  font-size: 10px;
+  color: var(--accent);
+  padding: 2px 7px;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  opacity: 0.85;
+}
+
+/* ── Форма заполняемых полей ──────────────────────────────────── */
+.form {
+  flex: 1;
+  display: flex; flex-direction: column;
+  padding: 16px 18px;
+  overflow-y: auto;
+}
+.form-head {
+  font-size: 13px; color: var(--text-2);
+  margin-bottom: 14px;
+}
+.form-trigger {
+  font: 12px/1 ui-monospace, Menlo, monospace;
+  color: var(--accent);
+  padding: 2px 7px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+}
+.form-fields { display: flex; flex-direction: column; gap: 12px; }
+.form-field { display: flex; flex-direction: column; gap: 5px; }
+.form-label { font-size: 12px; color: var(--text-3); }
+.form-input {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 11px;
+  font: inherit; font-size: 14px;
+  color: var(--text);
+  outline: none;
+  user-select: text;
+}
+.form-input:focus { border-color: var(--accent); }
+
+.form-preview-wrap { margin-top: 16px; }
+.form-preview-label {
+  font-size: 11px; color: var(--text-3); text-transform: uppercase;
+  letter-spacing: 0.04em; margin-bottom: 6px;
+}
+.form-preview {
+  font-size: 13px; line-height: 1.5; color: var(--text-2);
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  white-space: pre-wrap;
+  max-height: 120px; overflow-y: auto;
+}
+.form-actions { margin-top: 16px; display: flex; justify-content: flex-end; }
+.form-btn {
+  font: inherit; font-size: 14px; font-weight: 600;
+  color: #fff; background: var(--accent);
+  border: none; border-radius: 8px;
+  padding: 9px 20px; cursor: pointer;
+}
+.form-btn:hover { filter: brightness(1.08); }

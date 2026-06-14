@@ -4,30 +4,32 @@
   <meta charset="UTF-8" />
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:;" />
-  <title>Quick Snippet Picker</title>
+  <title>Snippi — палитра</title>
   <link rel="stylesheet" href="palette.css" />
 </head>
 <body>
   <div class="palette">
-    <div class="search-row">
+    <div class="search-row" id="search-row">
       <svg class="search-icon" viewBox="0 0 20 20" fill="none" width="18" height="18" aria-hidden="true">
         <circle cx="9" cy="9" r="6.5" stroke="currentColor" stroke-width="1.6"/>
         <line x1="14" y1="14" x2="18" y2="18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
       </svg>
       <input id="q" type="text" autocomplete="off" spellcheck="false"
-             placeholder="Поиск по триггеру или тексту…" />
+             placeholder="Поиск сниппетов и команд…" />
       <span class="hint-esc">Esc</span>
     </div>
+
     <ul id="list" class="list"></ul>
+
     <div id="empty" class="empty hidden">
       <div class="empty-emoji">🔍</div>
       <div class="empty-text">Ничего не найдено</div>
     </div>
-    <div class="footer">
-      <span class="kbd">↑↓</span> навигация
-      <span class="kbd">↵</span> вставить
-      <span class="kbd">Esc</span> закрыть
-    </div>
+
+    <!-- Форма заполняемых полей {?Метка} -->
+    <div id="form" class="form hidden"></div>
+
+    <div class="footer" id="footer"></div>
   </div>
   <script src="palette.js"></script>
 </body>

@@ -6,7 +6,7 @@ const { execFile }            = require('child_process');
 const path                    = require('path');
 const storage                 = require('./storage');
 const clipboardWatcher        = require('./clipboardWatcher');
-const { processPlaceholders } = require('./placeholders');
+const { processPlaceholders, hasFields } = require('./placeholders');
 const { markdownToHtml, htmlToPlain } = require('./markdown');
 
 // ── macOS: путь к скомпилированному Swift-хелперу ─────────────────────────
@@ -361,6 +361,14 @@ async function tryExpandSnippet() {
       // он к этому моменту обычно уже отпущен (срабатывание на keyup), но на
       // всякий случай ждём отпускания модификаторов перед Ctrl+V.
       if (process.platform === 'win32') await waitModifiersUp(400);
+      // Заполняемые поля {?Метка}: вместо немедленной вставки открываем форму
+      // палитры. Триггер (напечатанные буквы) останется в поле — backspaces
+      // сотрут его уже при финальной вставке после заполнения формы.
+      if (hasFields(match.replacement)) {
+        try { require('./palette').openSnippetForm(match, { backspaces: backspaceCount }); }
+        catch (e) { console.error('[expander] openSnippetForm:', e.message); }
+        return; // finally сбросит expanding; вставка произойдёт после формы
+      }
       // Для статистики предварительно раскрываем плейсхолдеры — длина после
       // подстановки может сильно отличаться от длины исходного шаблона.
       // sendBackspacesAndPaste раскроет их ещё раз, но с тем же seed-моментом
@@ -506,9 +514,9 @@ function stopExpander() {
 
 // Публичный API для вставки произвольного текста (палитра, AI-фичи и т.п.):
 // просто кладёт текст в буфер и эмулирует Cmd/Ctrl+V в активном окне.
-async function pasteText(text, format) {
+async function pasteText(text, format, backspaces = 0) {
   if (!text) return;
-  await sendBackspacesAndPaste(0, text, { format: format === 'rich' ? 'rich' : 'plain' });
+  await sendBackspacesAndPaste(backspaces || 0, text, { format: format === 'rich' ? 'rich' : 'plain' });
 }
 
 module.exports = { initExpander, stopExpander, setOnFire, pasteText, AVAILABLE_TRIGGER_KEYS };

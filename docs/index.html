@@ -221,7 +221,7 @@
         <span class="exp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span>
         <span class="exp-tx">
           <h3 data-ru="Сниппеты" data-en="Snippets">Сниппеты</h3>
-          <p data-ru="Короткий триггер → целый блок текста" data-en="A short trigger → a whole block of text">Короткий триггер → целый блок текста</p>
+          <p data-ru="Триггер → блок текста, с заполняемыми полями" data-en="Trigger → a block of text, with fill-in fields">Триггер → блок текста, с заполняемыми полями</p>
         </span>
       </button>
       <button class="exp-item" data-feat="1" role="tab" aria-selected="false">
@@ -255,8 +255,8 @@
       <button class="exp-item" data-feat="5" role="tab" aria-selected="false">
         <span class="exp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
         <span class="exp-tx">
-          <h3 data-ru="Палитра поиска" data-en="Search palette">Палитра поиска</h3>
-          <p data-ru="Fuzzy-поиск по всем сниппетам — как Spotlight" data-en="Fuzzy search across all snippets — like Spotlight">Fuzzy-поиск по всем сниппетам — как Spotlight</p>
+          <h3 data-ru="Командная палитра" data-en="Command palette">Командная палитра</h3>
+          <p data-ru="Сниппеты, OCR, перевод и буфер — в одном окне" data-en="Snippets, OCR, translate &amp; clipboard — one window">Сниппеты, OCR, перевод и буфер — в одном окне</p>
         </span>
       </button>
     </div>
@@ -270,7 +270,7 @@
           <div class="aw-row"><span class="aw-trigger">gm</span><span class="aw-text">Good morning, hope you're having a great day!</span></div>
           <div class="aw-row"><span class="aw-trigger">sig</span><span class="aw-text">Best regards, Alex Carter — Product Lead</span></div>
           <div class="aw-row"><span class="aw-trigger">eml</span><span class="aw-text">alex.carter@acme.com</span></div>
-          <div class="aw-row"><span class="aw-trigger">inv</span><span class="aw-text" data-ru="Счёт во вложении, срок оплаты — 14 дней." data-en="Invoice attached, due within 14 days.">Счёт во вложении, срок оплаты — 14 дней.</span></div>
+          <div class="aw-row"><span class="aw-trigger">inv</span><span class="aw-text" data-ru="Здравствуйте, {?Имя}! По заказу {?Заказ}…" data-en="Hi {?Name}! About order {?Order}…">Здравствуйте, {?Имя}! По заказу {?Заказ}…</span></div>
         </div>
       </div>
 
@@ -335,13 +335,13 @@
         <div class="exp-palette">
           <div class="fp-input">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-            <span>morn</span>
+            <span data-ru="команды и сниппеты…" data-en="commands &amp; snippets…">команды и сниппеты…</span>
             <span class="fp-kbd kbd-mac">⌘⇧E</span>
             <span class="fp-kbd kbd-win">Ctrl+Shift+E</span>
           </div>
-          <div class="fp-item sel"><span class="aw-trigger">gm</span><span>Good morning, hope you're having a great day!</span></div>
-          <div class="fp-item"><span class="aw-trigger">mtg</span><span>Meeting scheduled for tomorrow at 14:00</span></div>
-          <div class="fp-item"><span class="aw-trigger">ty</span><span>Thank you for reaching out!</span></div>
+          <div class="fp-item sel"><span class="aw-trigger">OCR</span><span data-ru="Скриншот → текст" data-en="Screenshot → text">Скриншот → текст</span></div>
+          <div class="fp-item"><span class="aw-trigger">⇧2</span><span data-ru="Скриншот → перевод" data-en="Screenshot → translate">Скриншот → перевод</span></div>
+          <div class="fp-item"><span class="aw-trigger">gm</span><span>Good morning, hope you're having a great day!</span></div>
         </div>
       </div>
     </div>
@@ -533,6 +533,26 @@
     <a id="dl-intel" href="https://github.com/woler1337/snippi/releases/latest"
        data-ru="Mac на Intel? Скачать x64-версию" data-en="Intel Mac? Download the x64 build">Mac на Intel? Скачать x64-версию</a>
   </p>
+
+  <details class="install-help">
+    <summary data-ru="Не открывается при первом запуске?" data-en="Won't open on first launch?">Не открывается при первом запуске?</summary>
+    <div class="install-help-body">
+      <div class="ih-os">
+        <div class="ih-os-name">macOS</div>
+        <p data-ru-html="Snippi пока без платной подписи Apple, поэтому macOS может написать, что приложение «повреждено». Это безопасно — код открыт на GitHub. Обходится один раз: правый клик по <strong>Snippi</strong> в «Программах» → <strong>«Открыть»</strong> → ещё раз <strong>«Открыть»</strong>. Если всё равно пишет «повреждено», выполни в Терминале:<br><code>xattr -dr com.apple.quarantine /Applications/Snippi.app</code>"
+           data-en-html="Snippi ships without a paid Apple signature for now, so macOS may say the app is “damaged.” It's safe — the source is open on GitHub. You only do this once: right-click <strong>Snippi</strong> in Applications → <strong>Open</strong> → <strong>Open</strong> again. If it still says “damaged,” run in Terminal:<br><code>xattr -dr com.apple.quarantine /Applications/Snippi.app</code>">
+          Snippi пока без платной подписи Apple, поэтому macOS может написать, что приложение «повреждено». Это безопасно — код открыт на GitHub. Обходится один раз: правый клик по <strong>Snippi</strong> в «Программах» → <strong>«Открыть»</strong> → ещё раз <strong>«Открыть»</strong>. Если всё равно пишет «повреждено», выполни в Терминале:<br><code>xattr -dr com.apple.quarantine /Applications/Snippi.app</code>
+        </p>
+      </div>
+      <div class="ih-os">
+        <div class="ih-os-name">Windows</div>
+        <p data-ru-html="Без платного сертификата SmartScreen может показать «Система Windows защитила ваш компьютер». Нажми <strong>«Подробнее» → «Выполнить в любом случае»</strong>. Это безопасно — исходный код открыт на GitHub."
+           data-en-html="Without a paid certificate, SmartScreen may show “Windows protected your PC.” Click <strong>“More info” → “Run anyway.”</strong> It's safe — the source is open on GitHub.">
+          Без платного сертификата SmartScreen может показать «Система Windows защитила ваш компьютер». Нажми <strong>«Подробнее» → «Выполнить в любом случае»</strong>. Это безопасно — исходный код открыт на GitHub.
+        </p>
+      </div>
+    </div>
+  </details>
 </section>
 
 <!-- ─────────────────────────────────────────────  FAQ  ───────────────────── -->
@@ -543,6 +563,22 @@
   </div>
 
   <div class="faq-wrap">
+    <details class="faq-item">
+      <summary data-ru="Можно делать шаблоны с подстановкой (имя, номер заказа)?" data-en="Can I make templates with fill-in fields (name, order number)?">Можно делать шаблоны с подстановкой (имя, номер заказа)?</summary>
+      <p data-ru-html='Да. В тексте сниппета пиши поля: <code>{?Имя}</code> или <code>{?Заказ=000}</code> (со значением по умолчанию). При срабатывании сниппета всплывёт форма — заполняешь и вставляешь. Одинаковые поля заполняются один раз и подставляются во все вхождения. Поля комбинируются с динамическими плейсхолдерами вроде <code>{date}</code>.'
+         data-en-html='Yes. Add fields to the snippet text: <code>{?Name}</code> or <code>{?Order=000}</code> (with a default). When the snippet fires, a small form pops up — fill it in and it inserts. Repeated fields are asked once and filled everywhere. Fields combine with dynamic placeholders like <code>{date}</code>.'>
+        Да. В тексте сниппета пиши поля: <code>{?Имя}</code> или <code>{?Заказ=000}</code> (со значением по умолчанию). При срабатывании сниппета всплывёт форма — заполняешь и вставляешь. Одинаковые поля заполняются один раз и подставляются во все вхождения. Поля комбинируются с динамическими плейсхолдерами вроде <code>{date}</code>.
+      </p>
+    </details>
+
+    <details class="faq-item">
+      <summary data-ru="Что такое командная палитра?" data-en="What is the command palette?">Что такое командная палитра?</summary>
+      <p data-ru-html='Одно окно по <kbd>⌘⇧E</kbd> / <kbd>Ctrl+Shift+E</kbd>, откуда можно запустить всё: найти и вставить сниппет, открыть «Скриншот → текст» или «Скриншот → перевод», порыться в истории буфера. Печатаешь — fuzzy-поиск находит и команды, и сниппеты. Как Spotlight, но для Snippi.'
+         data-en-html='One window via <kbd>⌘⇧E</kbd> / <kbd>Ctrl+Shift+E</kbd> to run everything: find and insert a snippet, launch “Screenshot → text” or “Screenshot → translate,” browse clipboard history. Type and fuzzy search matches both commands and snippets. Like Spotlight, but for Snippi.'>
+        Одно окно по <kbd>⌘⇧E</kbd> / <kbd>Ctrl+Shift+E</kbd>, откуда можно запустить всё: найти и вставить сниппет, открыть «Скриншот → текст» или «Скриншот → перевод», порыться в истории буфера. Печатаешь — fuzzy-поиск находит и команды, и сниппеты. Как Spotlight, но для Snippi.
+      </p>
+    </details>
+
     <details class="faq-item">
       <summary data-ru="Что отправляется в интернет?" data-en="What is sent over the internet?">Что отправляется в интернет?</summary>
       <p data-ru-html='Только распознанный текст для функции «Скриншот → перевод» — он уходит в <a href="https://mymemory.translated.net/" target="_blank" rel="noopener">MyMemory Translated API</a>. Сами скриншоты никогда не покидают компьютер. OCR работает локально через Apple Vision (Mac) или Tesseract (Windows). Сниппеты, история буфера, статистика — всё локально.'

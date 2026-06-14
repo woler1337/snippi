@@ -141,4 +141,45 @@ function processPlaceholders(text, ctx = {}) {
              (_, mod, t) => applyModifier(mod, t));
 }
 
-module.exports = { processPlaceholders };
+// ── Заполняемые поля (fill-in) ────────────────────────────────────
+// Синтаксис: {?Метка} или {?Метка=значение по умолчанию}.
+// При вставке такого сниппета приложение спрашивает значения через форму.
+// Одинаковые метки заполняются один раз и подставляются во все вхождения.
+// Префикс `?` выбран чтобы не конфликтовать с {date}/{clip}/{upper:…} и т.п.
+function fieldRe() { return /\{\?([^}=]+?)(?:=([^}]*))?\}/g; }
+
+function hasFields(text) {
+  return !!text && fieldRe().test(text);
+}
+
+// Возвращает упорядоченный список уникальных полей: [{ label, def }].
+function extractFields(text) {
+  const out = [];
+  const seen = new Set();
+  if (!text) return out;
+  const re = fieldRe();
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    const label = m[1].trim();
+    if (!label) continue;
+    const key = label.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push({ label, def: m[2] !== undefined ? m[2] : '' });
+  }
+  return out;
+}
+
+// Подставляет значения полей. values — объект { метка: значение } (регистр метки не важен).
+function applyFields(text, values) {
+  if (!text) return text;
+  const map = {};
+  for (const k in (values || {})) map[String(k).trim().toLowerCase()] = values[k];
+  return text.replace(fieldRe(), (_m, label, def) => {
+    const key = String(label).trim().toLowerCase();
+    if (Object.prototype.hasOwnProperty.call(map, key)) return String(map[key]);
+    return def !== undefined ? def : '';
+  });
+}
+
+module.exports = { processPlaceholders, hasFields, extractFields, applyFields };
